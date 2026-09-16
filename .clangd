@@ -1,0 +1,11 @@
+CompileFlags:
+  Compiler: clang-cl
+  Remove: [-WX, /WX]
+
+---
+
+If:
+  PathMatch: native/include/BMK/Skyrim/.*
+
+CompileFlags:
+  CompilationDatabase: tests/native/plugins

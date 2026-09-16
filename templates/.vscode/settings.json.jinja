@@ -1,0 +1,29 @@
+{% set settings = {} %}
+{% if devbench_tests %}
+{% set _ = settings.update({
+    'python.defaultInterpreterPath': '${workspaceFolder}/.venv',
+    'python.testing.pytestEnabled': true,
+    'python.testing.unittestEnabled': false,
+    '[python]': {'editor.defaultFormatter': 'charliermarsh.ruff'}
+}) %}
+{% endif %}
+{% if 'native' in components %}
+{% set _ = settings.update({
+    'xmake.autoGenerateCompileCommands': 'disabled',
+    'C_Cpp.intelliSenseEngine': 'disabled',
+    '[c]': {'editor.defaultFormatter': 'llvm-vs-code-extensions.vscode-clangd'},
+    '[cpp]': {'editor.defaultFormatter': 'llvm-vs-code-extensions.vscode-clangd'}
+}) %}
+{% endif %}
+{% if 'plugin_generation' in components or 'plugin_patching' in components or mcm %}
+{% set _ = settings.update({
+    '[csharp]': {'editor.defaultFormatter': 'csharpier.csharpier-vscode', 'editor.formatOnSave': true},
+    '[xml]': {'editor.defaultFormatter': 'csharpier.csharpier-vscode', 'editor.formatOnSave': true}
+}) %}
+{% endif %}
+{% if 'interface' in components and not ('plugin_generation' in components or 'plugin_patching' in components or mcm) %}
+{% set _ = settings.update({
+    '[xml]': {'editor.defaultFormatter': 'redhat.vscode-xml'}
+}) %}
+{% endif %}
+{{ settings | to_json(indent=2) }}

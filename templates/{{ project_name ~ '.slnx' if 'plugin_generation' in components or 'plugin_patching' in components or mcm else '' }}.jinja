@@ -1,0 +1,8 @@
+<Solution>
+{% if 'plugin_generation' in components or mcm %}
+  <Project Path="{{ mutagen_source }}/{{ project_name }}.csproj" />
+{% endif %}
+{% if 'plugin_patching' in components %}
+  <Project Path="{{ synthesis_source }}/{{ project_name }}Patch.csproj" />
+{% endif %}
+</Solution>

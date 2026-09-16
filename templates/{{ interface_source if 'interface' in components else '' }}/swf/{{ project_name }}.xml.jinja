@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<swf _xmlExportMajor="2" _xmlExportMinor="1" type="SWF" charset="UTF-8" compression="ZLIB" encrypted="false" frameCount="1" frameRate="30.0" gfx="false" hasEndTag="true" version="{{ 15 if game == 'skyrim' else 17 }}">
+  <displayRect type="RECT" Xmax="25600" Xmin="0" Ymax="14400" Ymin="0" nbits="16"/>
+  <tags>
+    <item type="FileAttributesTag" actionScript3="{{ 'false' if game == 'skyrim' else 'true' }}" forceWriteAsLong="false" hasMetadata="false" noCrossDomainCache="false" reservedA="false" reservedB="0" swfRelativeUrls="false" useDirectBlit="false" useGPU="false" useNetwork="false"/>
+{% if game == 'skyrim' %}
+    <item type="DoActionTag" actionBytes="00" forceWriteAsLong="false"/>
+{% endif %}
+    <item type="ShowFrameTag" forceWriteAsLong="false"/>
+  </tags>
+</swf>

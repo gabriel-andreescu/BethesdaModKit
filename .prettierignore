@@ -1,0 +1,8 @@
+.venv/
+.xmake/
+build/
+dist/
+scratch/
+uv.lock
+**/*.jinja
+packages/*/*/licenses/

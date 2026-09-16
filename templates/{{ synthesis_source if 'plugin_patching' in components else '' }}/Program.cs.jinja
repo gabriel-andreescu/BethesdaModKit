@@ -1,0 +1,16 @@
+using Mutagen.Bethesda.{{ 'Skyrim' if game == 'skyrim' else 'Fallout4' }};
+using Mutagen.Bethesda.Synthesis;
+
+namespace {{ project_name.replace('-', '_') }}.Patcher;
+
+internal static class Program
+{
+    private static async Task<int> Main(string[] args)
+    {
+        return await SynthesisPipeline
+            .Instance.AddPatch<I{{ 'Skyrim' if game == 'skyrim' else 'Fallout4' }}Mod, I{{ 'Skyrim' if game == 'skyrim' else 'Fallout4' }}ModGetter>(RunPatch)
+            .Run(args);
+    }
+
+    private static void RunPatch(IPatcherState<I{{ 'Skyrim' if game == 'skyrim' else 'Fallout4' }}Mod, I{{ 'Skyrim' if game == 'skyrim' else 'Fallout4' }}ModGetter> state) { }
+}

@@ -1,0 +1,26 @@
+{
+    "modName": "{{ project_name }}",
+    "displayName": "{{ project_name }}",
+{% if game == 'skyrim' %}
+    "$schema": "https://raw.githubusercontent.com/Exit-9B/MCM-Helper/main/docs/config.schema.json",
+    "minMcmVersion": 13,
+{% else %}
+    "pluginRequirements": ["{{ project_name }}.esp"],
+{% endif %}
+    "pages": [
+        {
+            "pageDisplayName": "General",
+            "content": [
+                {
+                    "id": "bDebugLogging:General",
+                    "text": "Debug logging",
+                    "type": "{{ 'toggle' if game == 'skyrim' else 'switcher' }}",
+                    "valueOptions": {
+                        "sourceType": "ModSettingBool",
+                        "defaultValue": false
+                    }
+                }
+            ]
+        }
+    ]
+}

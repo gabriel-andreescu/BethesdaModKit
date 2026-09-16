@@ -1,0 +1,27 @@
+target("{{ project_name }}")
+    set_version(version)
+    add_rules("@addon/bmk/{{ game }}.package"{% if components or pack_assets %}, {
+{% if components %}
+        targets = {
+{% for component in components %}
+            "{{ {'plugin_generation': 'Mutagen', 'plugin_patching': 'Synthesis'}.get(component, component | capitalize) }}",
+{% endfor %}
+        }{{ ',' if pack_assets else '' }}
+{% endif %}
+{% if pack_assets %}
+        {{ 'bsa' if game == 'skyrim' else 'ba2' }} = true
+{% endif %}
+    }{% endif %})
+    add_installfiles("$(projectdir)/assets/(**){% if mcm %}|optional/**{% endif %}")
+{% if mcm and 'plugin_generation' in components %}
+    add_installfiles("$(builddir)/artifacts/Mutagen/main/({{ project_name }}.esp)")
+{% endif %}
+{% if mcm %}
+
+target("{{ project_name }}MCM")
+    set_version(version)
+    add_deps("Mutagen", {inherit = false})
+    add_rules("@addon/bmk/{{ game }}.package", {targets = {"MCMScripts"}})
+    add_installfiles("$(builddir)/artifacts/Mutagen/mcm/({{ project_name }}.esp)")
+    add_installfiles("$(projectdir)/assets/optional/mcm/(**)")
+{% endif %}

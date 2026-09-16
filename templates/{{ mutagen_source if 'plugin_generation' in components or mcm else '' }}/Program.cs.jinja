@@ -1,0 +1,57 @@
+using Mutagen.Bethesda;
+{% if game == 'fallout4' %}
+using Mutagen.Bethesda.Fallout4;
+{% endif %}
+using Mutagen.Bethesda.Plugins.Allocators;
+{% if game == 'skyrim' %}
+using Mutagen.Bethesda.Skyrim;
+{% endif %}
+
+namespace {{ project_name.replace('-', '_') }}.Generator;
+
+internal static class Program
+{
+    private static void Main(string[] args)
+    {
+        var output = Path.GetFullPath(args[0]);
+{% if mcm %}
+        var mod = new {{ 'SkyrimMod' if game == 'skyrim' else 'Fallout4Mod' }}("{{ project_name }}.esp", {{ 'SkyrimRelease.SkyrimSE' if game == 'skyrim' else 'Fallout4Release.Fallout4' }}){% if 'plugin_generation' in components %};{% endif %}
+
+{% if 'plugin_generation' not in components %}
+        {
+            IsSmallMaster = true,
+        };
+{% endif %}
+{% else %}
+        Directory.CreateDirectory(Path.GetDirectoryName(output)!);
+        var mod = new {{ 'SkyrimMod(Path.GetFileName(output), SkyrimRelease.SkyrimSE)' if game == 'skyrim' else 'Fallout4Mod(Path.GetFileName(output), Fallout4Release.Fallout4)' }};
+{% endif %}
+        using var allocator = new TextFileFormKeyAllocator(mod, args[1])
+        {
+            CommitOnDispose = false,
+        };
+        mod.SetAllocator(allocator);
+{% if 'plugin_generation' in components %}
+        BuildPlugin(mod);
+{% endif %}
+
+{% if mcm %}
+{% if 'plugin_generation' in components %}
+        Directory.CreateDirectory(Path.Combine(output, "main"));
+        mod.WriteToBinary(Path.Combine(output, "main", "{{ project_name }}.esp"));
+
+{% endif %}
+        Mcm.AddQuest(mod);
+        Directory.CreateDirectory(Path.Combine(output, "mcm"));
+        mod.WriteToBinary(Path.Combine(output, "mcm", "{{ project_name }}.esp"));
+
+{% else %}
+        mod.WriteToBinary(output);
+{% endif %}
+        allocator.Commit();
+    }
+{% if 'plugin_generation' in components %}
+
+    private static void BuildPlugin({{ 'SkyrimMod' if game == 'skyrim' else 'Fallout4Mod' }} mod) { }
+{% endif %}
+}

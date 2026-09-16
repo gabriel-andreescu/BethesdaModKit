@@ -1,0 +1,51 @@
+set_xmakever("3.1.1")
+set_project("{{ project_name }}")
+
+local version = "0.1.0"
+
+add_repositories({{ ('bmk ' ~ bmk_repository | replace('\\', '/')) | to_json(ensure_ascii=False) }})
+add_addons("bmk 0.1.0")
+includes("@addon/bmk/project")
+{% if 'native' in components %}
+includes("@addon/bmk/native")
+
+add_requires("{{ 'commonlibsse-ng 8.0.1' if game == 'skyrim' else 'commonlibf4 2026.09.13' }}", {system = false})
+{% if clib_util or native_settings %}
+add_requires("clib-util 1.5.0", {system = false})
+{% endif %}
+{% if devbench_api and game == 'skyrim' %}
+add_requires("bmk", "devbench-api 2026.09.13", {system = false})
+{% endif %}
+{% endif %}
+{% if 'papyrus' in components or mcm %}
+
+add_requires("caprica", {host = true})
+{% if mcm and game == 'skyrim' %}
+add_requires("mcm-helper-sdk 1.6.3")
+{% endif %}
+option("papyrus_imports", {description = "Papyrus import directories separated by ;"})
+option("papyrus_flags", {description = "Optional Papyrus flags file override"})
+{% endif %}
+{% if 'interface' in components %}
+
+add_requires("ffdec 26.3.0", {host = true})
+{% endif %}
+{% if 'plugin_patching' in components %}
+
+option("synthesis_data", {description = "Synthesis input Data directory"})
+option("synthesis_load_order", {description = "Synthesis load-order file"})
+{% endif %}
+{% for component in components %}
+
+{% include 'templates/_partials/xmake/' ~ component ~ '.jinja' %}
+{% endfor %}
+{% if mcm %}
+
+{% if 'plugin_generation' not in components %}
+{% include 'templates/_partials/xmake/plugin_generation.jinja' %}
+
+{% endif %}
+{% include 'templates/_partials/xmake/mcm.jinja' %}
+{% endif %}
+
+{% include 'templates/_partials/xmake/packages.jinja' %}

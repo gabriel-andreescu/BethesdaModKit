@@ -1,0 +1,9 @@
+{
+  "Nickname": "{{ project_name }}Patch",
+  "Visibility": "Visible",
+  "OneLineDescription": {{ description | to_json(ensure_ascii=False) }},
+  "LongDescription": "",
+  "PreferredAutoVersioning": "Default",
+  "RequiredMods": [],
+  "TargetedReleases": ["{{ 'SkyrimSE' if game == 'skyrim' else 'Fallout4' }}"]
+}

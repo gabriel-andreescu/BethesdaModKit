@@ -1,0 +1,12 @@
+.xmake/
+.bmk/
+build/
+dist/
+.idea/
+scratch/
+compile_commands.json
+.venv/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+test-results/

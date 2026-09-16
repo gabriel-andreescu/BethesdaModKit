@@ -1,0 +1,8 @@
+target("Interface")
+    set_default(false)
+    add_rules("@addon/bmk/ffdec", {
+        xml = "{{ interface_source }}/swf/{{ project_name }}.xml",
+        scripts = "{{ interface_source }}/actionscript",
+        output = "{{ project_name }}.swf"
+    })
+    add_packages("ffdec")

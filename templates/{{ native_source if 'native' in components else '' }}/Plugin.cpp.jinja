@@ -1,0 +1,45 @@
+{% if devbench_api %}
+#include <BMK/Skyrim/DevBench.h>
+
+{% endif %}
+{% if mcm %}
+#include <{{ 'RE/Skyrim.h' if game == 'skyrim' else 'RE/Fallout.h' }}>
+
+{% endif %}
+#include <{{ 'SKSE/SKSE.h' if game == 'skyrim' else 'F4SE/F4SE.h' }}>
+{% if native_settings %}
+
+#include "Settings.h"
+{% endif %}
+{% if mcm %}
+{% if game == 'fallout4' %}
+
+#include <variant>
+{% endif %}
+
+namespace {
+void ReloadSettings({{ 'RE::StaticFunctionTag*' if game == 'skyrim' else 'std::monostate' }} /*base*/) {
+    {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::GetTaskInterface()->AddTask([] { Settings::Reload(); });
+}
+
+bool RegisterPapyrus(RE::BSScript::IVirtualMachine* virtualMachine) {
+{% if game == 'skyrim' %}
+    virtualMachine->RegisterFunction("ReloadSettings", "{{ project_name.replace('-', '_') }}Native", ReloadSettings);
+{% else %}
+    virtualMachine->BindNativeMethod("{{ project_name.replace('-', '_') }}Native", "ReloadSettings", ReloadSettings);
+{% endif %}
+    return true;
+}
+}
+{% endif %}
+
+{{ 'SKSE' if game == 'skyrim' else 'F4SE' }}_PLUGIN_LOAD(const {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::LoadInterface* extender) {
+    {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::Init(extender);
+{% if native_settings %}
+    Settings::Reload();
+{% endif %}
+{% if mcm %}
+    {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::GetPapyrusInterface()->Register(RegisterPapyrus);
+{% endif %}
+    return true;
+}

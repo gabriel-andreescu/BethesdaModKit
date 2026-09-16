@@ -1,0 +1,254 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v[0-9]*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      native: ${{ steps.filter.outputs.native }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        if: github.event_name != 'workflow_dispatch' && github.ref_type != 'tag'
+        with:
+          filters: |
+            native:
+              - 'packages/b/bmk/**'
+              - 'packages/c/commonlibsse-ng/**'
+              - 'packages/c/commonlibf4/**'
+              - 'packages/c/clib-util/**'
+              - 'packages/d/devbench-api/**'
+              - 'addons/**'
+              - 'native/include/**'
+              - 'xmake/includes/**'
+              - 'xmake/rules/plugin/**'
+              - 'xmake/rules/skyrim/**'
+              - 'xmake/rules/fallout4/**'
+              - 'tests/native/plugins/**'
+              - 'tests/native/test_plugins.py'
+              - 'copier.yml'
+              - 'templates/xmake.lua.jinja'
+              - 'templates/_partials/xmake/native.jinja'
+              - 'templates/**/Plugin.cpp.jinja'
+              - 'tests/{conftest,support}.py'
+              - 'pyproject.toml'
+              - 'uv.lock'
+              - '.github/workflows/ci.yml'
+
+  workflows:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check workflows
+        run: |
+          curl --fail --location --output "$RUNNER_TEMP/actionlint.tar.gz" \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint"
+
+      - uses: astral-sh/setup-uv@45c121f982720f3bdf236c2ac06f126ca211949c
+        with:
+          version: "0.12.13"
+          python-version: "3.11"
+          enable-cache: true
+
+      - name: Install development dependencies
+        run: uv sync --locked
+
+      - name: Test release scripts
+        run: uv run pytest tests/integration/workflows/test_release.py
+
+  checks:
+    runs-on: windows-2025
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@45c121f982720f3bdf236c2ac06f126ca211949c
+        with:
+          version: "0.12.13"
+          python-version: "3.11"
+          enable-cache: true
+
+      - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a
+        with:
+          xmake-version: "3.1.1"
+          actions-cache-folder: .xmake-install
+
+      - name: Set XMake cache directories
+        id: image
+        run: |
+          "version=$env:ImageVersion" >> $env:GITHUB_OUTPUT
+          "BMK_TEST_CACHE=$env:RUNNER_TEMP/bmk/tests" >> $env:GITHUB_ENV
+          "XMAKE_GLOBALDIR=$env:RUNNER_TEMP/bmk/global" >> $env:GITHUB_ENV
+          "XMAKE_PKG_INSTALLDIR=$env:RUNNER_TEMP/bmk/packages" >> $env:GITHUB_ENV
+          "XMAKE_PKG_CACHEDIR=$env:RUNNER_TEMP/bmk/downloads" >> $env:GITHUB_ENV
+
+      - name: Cache XMake repositories and downloads
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ${{ runner.temp }}/bmk/global
+            ${{ runner.temp }}/bmk/downloads
+            ${{ env.BMK_TEST_CACHE }}/*/global
+            ${{ env.BMK_TEST_CACHE }}/*/downloads
+          key: xmake-3.1.1-${{ runner.os }}-checks-downloads-${{ github.sha }}
+          restore-keys: xmake-3.1.1-${{ runner.os }}-checks-downloads-
+
+      - name: Cache installed dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ${{ runner.temp }}/bmk/packages
+            ${{ env.BMK_TEST_CACHE }}/*/packages
+          key:
+            xmake-3.1.1-${{ runner.os }}-checks-${{ steps.image.outputs.version
+            }}-${{ github.sha }}
+          restore-keys:
+            xmake-3.1.1-${{ runner.os }}-checks-${{ steps.image.outputs.version
+            }}-
+
+      - name: Install development dependencies
+        run: uv sync --locked
+
+      - name: Cache pre-commit environments
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/pre-commit
+          key:
+            pre-commit-${{ runner.os }}-py311-${{
+            hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Lint and format
+        run: uv run pre-commit run --all-files --show-diff-on-failure
+
+      - name: Unit tests
+        run: uv run pytest --junitxml=build/unit-results.xml
+
+      - name: Integration tests
+        run:
+          uv run pytest tests/integration -n 4
+          --junitxml=build/integration-results.xml
+
+      - name: Test native helpers
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          xmake f -P tests/native -y -a x64 -m releasedbg --toolchain=msvc
+          xmake -P tests/native -y
+          xmake test -P tests/native
+
+      - name: Build Python distributions
+        run: uv build --package bethesda-mod-kit
+
+      - name: Read version
+        id: version
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          $version = uv run python -c 'import tomllib; print(tomllib.load(open("python/pyproject.toml", "rb"))["project"]["version"])'
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: test-results
+          path: build/*-results.xml
+
+  plugins:
+    needs: changes
+    if:
+      github.event_name == 'workflow_dispatch' || github.ref_type == 'tag' ||
+      needs.changes.outputs.native == 'true'
+    runs-on: windows-2025
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: [msvc, clang-cl]
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@45c121f982720f3bdf236c2ac06f126ca211949c
+        with:
+          version: "0.12.13"
+          python-version: "3.11"
+          enable-cache: true
+
+      - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a
+        with:
+          xmake-version: "3.1.1"
+          actions-cache-folder: .xmake-install
+
+      - name: Set XMake cache directory
+        id: image
+        run: |
+          "version=$env:ImageVersion" >> $env:GITHUB_OUTPUT
+          "BMK_TEST_CACHE=$env:RUNNER_TEMP/bmk/tests" >> $env:GITHUB_ENV
+
+      - name: Cache XMake repositories and downloads
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ${{ env.BMK_TEST_CACHE }}/*/global
+            ${{ env.BMK_TEST_CACHE }}/*/downloads
+          key:
+            xmake-3.1.1-${{ runner.os }}-${{ matrix.toolchain }}-downloads-${{
+            github.sha }}
+          restore-keys:
+            xmake-3.1.1-${{ runner.os }}-${{ matrix.toolchain }}-downloads-
+
+      - name: Cache installed dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.BMK_TEST_CACHE }}/*/packages
+          key:
+            xmake-3.1.1-${{ runner.os }}-${{ matrix.toolchain }}-${{
+            steps.image.outputs.version }}-${{ github.sha }}
+          restore-keys:
+            xmake-3.1.1-${{ runner.os }}-${{ matrix.toolchain }}-${{
+            steps.image.outputs.version }}-
+
+      - run: uv sync --locked
+
+      - name: Build and inspect plugin packages
+        env:
+          BMK_TEST_NATIVE_PLUGINS: "1"
+          BMK_TEST_TOOLCHAIN: ${{ matrix.toolchain }}
+        run: uv run pytest tests/native/test_plugins.py
+
+  release:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs: [workflows, checks, plugins]
+    permissions:
+      contents: write
+    uses: ./.github/workflows/release.yml
+    with:
+      expected-version: ${{ needs.checks.outputs.version }}

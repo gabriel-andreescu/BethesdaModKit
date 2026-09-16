@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+scratch/
+build/
+.xmake/
+.bmk/
+compile_commands.json
+/tests/native/plugins/xmake-requires.lock
+/tests/native/plugins/xmake-addons.lock
+dist/

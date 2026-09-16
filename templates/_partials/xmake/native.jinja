@@ -1,0 +1,16 @@
+target("Native")
+    set_default(false)
+    set_basename("{{ project_name }}")
+    set_version(version)
+    add_rules("@{{ 'commonlibsse-ng' if game == 'skyrim' else 'commonlibf4' }}/plugin", {
+        author = {{ author | to_json(ensure_ascii=False) }},
+        description = {{ description | to_json(ensure_ascii=False) }}
+    })
+    add_rules("@addon/bmk/{{ game }}.plugin")
+    add_files("$(projectdir)/{{ native_source }}/**.cpp")
+    add_includedirs("$(projectdir)/{{ native_source }}")
+    add_packages("{{ 'commonlibsse-ng' if game == 'skyrim' else 'commonlibf4' }}"{% if clib_util or native_settings %}, "clib-util"{% endif %})
+{% if devbench_api and game == 'skyrim' %}
+    add_rules("@devbench-api/integration")
+    add_packages("bmk", "devbench-api")
+{% endif %}

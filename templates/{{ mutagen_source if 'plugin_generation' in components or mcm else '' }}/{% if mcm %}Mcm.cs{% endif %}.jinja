@@ -1,0 +1,75 @@
+using Mutagen.Bethesda;
+{% if game == 'fallout4' %}
+using Mutagen.Bethesda.Fallout4;
+{% endif %}
+using Mutagen.Bethesda.Plugins;
+{% if game == 'skyrim' %}
+using Mutagen.Bethesda.Skyrim;
+{% endif %}
+
+namespace {{ project_name.replace('-', '_') }}.Generator;
+
+internal static class Mcm
+{
+    public static void AddQuest({{ 'SkyrimMod' if game == 'skyrim' else 'Fallout4Mod' }} mod)
+    {
+        var quest = mod.Quests.AddNew("{{ project_name.replace('-', '_') }}MCMQuest");
+        quest.Name = "{{ project_name }}";
+{% if game == 'skyrim' %}
+        quest.Flags = Quest.Flag.StartGameEnabled | Quest.Flag.RunOnce;
+{% else %}
+        quest.Data = new QuestData { Flags = Quest.Flag.StartGameEnabled | Quest.Flag.RunOnce };
+{% endif %}
+{% if game == 'skyrim' %}
+        quest.VirtualMachineAdapter = new QuestAdapter
+        {
+            Version = 5,
+            ExtraBindDataVersion = 2,
+            FileName = string.Empty,
+        };
+{% else %}
+        quest.VirtualMachineAdapter = new QuestAdapter { Version = 6, ExtraBindDataVersion = 3 };
+{% endif %}
+        var script = new ScriptEntry { Name = "{{ project_name.replace('-', '_') }}MCM", Flags = ScriptEntry.Flag.Local };
+{% if game == 'skyrim' %}
+        script.Properties.Add(
+            new ScriptStringProperty
+            {
+                Name = "ModName",
+                Flags = ScriptProperty.Flag.Edited,
+                Data = "{{ project_name }}",
+            }
+        );
+{% endif %}
+        quest.VirtualMachineAdapter.Scripts.Add(script);
+{% if game == 'skyrim' %}
+        quest.NextAliasID = 1;
+        var alias = new QuestAlias
+        {
+            ID = 0,
+            Name = "PlayerAlias",
+            Type = QuestAlias.TypeEnum.Reference,
+        };
+        alias.ForcedReference.SetTo(FormKey.Factory("000014:Skyrim.esm"));
+        quest.Aliases.Add(alias);
+
+        var property = new ScriptObjectProperty
+        {
+            Name = string.Empty,
+            Flags = ScriptProperty.Flag.Edited,
+            Alias = 0,
+        };
+        property.Object.SetTo(quest.FormKey);
+        var attachment = new QuestFragmentAlias
+        {
+            Version = 5,
+            ObjectFormat = 2,
+            Property = property,
+        };
+        attachment.Scripts.Add(
+            new ScriptEntry { Name = "SKI_PlayerLoadGameAlias", Flags = ScriptEntry.Flag.Local }
+        );
+        quest.VirtualMachineAdapter.Aliases.Add(attachment);
+{% endif %}
+    }
+}

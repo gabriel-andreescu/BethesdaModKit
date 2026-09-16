@@ -1,0 +1,14 @@
+{% set recommendations = ['tboox.xmake-vscode', 'EditorConfig.EditorConfig'] %}
+{% if devbench_tests %}
+{% set _ = recommendations.extend(['ms-python.python', 'charliermarsh.ruff']) %}
+{% endif %}
+{% if 'native' in components %}
+{% set _ = recommendations.append('llvm-vs-code-extensions.vscode-clangd') %}
+{% endif %}
+{% if 'plugin_generation' in components or 'plugin_patching' in components or mcm %}
+{% set _ = recommendations.extend(['ms-dotnettools.csharp', 'csharpier.csharpier-vscode']) %}
+{% endif %}
+{% if 'interface' in components %}
+{% set _ = recommendations.append('redhat.vscode-xml') %}
+{% endif %}
+{{ {'recommendations': recommendations} | to_json(indent=2) }}

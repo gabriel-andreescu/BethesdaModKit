@@ -1,0 +1,5 @@
+addon("bmk")
+set_homepage("https://github.com/gabriel-andreescu/BethesdaModKit")
+set_description("Build rules for Bethesda modding")
+set_license("MIT")
+set_sourcedir("xmake")

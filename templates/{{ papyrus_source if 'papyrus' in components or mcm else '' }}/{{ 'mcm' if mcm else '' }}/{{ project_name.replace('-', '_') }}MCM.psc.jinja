@@ -1,0 +1,22 @@
+Scriptname {{ project_name.replace('-', '_') }}MCM extends {{ 'MCM_ConfigBase' if game == 'skyrim' else 'Quest' }} Hidden
+
+{% if game == 'skyrim' %}
+
+Event OnConfigClose()
+    {{ project_name.replace('-', '_') }}Native.ReloadSettings()
+EndEvent
+{% else %}
+
+Event OnQuestInit()
+    RegisterForExternalEvent("OnMCMClose", "OnMCMClose")
+    RegisterForRemoteEvent(Game.GetPlayer(), "OnPlayerLoadGame")
+EndEvent
+
+Event Actor.OnPlayerLoadGame(Actor sender)
+    RegisterForExternalEvent("OnMCMClose", "OnMCMClose")
+EndEvent
+
+Function OnMCMClose()
+    {{ project_name.replace('-', '_') }}Native.ReloadSettings()
+EndFunction
+{% endif %}

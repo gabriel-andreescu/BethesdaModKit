@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "bethesda-mod-kit"
+version = "0.1.0"
+description = "Development helpers for Bethesda modding"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = ["requests>=2.28"]
+
+[project.urls]
+Repository = "https://github.com/gabriel-andreescu/BethesdaModKit"
+Documentation = "https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/README.md"
+
+[project.optional-dependencies]
+test = ["pytest>=8.4,<10"]
+
+[project.scripts]
+devbench-scenario = "bmk.skyrim.devbench.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/bmk"]

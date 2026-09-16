@@ -1,0 +1,42 @@
+# {{ project_name }}
+
+This project uses [BethesdaModKit (BMK)](https://github.com/gabriel-andreescu/BethesdaModKit)
+for project generation and development tooling.
+
+## Development
+
+See BMK's [project build instructions](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/template/projects.md#build-a-generated-project)
+and [deployment and packaging](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/tooling/packaging.md).
+{% if pre_commit %}
+
+See [formatting setup](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/template/defaults.md#formatting).
+{% endif %}
+{% if 'papyrus' in components or mcm %}
+
+Papyrus sources require [Caprica](https://github.com/gabriel-andreescu/Caprica)
+with language extensions enabled.
+{% endif %}
+{% if 'native' in components %}
+
+See [Clang tooling](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/tooling/clang.md) for formatting and linting.
+{% endif %}
+{% if devbench_api %}
+
+See [DevBench native integration](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/tooling/skyrim/devbench.md#native-api).
+{% endif %}
+{% if native_settings %}
+
+See [Settings and MCM](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/template/settings.md) for configuration and menu integration.
+{% endif %}
+
+```sh
+xmake
+xmake package
+```
+{% if devbench_tests %}
+
+## Tests
+
+See [DevBench setup](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/template/defaults.md#devbench)
+and the [Python client and fixtures](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/tooling/skyrim/devbench.md).
+{% endif %}

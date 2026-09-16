@@ -1,0 +1,6 @@
+package("bmk")
+set_kind("addon")
+set_description("Build rules for Bethesda modding")
+set_license("MIT")
+add_urls("https://github.com/gabriel-andreescu/BethesdaModKit.git")
+add_versions("0.1.0", "v0.1.0")
