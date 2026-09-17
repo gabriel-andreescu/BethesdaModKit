@@ -4,7 +4,7 @@ add_deps("plugin.compile_commands.autoupdate")
 after_config(function(target)
     local config = target:data("bmk.plugin")
     target:set("kind", "shared")
-    if not target:get("languages") then
+    if #table.wrap(target:get("languages")) == 0 then
         target:set("languages", "c++23")
     end
     if not target:get("warnings") then
