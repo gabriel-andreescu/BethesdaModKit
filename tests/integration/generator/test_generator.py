@@ -52,6 +52,11 @@ def test_component_layout(tmp_path, game):
     assert (tmp_path / "src/papyrus/mcm/MyModMCM.psc").is_file()
     assert (tmp_path / "src/mutagen/MyMod/Mcm.cs").is_file()
     assert (tmp_path / "src/mutagen/MyMod/FormIDs.txt").read_bytes() == b""
+    project = (tmp_path / "src/mutagen/MyMod/MyMod.csproj").read_text()
+    if game == "skyrim":
+        assert 'PackageReference Include="BethesdaModKit.Mutagen"' in project
+    else:
+        assert "BethesdaModKit.Mutagen" not in project
     assert (tmp_path / "assets/MCM/Config/MyMod/settings.ini").is_file()
     assert (tmp_path / "assets/optional/mcm/MCM/Config/MyMod/config.json").is_file()
     assert (

@@ -6,6 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+{% if game == 'skyrim' and mcm %}
+    <PackageReference Include="BethesdaModKit.Mutagen" Version="0.1.0" />
+{% endif %}
     <PackageReference Include="Mutagen.Bethesda.{{ 'Skyrim' if game == 'skyrim' else 'Fallout4' }}" Version="0.54.4" />
   </ItemGroup>
 </Project>

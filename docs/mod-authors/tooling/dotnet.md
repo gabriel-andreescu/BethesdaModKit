@@ -50,6 +50,37 @@ for released records, including records omitted from a later build. Variants of
 the same plugin can share a mapping when generated sequentially. Save the
 allocation map after writing the plugin outputs.
 
+## Skyrim MCM quests
+
+Add `BethesdaModKit.Mutagen` to a Skyrim generator that creates an MCM Helper
+quest:
+
+```xml
+<PackageReference Include="BethesdaModKit.Mutagen" Version="0.1.0" />
+```
+
+Create the quest after installing the generator's persistent FormID allocator:
+
+```csharp
+using BMK.Mutagen.Skyrim;
+
+var quest = McmQuest.Add(
+    mod,
+    new McmQuestOptions
+    {
+        EditorId = "MyMod_MCMQuest",
+        DisplayName = "My Mod",
+        ConfigScriptName = "MyMod_MCM",
+        ModName = "MyMod",
+    }
+);
+```
+
+`EditorId` is the allocator's stable record name. The helper attaches the
+configured script and SkyUI player-load alias. `ModName` sets the menu's display
+name. MCM Helper derives its settings identifier from the quest's plugin. The
+method returns the created quest.
+
 ## Synthesis rules
 
 `@addon/bmk/skyrim.synthesis` and `@addon/bmk/fallout4.synthesis` build and run

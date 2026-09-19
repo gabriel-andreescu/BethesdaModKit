@@ -12,6 +12,7 @@ formatting and tests.
 | `addons/`    | Addon distribution recipes.                                  |
 | `packages/`  | Library and API recipes, patches and package-specific rules. |
 | `native/`    | C++ helpers.                                                 |
+| `dotnet/`    | .NET helper packages.                                        |
 | `python/`    | Python helpers and pytest integration.                       |
 
 Game-specific behavior belongs under its game directory.
@@ -19,6 +20,19 @@ Game-specific behavior belongs under its game directory.
 Template documentation belongs in `docs/mod-authors/template/` and links to the
 independent rule and helper references in `docs/mod-authors/tooling/`.
 Contributor setup and checks belong in `docs/maintainers/`.
+
+## .NET package maintenance
+
+`BethesdaModKit.Mutagen` uses the same version as the BMK Python package. Build
+and inspect it before release:
+
+```powershell
+dotnet pack dotnet/BethesdaModKit.Mutagen/BethesdaModKit.Mutagen.csproj -c Release -o build/nuget
+```
+
+Release tags publish the package to NuGet.org through the `ci.yml` trusted
+publishing job. Configure its NuGet.org policy for this repository and workflow,
+then set the `NUGET_USER` repository secret to the NuGet.org profile name.
 
 ## Package maintenance
 
@@ -101,10 +115,12 @@ test setup change, and on tags or manual runs.
 Keep the XMake version in the CI and consumer workflows aligned with
 [the development setup](docs/maintainers/development.md#xmake).
 
-For BMK releases, update `python/pyproject.toml`, `uv.lock` and the dated
-changelog entry. Add the release to `addons/b/bmk/xmake.lua` and update the
-`add_addons` version in the template, examples and test consumers. Keep existing
-recipe versions so consumers can continue installing older releases.
+For BMK releases, update `python/pyproject.toml`, the
+`BethesdaModKit.Mutagen.csproj` package version, `uv.lock` and the dated
+changelog entry. Update the template and documentation PackageReference pins.
+Add the release to `addons/b/bmk/xmake.lua` and update the `add_addons` version
+in the template, examples and test consumers. Keep existing recipe versions so
+consumers can continue installing older releases.
 
 Publish a matching `vX.Y.Z` tag. The addon downloads that tag, and CI publishes
 the source release after checks pass. Do not move published release tags.

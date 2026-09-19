@@ -35,6 +35,9 @@ The optional `<name>MCM` package contains:
 - The quest script and native Papyrus declarations, including sources.
 - `MCM/Config/<name>/config.json`.
 
+For Skyrim, the generator creates the quest with the
+[`BethesdaModKit.Mutagen` MCM helper](../tooling/dotnet.md#skyrim-mcm-quests).
+
 The settings identifier matches `<name>.esp`, as required by Skyrim's MCM
 Helper.
 
