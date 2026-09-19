@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- Add a Nexus description starter to generated projects.
 - Add a NuGet package for creating Skyrim MCM Helper quests with Mutagen.
 - Add native settings helpers for layered INI loading and log levels.
 - Add a Skyrim DevBench inspection registration helper.
