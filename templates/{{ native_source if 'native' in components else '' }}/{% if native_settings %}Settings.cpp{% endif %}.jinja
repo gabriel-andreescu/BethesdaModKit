@@ -53,7 +53,9 @@ void Reload() {
             throw std::runtime_error(std::format("Cannot save {}", userPath.string()));
         }
         current = candidate;
-        spdlog::set_level(current.debugLogging ? spdlog::level::debug : spdlog::level::info);
+        const auto logLevel = current.debugLogging ? spdlog::level::debug : spdlog::level::info;
+        spdlog::set_level(logLevel);
+        spdlog::flush_on(logLevel);
     } catch (const std::exception& error) {
         {{ 'SKSE::log::warn' if game == 'skyrim' else 'REX::WARN' }}("Cannot load settings: {}", error.what());
     }
