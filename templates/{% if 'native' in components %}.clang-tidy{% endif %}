@@ -5,6 +5,8 @@ Checks:
   - 'clang-analyzer-*'
   # Engine hooks use numerical addresses.
   - '-clang-analyzer-*FixedAddressDereference'
+  # MSVC's filesystem headers combine flags outside the enum's declared range.
+  - '-clang-analyzer-optin.core.EnumCastOutOfRange'
   # These platform-specific checkers do not apply to Windows.
   - '-clang-analyzer-fuchsia.*'
   - '-clang-analyzer-optin.mpi.*'

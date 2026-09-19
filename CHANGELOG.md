@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- Avoid a false positive from LLVM's enum range analyzer in MSVC filesystem
+  headers.
 - Apply the documented C++23 default when native targets do not set a language.
 - Fix Clang tooling for native projects that use precompiled headers.
 - Generate dependency lockfiles for new projects.
