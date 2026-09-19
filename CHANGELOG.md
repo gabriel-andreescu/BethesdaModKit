@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 
 - Apply the documented C++23 default when native targets do not set a language.
+- Generate dependency lockfiles for new projects.
 
 ## [0.1.0] - 2026-09-17
 

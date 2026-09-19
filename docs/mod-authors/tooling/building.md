@@ -20,6 +20,7 @@ A complete asset-only `xmake.lua`:
 add_repositories("bmk https://github.com/gabriel-andreescu/BethesdaModKit.git")
 add_addons("bmk 0.1.0")
 includes("@addon/bmk/project")
+set_policy("package.requires_lock", true)
 
 target("MyMod")
     set_version("1.0.0")
@@ -29,8 +30,8 @@ target("MyMod")
 
 Place files under `assets/` using the paths you want inside the ZIP. For
 example, `assets/textures/MyMod/iron.dds` becomes `textures/MyMod/iron.dds`. Use
-`@addon/bmk/fallout4.package` for Fallout 4. `project` enables XMake's
-dependency lockfile and declares the `deploy` and `distdir` options.
+`@addon/bmk/fallout4.package` for Fallout 4. The root policy enables XMake's
+dependency lockfile. `project` declares the `deploy` and `distdir` options.
 
 ## Build and package
 
