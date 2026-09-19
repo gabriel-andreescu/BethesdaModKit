@@ -51,7 +51,7 @@ Checks:
   - '-readability-magic-numbers'
 
 WarningsAsErrors: '*'
-ExtraArgs: ['-Wno-unused-command-line-argument']
+ExtraArgs: ['/Y-', '-Wno-unused-command-line-argument']
 HeaderFilterRegex: '(^|[/\\])src[/\\]'
 FormatStyle: none
 

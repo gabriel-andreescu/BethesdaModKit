@@ -5,6 +5,7 @@ CompileFlags:
   Add:
     - --target=x86_64-pc-windows-msvc
     - /clang:-std=c++23
+    - /Y-
 
 ---
 
