@@ -36,6 +36,12 @@ BMK passes the source `root` first, followed by `imports` in the order written.
 Papyrus SDK packages added with `add_packages` append their include directories.
 Caprica gives earlier imports precedence over later ones.
 
+For Skyrim projects, `skse-papyrus-sources` provides the source interfaces from
+the pinned SKSE release. `skyrim-papyrus-sources` provides the vanilla type
+interfaces tracked by SKSE's official repository. Add them in that order so
+SKSE's extended declarations take precedence. Scripts that use other vanilla
+globals still need the Creation Kit source directory in `imports`.
+
 Change compiler options through `arguments`. See
 [Caprica's options](https://github.com/gabriel-andreescu/Caprica/blob/v2026.9.17/Caprica/main_options.cpp)
 for the available flags.
