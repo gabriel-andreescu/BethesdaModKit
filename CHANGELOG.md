@@ -12,6 +12,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Add Papyrus source packages for Skyrim, SKSE, and powerofthree's Papyrus
   Extender.
 
+### Changed
+
+- Include source locations and thread IDs in generated native plugins' logs, and
+  use CommonLib's default log level.
+
 ### Fixed
 
 - Apply the documented C++23 default when native targets do not set a language.

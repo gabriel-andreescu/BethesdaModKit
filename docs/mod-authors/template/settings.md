@@ -15,7 +15,9 @@ settings filled in.
 Users edit the generated INI. Changes take effect after a game restart. Existing
 user values take precedence over changes to packaged defaults.
 
-`bDebugLogging` switches the CommonLib logger between debug and info levels.
+`bDebugLogging` switches the CommonLib logger to debug level. When it is
+disabled, the logger uses CommonLib's build-dependent default. An attached
+debugger also enables debug logging.
 
 ## MCM addon
 

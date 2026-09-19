@@ -34,7 +34,10 @@ bool RegisterPapyrus(RE::BSScript::IVirtualMachine* virtualMachine) {
 {% endif %}
 
 {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}_PLUGIN_LOAD(const {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::LoadInterface* extender) {
-    {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::Init(extender);
+    {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::Init(
+        extender,
+        {.logPattern = "[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v"}
+    );
 {% if native_settings %}
     Settings::Reload();
 {% endif %}
