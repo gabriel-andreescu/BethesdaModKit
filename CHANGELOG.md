@@ -9,8 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - Format native project sources with clang-format during pre-commit checks.
-- Added XMake packages for SKSE's Papyrus sources and the vanilla type
-  interfaces tracked by SKSE's official repository.
+- Add Papyrus source packages for Skyrim, SKSE, and powerofthree's Papyrus
+  Extender.
 
 ## [0.1.0] - 2026-09-17
 

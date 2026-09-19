@@ -2,7 +2,7 @@
 
 BMK installs a prebuilt [Caprica](https://github.com/gabriel-andreescu/Caprica)
 compiler for Windows x64 through XMake. Provide game and dependency script
-sources through `imports`.
+sources through `imports` or Papyrus SDK packages.
 
 ## Target configuration
 
@@ -36,11 +36,13 @@ BMK passes the source `root` first, followed by `imports` in the order written.
 Papyrus SDK packages added with `add_packages` append their include directories.
 Caprica gives earlier imports precedence over later ones.
 
-For Skyrim projects, `skse-papyrus-sources` provides the source interfaces from
-the pinned SKSE release. `skyrim-papyrus-sources` provides the vanilla type
-interfaces tracked by SKSE's official repository. Add them in that order so
-SKSE's extended declarations take precedence. Scripts that use other vanilla
-globals still need the Creation Kit source directory in `imports`.
+For Skyrim projects, BMK provides these Papyrus SDK packages:
+
+- `skyrim-papyrus-sources`:
+  [vanilla Skyrim interfaces from Papyrus Index](https://github.com/BellCubeDev/papyrus-index)
+- `skse-papyrus-sources`: [SKSE interfaces](https://github.com/ianpatt/skse64)
+- `papyrus-extender-sse-sources`:
+  [powerofthree's Papyrus Extender interfaces](https://github.com/powerof3/PapyrusExtenderSSE)
 
 Change compiler options through `arguments`. See
 [Caprica's options](https://github.com/gabriel-andreescu/Caprica/blob/v2026.9.17/Caprica/main_options.cpp)
