@@ -18,24 +18,24 @@
 {% endif %}
 
 namespace {
-void ReloadSettings({{ 'RE::StaticFunctionTag*' if game == 'skyrim' else 'std::monostate' }} /*base*/) {
+void ReloadSettings({{ 'RE::StaticFunctionTag*' if game == 'skyrim' else 'std::monostate' }} /*a_base*/) {
     {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::GetTaskInterface()->AddTask([] { Settings::Reload(); });
 }
 
-bool RegisterPapyrus(RE::BSScript::IVirtualMachine* virtualMachine) {
+bool RegisterPapyrus(RE::BSScript::IVirtualMachine* a_virtualMachine) {
 {% if game == 'skyrim' %}
-    virtualMachine->RegisterFunction("ReloadSettings", "{{ project_name.replace('-', '_') }}Native", ReloadSettings);
+    a_virtualMachine->RegisterFunction("ReloadSettings", "{{ project_name.replace('-', '_') }}Native", ReloadSettings);
 {% else %}
-    virtualMachine->BindNativeMethod("{{ project_name.replace('-', '_') }}Native", "ReloadSettings", ReloadSettings);
+    a_virtualMachine->BindNativeMethod("{{ project_name.replace('-', '_') }}Native", "ReloadSettings", ReloadSettings);
 {% endif %}
     return true;
 }
 }
 {% endif %}
 
-{{ 'SKSE' if game == 'skyrim' else 'F4SE' }}_PLUGIN_LOAD(const {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::LoadInterface* extender) {
+{{ 'SKSE' if game == 'skyrim' else 'F4SE' }}_PLUGIN_LOAD(const {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::LoadInterface* a_extender) {
     {{ 'SKSE' if game == 'skyrim' else 'F4SE' }}::Init(
-        extender,
+        a_extender,
         {.logPattern = "[%Y-%m-%d %H:%M:%S.%e] [%n] [%l] [%t] [%s:%#] %v"}
     );
 {% if native_settings %}
