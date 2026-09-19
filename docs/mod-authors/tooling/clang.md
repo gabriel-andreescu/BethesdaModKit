@@ -19,5 +19,7 @@ clang-format -i src/Plugin.cpp
 With LLVM on PATH, run from the native project:
 
 ```powershell
-xmake check clang.tidy
+xmake check clang.tidy -f 'src/**.cpp'
 ```
+
+Adjust the file pattern to match your native sources.
