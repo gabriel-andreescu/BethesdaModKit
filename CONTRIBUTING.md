@@ -92,7 +92,7 @@ consumer's `bmk` repository and install it with XMake's `--debugdir` option:
 ```powershell
 $env:XMAKE_GLOBALDIR = Join-Path $PWD ".xmake/development"
 xmake repo --add --global bmk C:/path/to/BethesdaModKit
-xrepo install --addon -y --debugdir=C:/path/to/BethesdaModKit "bmk 0.1.0"
+xrepo install --addon -y --debugdir=C:/path/to/BethesdaModKit "bmk 0.2.0"
 xmake
 xmake package
 ```
