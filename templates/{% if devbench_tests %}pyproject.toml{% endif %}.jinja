@@ -1,3 +1,8 @@
+[project]
+name = "{{ project_name | lower }}-tests"
+version = "0.1.0"
+requires-python = ">=3.11"
+
 [dependency-groups]
 dev = [
     "bethesda-mod-kit[test] @ git+https://github.com/gabriel-andreescu/BethesdaModKit.git#subdirectory=python",

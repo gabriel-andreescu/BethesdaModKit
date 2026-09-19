@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- Require Python 3.11 or newer in generated DevBench test projects.
 - Avoid a false positive from LLVM's enum range analyzer in MSVC filesystem
   headers.
 - Apply the documented C++23 default when native targets do not set a language.
