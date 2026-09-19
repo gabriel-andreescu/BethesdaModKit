@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - Format native project sources with clang-format during pre-commit checks.
+- Add a Skyrim Papyrus SDK package with optional SKSE, MCM Helper, and
+  powerofthree's Papyrus Extender interfaces.
 - Add Papyrus source packages for Skyrim, SKSE, and powerofthree's Papyrus
   Extender.
 

@@ -7,21 +7,24 @@ sources through `imports` or Papyrus SDK packages.
 ## Target configuration
 
 ```lua
-add_requires("caprica", {host = true})
+add_requires("caprica", { host = true })
+add_requires("skyrim-papyrus-sdk", { configs = { skse = true } })
 
-target("Papyrus")
+target("Papyrus", function()
     set_default(false)
     add_rules("@addon/bmk/skyrim.papyrus", {
         root = "src/papyrus",
-        imports = {"dependencies/scripts"}
+        imports = { "dependencies/scripts" },
     })
-    add_packages("caprica")
+    add_packages("caprica", "skyrim-papyrus-sdk")
     add_files("src/papyrus/**.psc")
+end)
 ```
 
-Use `@addon/bmk/fallout4.papyrus` for Fallout 4. Select the Papyrus target in a
-[package](packaging.md#package-composition) to ship its PEX files under
-`Scripts/`.
+Fallout 4 uses `@addon/bmk/fallout4.papyrus` with its game and dependency
+sources supplied through `imports` instead of the Skyrim SDK. Select the Papyrus
+target in a [package](packaging.md#package-composition) to ship its PEX files
+under `Scripts/`.
 
 | Option      | Default                       | Purpose                                           |
 | ----------- | ----------------------------- | ------------------------------------------------- |
@@ -38,9 +41,13 @@ Caprica gives earlier imports precedence over later ones.
 
 For Skyrim projects, BMK provides these Papyrus SDK packages:
 
+- `skyrim-papyrus-sdk`: vanilla Skyrim interfaces, with optional `skse`, `mcm`,
+  and `papyrus_extender` configurations
 - `skyrim-papyrus-sources`:
   [vanilla Skyrim interfaces from Papyrus Index](https://github.com/BellCubeDev/papyrus-index)
 - `skse-papyrus-sources`: [SKSE interfaces](https://github.com/ianpatt/skse64)
+- `mcm-helper-sdk`:
+  [MCM Helper interfaces](https://github.com/Exit-9B/MCM-Helper)
 - `papyrus-extender-sse-sources`:
   [powerofthree's Papyrus Extender interfaces](https://github.com/powerof3/PapyrusExtenderSSE)
 

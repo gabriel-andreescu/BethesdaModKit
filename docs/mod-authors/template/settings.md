@@ -40,11 +40,10 @@ Helper.
 | Skyrim    | [SkyUI](https://www.nexusmods.com/skyrimspecialedition/mods/12604) and [MCM Helper](https://www.nexusmods.com/skyrimspecialedition/mods/53000) | `OnConfigClose` |
 | Fallout 4 | [Mod Configuration Menu](https://www.nexusmods.com/fallout4/mods/21497)                                                                        | `OnMCMClose`    |
 
-Set [Papyrus imports](defaults.md#papyrus) to the game's source scripts. The
-Skyrim template includes the
-[MCM Helper SDK](https://github.com/Exit-9B/MCM-Helper/wiki/Creating-a-Config-Script)
-as an XMake dependency. Fallout 4 also needs the matching F4SE sources for
-`RegisterForExternalEvent`.
+The Skyrim template includes vanilla and MCM Helper interfaces through the
+[Papyrus SDK](../tooling/papyrus.md#imports-and-compiler-options). For Fallout
+4, set [Papyrus imports](defaults.md#papyrus) to the game and F4SE source
+directories.
 
 ### ESP variants
 

@@ -27,7 +27,9 @@ add_requires("bmk", "devbench-api 2026.09.13", { system = false })
 
 add_requires("caprica", { host = true })
 {% if mcm and game == 'skyrim' %}
-add_requires("mcm-helper-sdk 1.6.3")
+add_requires("skyrim-papyrus-sdk", { configs = { mcm = true } })
+{% elif game == 'skyrim' %}
+add_requires("skyrim-papyrus-sdk")
 {% endif %}
 option("papyrus_imports", { description = "Papyrus import directories separated by ;" })
 option("papyrus_flags", { description = "Optional Papyrus flags file override" })

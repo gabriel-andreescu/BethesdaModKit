@@ -68,6 +68,10 @@ They include PSC sources in packages under `Source/Scripts/` for Skyrim or
 `Scripts/Source/User/` for Fallout 4. Remove the target's `add_installfiles`
 declaration to omit sources.
 
+Skyrim targets include the
+[Papyrus SDK](../tooling/papyrus.md#imports-and-compiler-options) for vanilla
+interfaces.
+
 The generated XMake options accept local import paths and an optional flags
 file:
 

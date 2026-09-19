@@ -6,7 +6,7 @@ target("Papyrus", function()
         flags = get_config("papyrus_flags"),
         arguments = { "--strict", "--enable-language-extensions=true" },
     })
-    add_packages("caprica")
+    add_packages("caprica"{% if game == 'skyrim' %}, "skyrim-papyrus-sdk"{% endif %})
     add_files("$(projectdir)/{{ papyrus_source }}/**.psc{% if mcm %}|mcm/**{% endif %}")
     add_installfiles("$(projectdir)/{{ papyrus_source }}/(**.psc){% if mcm %}|mcm/**{% endif %}", { prefixdir = "{{ 'Source/Scripts' if game == 'skyrim' else 'Scripts/Source/User' }}" })
 end)
