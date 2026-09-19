@@ -37,6 +37,7 @@ jobs:
               - 'addons/**'
               - 'native/include/**'
               - 'xmake/includes/**'
+              - 'xmake/rules/native/**'
               - 'xmake/rules/plugin/**'
               - 'xmake/rules/skyrim/**'
               - 'xmake/rules/fallout4/**'

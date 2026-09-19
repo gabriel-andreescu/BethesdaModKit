@@ -7,6 +7,8 @@ add_requires("catch2 3.8.1")
 
 target("InspectionTaskTests", function()
     set_kind("binary")
+    add_rules("platform.windows.subsystem")
+    set_values("windows.subsystem", "console")
     add_files("skyrim/InspectionTaskTests.cpp")
     add_includedirs("../../native/include")
     add_packages("catch2")

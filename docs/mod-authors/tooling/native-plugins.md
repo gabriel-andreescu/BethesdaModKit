@@ -38,6 +38,12 @@ compilation database generation. Select another mode with `xmake f -m`.
 Use `set_warnings("allextra")` on a target to retain extra warnings without
 treating them as errors. An explicit `set_languages` also overrides C++23.
 
+Use the same compiler defaults for native test and utility targets:
+
+```lua
+add_rules("@addon/bmk/native.compiler")
+```
+
 CommonLib's rule generates the DLL's SKSE/F4SE metadata and Windows version
 resource from target metadata. Native and package versions are independent. Use
 a shared Lua variable when they should match.
