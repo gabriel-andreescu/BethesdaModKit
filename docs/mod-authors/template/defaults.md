@@ -55,7 +55,8 @@ Copier update.
 Native projects include `.clang-format`, `.clangd` and `.clang-tidy`. The
 formatting configuration requires clang-format 23 or newer. The clangd
 configuration uses `clang-cl` for Windows x64 C++23. The clang-tidy header
-filter covers `src/`. Adjust it if project headers live elsewhere.
+filter covers `src/`. Adjust it if project headers live elsewhere. Generated
+native targets precompile the CommonLib and script extender headers in `PCH.h`.
 
 See [native build rules](../tooling/native-plugins.md) and
 [Clang commands](../tooling/clang.md).

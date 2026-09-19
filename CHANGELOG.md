@@ -20,6 +20,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- Generate native projects with a precompiled header for CommonLib and the
+  script extender.
 - Include source locations and thread IDs in generated native plugins' logs, and
   use CommonLib's default log level.
 
