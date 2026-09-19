@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Added
 
 - Add native settings helpers for layered INI loading and log levels.
+- Add a Skyrim DevBench inspection registration helper.
 - Add native compiler defaults for plugins, tests, and utilities.
 - Format native project sources with clang-format during pre-commit checks.
 - Add a Skyrim Papyrus SDK package with optional SKSE, MCM Helper, and

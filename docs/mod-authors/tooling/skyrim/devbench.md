@@ -229,6 +229,31 @@ void InspectPlayer(void*, const char*, void* sink, DevBenchAPI::WriteFn write)
 }
 ```
 
+`RegisterInspection` registers a read-only `inspect` extension when DevBench
+1.5.0 or newer is available. It returns without registering when DevBench is
+absent, and logs when the host is too old or the name replaces an existing
+extension. Define its `Inspection` descriptor at static storage duration, then
+register it during SKSE's `kPostPostLoad` message, after DevBench finishes its
+`kPostLoad` initialization:
+
+```cpp
+namespace {
+std::string Snapshot();
+
+constexpr BMK::Skyrim::DevBench::Inspection kInspection {
+    .name = "my-mod",
+    .descriptor = R"({"description":"My mod state.","readOnly":true})",
+    .snapshot = Snapshot,
+    .timeoutResponse = R"({"ok":false,"error":"Inspection timed out"})",
+    .failureResponse = R"({"ok":false,"error":"Inspection failed"})",
+};
+}
+
+void RegisterInspection() {
+    BMK::Skyrim::DevBench::RegisterInspection<kInspection>();
+}
+```
+
 ### Existing CMake projects
 
 Add BMK's `native/include` to the plugin's include directories. The helper needs
