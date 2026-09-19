@@ -1,19 +1,22 @@
-target("Mutagen")
+target("Mutagen", function()
     set_default(false)
     add_extrafiles("{{ mutagen_source }}/FormIDs.txt")
     add_rules("@addon/bmk/dotnet", {
         project = "{{ mutagen_source }}/{{ project_name }}.csproj",
 {% if mcm %}
-        arguments = {"$(outputdir)", path.absolute("{{ mutagen_source }}/FormIDs.txt")}
+        arguments = { "$(outputdir)", path.absolute("{{ mutagen_source }}/FormIDs.txt") },
 {% else %}
-        arguments = {"$(outputdir)/{{ project_name }}.esp", path.absolute("{{ mutagen_source }}/FormIDs.txt")},
-        outputs = {"{{ project_name }}.esp"}
+        arguments = { "$(outputdir)/{{ project_name }}.esp", path.absolute("{{ mutagen_source }}/FormIDs.txt") },
+        outputs = { "{{ project_name }}.esp" },
 {% endif %}
     })
 {% if mcm %}
     before_build(function()
-        assert(not os.isfile(path.join(os.projectdir(), "assets/{{ project_name }}.esp")),
-            "assets/{{ project_name }}.esp conflicts with the generated MCM variant. " ..
-            "The MCM generator does not import this ESP. Add its records to the generator or configure a separate MCM plugin.")
+        assert(
+            not os.isfile(path.join(os.projectdir(), "assets/{{ project_name }}.esp")),
+            "assets/{{ project_name }}.esp conflicts with the generated MCM variant. "
+                .. "The MCM generator does not import this ESP. Add its records to the generator or configure a separate MCM plugin."
+        )
     end)
 {% endif %}
+end)

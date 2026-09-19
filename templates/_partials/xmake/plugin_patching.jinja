@@ -1,8 +1,9 @@
-target("Synthesis")
+target("Synthesis", function()
     set_default(false)
     add_rules("@addon/bmk/{{ game }}.synthesis", {
         project = "{{ synthesis_source }}/{{ project_name }}Patch.csproj",
         data = get_config("synthesis_data"),
         load_order = get_config("synthesis_load_order"),
-        output = "{{ project_name }}Patch.esp"
+        output = "{{ project_name }}Patch.esp",
     })
+end)

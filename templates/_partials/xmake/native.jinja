@@ -1,10 +1,10 @@
-target("Native")
+target("Native", function()
     set_default(false)
     set_basename("{{ project_name }}")
     set_version(version)
     add_rules("@{{ 'commonlibsse-ng' if game == 'skyrim' else 'commonlibf4' }}/plugin", {
         author = {{ author | to_json(ensure_ascii=False) }},
-        description = {{ description | to_json(ensure_ascii=False) }}
+        description = {{ description | to_json(ensure_ascii=False) }},
     })
     add_rules("@addon/bmk/{{ game }}.plugin")
     add_files("$(projectdir)/{{ native_source }}/**.cpp")
@@ -14,3 +14,4 @@ target("Native")
     add_rules("@devbench-api/integration")
     add_packages("bmk", "devbench-api")
 {% endif %}
+end)
