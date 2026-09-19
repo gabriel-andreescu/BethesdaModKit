@@ -9,9 +9,9 @@ target("Native", function()
     add_rules("@addon/bmk/{{ game }}.plugin")
     add_files("$(projectdir)/{{ native_source }}/**.cpp")
     add_includedirs("$(projectdir)/{{ native_source }}")
-    add_packages("{{ 'commonlibsse-ng' if game == 'skyrim' else 'commonlibf4' }}"{% if clib_util or native_settings %}, "clib-util"{% endif %})
+    add_packages("{{ 'commonlibsse-ng' if game == 'skyrim' else 'commonlibf4' }}"{% if clib_util or native_settings %}, "clib-util"{% endif %}{% if native_settings %}, "bmk"{% endif %})
 {% if devbench_api and game == 'skyrim' %}
     add_rules("@devbench-api/integration")
-    add_packages("bmk", "devbench-api")
+    add_packages({% if not native_settings %}"bmk", {% endif %}"devbench-api")
 {% endif %}
 end)

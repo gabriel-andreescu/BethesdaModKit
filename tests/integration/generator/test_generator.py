@@ -57,7 +57,7 @@ def test_component_layout(tmp_path, game):
     assert (
         'add_packages("'
         + ("commonlibsse-ng" if game == "skyrim" else "commonlibf4")
-        + '", "clib-util")'
+        + '", "clib-util", "bmk")'
         in native
     )
 

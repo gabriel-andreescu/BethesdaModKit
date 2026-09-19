@@ -2,23 +2,16 @@
 
 #include <{{ 'SKSE/SKSE.h' if game == 'skyrim' else 'F4SE/F4SE.h' }}>
 
+#include <BMK/Settings.h>
+
 #include <CLIBUtil/simpleINI.hpp>
 #include <spdlog/spdlog.h>
 
-#include <filesystem>
-#include <format>
-#include <stdexcept>
+#include <utility>
 
 namespace Settings {
 namespace {
     Values current; // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
-
-    void LoadFile(CSimpleIniA& ini, const std::filesystem::path& path) {
-        ini.SetUnicode();
-        if (std::filesystem::exists(path) && ini.LoadFile(path.c_str()) < 0) {
-            throw std::runtime_error(std::format("Cannot read {}", path.string()));
-        }
-    }
 
     void ReadValues(CSimpleIniA& ini, Values& values) {
         clib_util::ini::get_value(
@@ -37,33 +30,31 @@ const Values& Get() {
 }
 
 void Reload() {
-    try {
-        const std::filesystem::path defaultPath = L"Data/MCM/Config/{{ project_name }}/settings.ini";
-        const std::filesystem::path userPath = L"Data/MCM/Settings/{{ project_name }}.ini";
-        CSimpleIniA defaults;
-        CSimpleIniA user;
-        LoadFile(defaults, defaultPath);
-        LoadFile(user, userPath);
-
-        Values candidate;
-        ReadValues(defaults, candidate);
-        ReadValues(user, candidate);
-        std::filesystem::create_directories(userPath.parent_path());
-        if (user.SaveFile(userPath.c_str()) < 0) {
-            throw std::runtime_error(std::format("Cannot save {}", userPath.string()));
+    auto loaded = BMK::Settings::Load(
+        {
+            .defaults = L"Data/MCM/Config/{{ project_name }}/settings.ini",
+            .user = L"Data/MCM/Settings/{{ project_name }}.ini",
+        },
+        Values {},
+        [](CSimpleIniA& defaults, CSimpleIniA& user, Values& candidate) {
+            ReadValues(defaults, candidate);
+            ReadValues(user, candidate);
         }
-        current = candidate;
-{% if game == 'skyrim' %}
-        const auto defaultLogLevel = SKSE::InitInfo {}.logLevel;
-{% else %}
-        const auto defaultLogLevel = static_cast<spdlog::level::level_enum>(F4SE::InitInfo {}.logLevel);
-{% endif %}
-        const auto logLevel = current.debugLogging || IsDebuggerPresent() != 0 ? spdlog::level::debug
-                                                                               : defaultLogLevel;
-        spdlog::set_level(logLevel);
-        spdlog::flush_on(logLevel);
-    } catch (const std::exception& error) {
-        {{ 'SKSE::log::warn' if game == 'skyrim' else 'REX::WARN' }}("Cannot load settings: {}", error.what());
+    );
+    if (!loaded) {
+        {{ 'SKSE::log::warn' if game == 'skyrim' else 'REX::WARN' }}("Cannot load settings: {}", loaded.error().message);
+        return;
     }
+    if (loaded->saveFailure) {
+        {{ 'SKSE::log::warn' if game == 'skyrim' else 'REX::WARN' }}("Cannot save settings: {}", loaded->saveFailure->message);
+    }
+
+    current = std::move(loaded->values);
+{% if game == 'skyrim' %}
+    const auto defaultLogLevel = SKSE::InitInfo {}.logLevel;
+{% else %}
+    const auto defaultLogLevel = static_cast<spdlog::level::level_enum>(F4SE::InitInfo {}.logLevel);
+{% endif %}
+    BMK::Settings::ApplyLogLevel(current.debugLogging, defaultLogLevel);
 }
 }

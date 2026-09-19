@@ -73,3 +73,43 @@ target("Native::Fallout4")
 Each target compiles shared files with its own dependencies and definitions. In
 included Lua files, use `$(projectdir)/src/...` for paths relative to the
 project root.
+
+## Settings files
+
+The settings helper requires C++23 and Windows. Add the `bmk` and `clib-util`
+header packages to the target. CommonLib provides spdlog:
+
+```lua
+add_requires("bmk", "clib-util 1.5.0")
+
+target("Native", function()
+    add_packages("bmk", "clib-util")
+end)
+```
+
+Include CommonLib before `BMK/Settings.h` because SimpleIni includes the Windows
+API. `BMK/Settings.h` loads the packaged and user INIs, then passes both files
+and the supplied initial values to the reader callback. By default, the helper
+saves the updated user INI after the reader returns. File errors and reader
+exceptions return a failure. A save failure is reported separately so valid
+values can still be applied.
+
+The reader callback owns each setting, its validation, and any repair written to
+the user INI. Pass CommonLib's default level to `ApplyLogLevel` to apply the
+shared debug setting and debugger behavior.
+
+Pass `BMK::Settings::SaveUserFile::kNo` to read settings without saving the user
+INI.
+
+```cpp
+auto loaded = BMK::Settings::Load(paths, Values {}, ReadValues);
+if (!loaded) {
+    spdlog::warn("Cannot load settings: {}", loaded.error().message);
+    return;
+}
+if (loaded->saveFailure) {
+    spdlog::warn("Cannot save settings: {}", loaded->saveFailure->message);
+}
+current = std::move(loaded->values);
+BMK::Settings::ApplyLogLevel(current.debugLogging, commonLibDefaultLevel);
+```

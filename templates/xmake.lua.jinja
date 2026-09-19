@@ -19,7 +19,9 @@ add_requires("{{ 'commonlibsse-ng 8.0.1' if game == 'skyrim' else 'commonlibf4 2
 {% if clib_util or native_settings %}
 add_requires("clib-util 1.5.0", { system = false })
 {% endif %}
-{% if devbench_api and game == 'skyrim' %}
+{% if native_settings and not (devbench_api and game == 'skyrim') %}
+add_requires("bmk", { system = false })
+{% elif devbench_api and game == 'skyrim' %}
 add_requires("bmk", "devbench-api 2026.09.13", { system = false })
 {% endif %}
 {% endif %}

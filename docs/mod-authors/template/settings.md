@@ -19,6 +19,9 @@ user values take precedence over changes to packaged defaults.
 disabled, the logger uses CommonLib's build-dependent default. An attached
 debugger also enables debug logging.
 
+[`BMK/Settings.h`](../tooling/native-plugins.md#settings-files) provides the
+same loading and logging behavior for existing projects.
+
 ## MCM addon
 
 When the MCM menu closes, the generated handler calls `Settings::Reload()` to
