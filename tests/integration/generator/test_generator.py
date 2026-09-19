@@ -10,6 +10,7 @@ def generate(destination, **answers):
     run_copy(
         str(ROOT),
         destination,
+        vcs_ref="HEAD",
         data={"bmk_repository": ROOT.as_posix(), **answers},
         defaults=True,
         quiet=True,

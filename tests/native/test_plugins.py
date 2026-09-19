@@ -64,6 +64,7 @@ def test_plugin_package(tmp_path_factory, native_xmake, game, extender):
     run_copy(
         str(ROOT),
         project,
+        vcs_ref="HEAD",
         data={
             "project_name": "TestPlugin",
             "author": "Test Author",

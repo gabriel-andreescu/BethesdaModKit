@@ -21,6 +21,8 @@ Pre-commit formats staged files with:
 - **[CSharpier](https://csharpier.com/docs/About)**, when C# is included: C# and
   XML (`.cs`, `.csx`, `.csproj`, `.props`, `.targets`, `.slnx`, `.xml`,
   `.config`). The hook restores the pinned .NET tool before formatting.
+- **clang-format**, when native code is included: C and C++ sources using
+  [LLVM 23 or newer](../tooling/clang.md).
 
 After initializing the project's Git repository, install the hooks with:
 

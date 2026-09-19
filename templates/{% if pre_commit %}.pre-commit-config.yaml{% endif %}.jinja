@@ -45,3 +45,10 @@ repos:
         additional_dependencies: ["@johnnymorganz/stylua-bin@2.5.2"]
         types: [lua]
         args: [--verify]
+{% if 'native' in components %}
+      - id: clang-format
+        name: clang-format
+        language: system
+        entry: clang-format -i
+        types_or: [c, c++]
+{% endif %}
