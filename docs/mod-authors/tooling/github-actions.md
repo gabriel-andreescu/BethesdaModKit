@@ -25,7 +25,7 @@ jobs:
   build:
     permissions:
       contents: write
-    uses: gabriel-andreescu/BethesdaModKit/.github/workflows/build.yml@5321e7e3bbb05565a1d0334a88a32152b1445eaf
+    uses: gabriel-andreescu/BethesdaModKit/.github/workflows/build.yml@03209b04fcd1cd536fc5cbfa4803938212dce6a4
 ```
 
 | Input                 | Default      | Purpose                                                                        |
