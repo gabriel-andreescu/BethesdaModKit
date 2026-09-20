@@ -42,7 +42,8 @@ def test_package_destinations_and_shared_changelogs():
     optional = {
         **main,
         "target": "MCM",
-        "archive": "MCM/My Mod MCM-1.1.0.zip",
+        "version": "1.0.0",
+        "archive": "MCM/My Mod MCM-1.0.0.zip",
         "nexus": {"mod_id": mod_id, "file_id": "2", "category": "optional"},
     }
     textures = {
@@ -74,6 +75,11 @@ def test_package_destinations_and_shared_changelogs():
         ("1", "main", True),
         ("2", "optional", False),
         ("3", "miscellaneous", False),
+    }
+    assert {file["file_id"]: file["version"] for file in files} == {
+        "1": "1.1.0",
+        "2": "1.0.0",
+        "3": "2.0.0",
     }
     assert {entry["version"]: entry["entries"] for entry in changelogs} == {
         "1.1.0": ["Fixed: Settings reload & saving."],

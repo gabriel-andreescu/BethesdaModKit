@@ -130,9 +130,9 @@ jobs:
                                   and item["version"] == package["version"])
                   else:
                       note = notes["0000"]
-                  key = (mod_id, package["version"])
+                  key = (mod_id, note["version"])
                   group = groups.setdefault(key, {
-                      "mod_id": mod_id, "version": package["version"],
+                      "mod_id": mod_id, "version": note["version"],
                       "domain": domain, "page_id": str(int(mod_id) & 0xffffffff),
                       "entries": [],
                   })
