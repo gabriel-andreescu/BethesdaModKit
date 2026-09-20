@@ -3,7 +3,7 @@ set_license("GPL-3.0")
 
 option("game", { default = "skyrim", values = { "skyrim", "fallout4" } })
 add_repositories("bmk " .. (os.getenv("BMK_TEST_REPOSITORY") or path.join(os.scriptdir(), "../../..")))
-add_addons("bmk 0.3.0")
+add_addons("bmk 0.3.1")
 includes("@addon/bmk/project")
 includes("@addon/bmk/native")
 

@@ -18,7 +18,7 @@ A complete asset-only `xmake.lua`:
 
 ```lua
 add_repositories("bmk https://github.com/gabriel-andreescu/BethesdaModKit.git")
-add_addons("bmk 0.3.0")
+add_addons("bmk 0.3.1")
 includes("@addon/bmk/project")
 set_policy("package.requires_lock", true)
 

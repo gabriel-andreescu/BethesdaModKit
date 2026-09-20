@@ -110,7 +110,7 @@ def test_package_composition(tmp_path, bmk_addon):
     (project / "override.txt").write_text("override")
     (project / "xmake.lua").write_text(
         f"add_repositories({json.dumps('bmk ' + ROOT.as_posix())})\n"
-        'add_addons("bmk 0.3.0")\nincludes("@addon/bmk/project")\n'
+        'add_addons("bmk 0.3.1")\nincludes("@addon/bmk/project")\n'
         'target("Private")\n set_kind("phony")\n set_default(false)\n add_installfiles("private.txt")\n'
         'target("Compiler")\n set_kind("phony")\n set_default(false)\n'
         ' add_deps("Private")\n add_installfiles("output.txt")\n'

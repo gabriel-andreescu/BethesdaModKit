@@ -59,7 +59,9 @@ pages.
 Nexus receives the package's
 [selected release notes](github-actions.md#target-changelogs) as plain entries,
 preserving category labels and link destinations. Packages sharing a mod and
-version share one changelog, with repeated entries removed.
+changelog version share one changelog, with repeated entries removed. The root
+changelog uses the release tag version. A custom target changelog uses that
+package target's version.
 
 Rerun failed jobs to resume publication. BMK skips file versions already present
 on Nexus and posts only missing changelog entries. It does not replace uploaded
