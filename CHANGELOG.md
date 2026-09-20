@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Use clang-format 23.1.0 in generated projects and their build workflow.
+
 ## [0.3.1] - 2026-09-20
 
 ### Fixed
