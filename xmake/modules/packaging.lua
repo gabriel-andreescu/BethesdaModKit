@@ -72,6 +72,8 @@ function package(target, payload, config)
                     name = config.options.package_name or target:name(),
                     version = version,
                     archive = path.relative(destination, dist):gsub("\\", "/"),
+                    game = config.game,
+                    nexus = config.options.nexus,
                     changelog = config.options.changelog
                         and path.relative(path.absolute(config.options.changelog), os.projectdir()):gsub("\\", "/"),
                 })

@@ -25,6 +25,14 @@ on:
         description: Actions artifact containing BMK package metadata.
         default: ""
         type: string
+      publish-nexus:
+        description:
+          Upload configured packages to Nexus Mods after the GitHub release.
+        default: false
+        type: boolean
+    secrets:
+      NEXUSMODS_API_KEY:
+        required: false
 
 permissions:
   contents: read
@@ -132,6 +140,7 @@ jobs:
           NOTES_ID: ${{ matrix.entry.id }}
           PACKAGE_NAMES: ${{ matrix.entry.names }}
           PACKAGE_VERSION: ${{ matrix.entry.version }}
+          CHANGELOG_PATH: ${{ matrix.entry.path }}
         run: |
           $date = [datetime]::MinValue
           if ($env:RELEASE_STATUS -ne 'released' -or
@@ -143,16 +152,21 @@ jobs:
           if ([string]::IsNullOrWhiteSpace($notes)) {
               throw 'The changelog release has no notes.'
           }
+          New-Item -ItemType Directory -Path release-notes -Force | Out-Null
+          [ordered]@{
+              path = $env:CHANGELOG_PATH
+              version = $env:PACKAGE_VERSION
+              html = (ConvertFrom-Markdown -InputObject $notes).Html
+          } | ConvertTo-Json | Set-Content -LiteralPath "release-notes/$env:NOTES_ID.json"
           if ($env:PACKAGE_NAMES) {
               $notes = "## $env:PACKAGE_NAMES - v$env:PACKAGE_VERSION`n`n$($notes.TrimStart())"
           }
-          New-Item -ItemType Directory -Path release-notes -Force | Out-Null
           Set-Content -LiteralPath "release-notes/$env:NOTES_ID.md" -Value $notes -NoNewline
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: release-notes-${{ matrix.entry.id }}
-          path: release-notes/*.md
+          path: release-notes/*
           if-no-files-found: error
 
   publish:
@@ -229,3 +243,14 @@ jobs:
           } finally {
               if (Test-Path -LiteralPath $staging) { Remove-Item -LiteralPath $staging -Recurse -Force }
           }
+
+  nexus:
+    if: inputs.publish-nexus
+    needs: publish
+    uses: ./.github/workflows/nexus.yml
+    with:
+      project-directory: ${{ inputs.project-directory }}
+      artifact: ${{ inputs.artifact }}
+      metadata: ${{ inputs.metadata }}
+    secrets:
+      NEXUSMODS_API_KEY: ${{ secrets.NEXUSMODS_API_KEY }}

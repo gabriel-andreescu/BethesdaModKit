@@ -26,10 +26,15 @@ def test_package_contents_omit_placeholders(module_project, module_command):
     nested = project / "payload/nested"
     nested.mkdir()
     (nested / ".gitkeep").touch()
+    nexus = {"mod_id": "7318624464804", "file_id": "7995705", "category": "main"}
     run(
         project,
         *module_command(
-            "package", config={"options": {"changelog": "Skyrim/CHANGELOG.md"}}
+            "package",
+            config={
+                "game": "skyrim",
+                "options": {"changelog": "Skyrim/CHANGELOG.md", "nexus": nexus},
+            },
         ),
     )
     output = project / "build/dist/TestMod"
@@ -46,6 +51,8 @@ def test_package_contents_omit_placeholders(module_project, module_command):
         "version": "0.1.0",
         "archive": "TestMod/TestMod-0.1.0.zip",
         "changelog": "Skyrim/CHANGELOG.md",
+        "game": "skyrim",
+        "nexus": nexus,
     }
 
 

@@ -28,12 +28,13 @@ jobs:
     uses: gabriel-andreescu/BethesdaModKit/.github/workflows/build.yml@5321e7e3bbb05565a1d0334a88a32152b1445eaf
 ```
 
-| Input                 | Default      | Purpose                                                            |
-| --------------------- | ------------ | ------------------------------------------------------------------ |
-| `project-directory`   | `.`          | Directory containing the project's `xmake.lua` and `CHANGELOG.md`. |
-| `run-tests`           | `false`      | Run `xmake test` before packaging.                                 |
-| `dist-directory`      | `build/dist` | ZIP output directory relative to the project.                      |
-| `configure-arguments` | Empty        | Additional XMake configure arguments, one per line.                |
+| Input                 | Default      | Purpose                                                                        |
+| --------------------- | ------------ | ------------------------------------------------------------------------------ |
+| `project-directory`   | `.`          | Directory containing the project's `xmake.lua` and `CHANGELOG.md`.             |
+| `run-tests`           | `false`      | Run `xmake test` before packaging.                                             |
+| `dist-directory`      | `build/dist` | ZIP output directory relative to the project.                                  |
+| `configure-arguments` | Empty        | Additional XMake configure arguments, one per line.                            |
+| `publish-nexus`       | `false`      | Upload configured packages to [Nexus Mods](nexus.md) after the GitHub release. |
 
 Builds use Windows, MSVC and XMake 3.1.1. Deployment is disabled.
 
@@ -71,6 +72,9 @@ Unique ZIP filenames remain unchanged.
 
 Missing, empty or undated entries block publication. Existing releases are not
 overwritten.
+
+Enable [Nexus Mods publication](nexus.md) to upload the same packages and their
+changelogs after the GitHub release succeeds.
 
 ### Target changelogs
 

@@ -38,6 +38,7 @@ files and compiler outputs.
 | `targets`      | `{}`                              | Build targets whose installable outputs ship.                          |
 | `package_name` | Target name without its namespace | ZIP filename before the version suffix.                                |
 | `changelog`    | Root `CHANGELOG.md`               | [Release notes](github-actions.md#target-changelogs) for this package. |
+| `nexus`        | Unset                             | [Nexus Mods destination](nexus.md) for release uploads.                |
 | `bsa` / `ba2`  | `false`                           | [Archive settings](archives.md).                                       |
 
 Use normal XMake mappings to control paths within the package:

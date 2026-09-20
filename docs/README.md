@@ -29,6 +29,7 @@ build rules or helpers.
 | [BSA and BA2 archives](mod-authors/tooling/archives.md)           | File selection, compression and loader plugins.                   |
 | [Clang tooling](mod-authors/tooling/clang.md)                     | Compilation databases, formatting and lint commands.              |
 | [GitHub Actions](mod-authors/tooling/github-actions.md)           | Mod builds and releases.                                          |
+| [Nexus Mods](mod-authors/tooling/nexus.md)                        | File destinations, categories and release uploads.                |
 | [Updating](mod-authors/tooling/updating.md)                       | Addon, dependency, Python and workflow updates.                   |
 | [Skyrim DevBench](mod-authors/tooling/skyrim/devbench.md)         | Python helpers, pytest fixtures and native API integration.       |
 

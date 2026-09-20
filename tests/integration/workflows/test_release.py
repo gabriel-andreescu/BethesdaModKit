@@ -12,7 +12,7 @@ def run_step(tmp_path, name, environment, *, prefix=""):
     workflow = yaml.safe_load(
         (ROOT / ".github/workflows/release.yml").read_text(encoding="utf-8")
     )
-    steps = [step for job in workflow["jobs"].values() for step in job["steps"]]
+    steps = [step for job in workflow["jobs"].values() for step in job.get("steps", [])]
     script = next(step["run"] for step in steps if step.get("name") == name)
     return subprocess.run(
         [
