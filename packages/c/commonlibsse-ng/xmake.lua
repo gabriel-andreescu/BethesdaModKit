@@ -2,10 +2,19 @@ package("commonlibsse-ng")
 set_homepage("https://github.com/alandtse/CommonLibSSE-NG")
 set_description("CommonLibSSE-NG for Skyrim SKSE plugins")
 set_license("GPL-3.0")
-add_urls("https://github.com/gabriel-andreescu/CommonLibSSE-NG/archive/b3bec7424238c9fee2623f145e2714e7558f18d4.tar.gz")
+add_urls("https://github.com/gabriel-andreescu/CommonLibSSE-NG/archive/$(version).tar.gz", {
+    version = function(version)
+        local revisions = {
+            ["8.0.1"] = "b3bec7424238c9fee2623f145e2714e7558f18d4",
+            ["9.0.0"] = "e04a2f09fbd6df65ecd24a1abf3e6580fda60411",
+        }
+        return revisions[tostring(version)]
+    end,
+})
 add_versions("8.0.1", "34162b1feaacd66a617e913f3bcf3320722ad9b8728be5c8d3f1c8bbcb07e39c")
+add_versions("9.0.0", "406df41ff3c6cd9bc3eb5bb8c5f68e3f4159798452d3b7f3335a23dab8231afd")
 add_patches(
-    "8.0.1",
+    ">=8.0.1",
     path.join(os.scriptdir(), "patches", "vr-form-factory.patch"),
     "d16641d4e41f7a58d8c978fc1d23293b980ee1e9a9ea704a7c008fa301693260"
 )
@@ -26,7 +35,7 @@ on_load(function(package)
         package:add("deps", "rapidcsv v8.92")
         package:add(
             "resources",
-            "8.0.1",
+            ">=8.0.1",
             "openvr",
             "https://github.com/ValveSoftware/openvr/archive/60eb187801956ad277f1cae6680e3a410ee0873b.zip",
             "51b4deef78c10f52e3e41d85bab51a87a55cd4d87b4d6c65c8952c2cbfafb9ae"
