@@ -53,6 +53,19 @@ jobs:
           xmake-version: "3.1.1"
           actions-cache-folder: .xmake-install
 
+      - name: Fix XMake MSVC precompiled header caching
+        run: |
+          xmake lua -c '
+            local file = path.join(os.programdir(), "modules/core/tools/cl.lua")
+            local source = io.readfile(file)
+            local old = "if objectfile:endswith(\".pch\") then"
+            local replacement = "if objectfile:endswith(\".pch\") or objectfile:endswith(\".pch.obj\") then"
+            if not source:find(replacement, 1, true) then
+              assert(source:find(old, 1, true), "Unexpected XMake MSVC PCH check")
+              local patched = source:replace(old, replacement, {plain = true})
+              io.writefile(file, patched)
+            end'
+
       - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
         if: hashFiles(format('{0}/global.json', inputs.project-directory)) != ''
         with:
@@ -102,10 +115,14 @@ jobs:
 
       - name: Set XMake cache directories
         id: image
+        env:
+          BMK_CONFIGURE_ARGUMENTS: ${{ inputs.configure-arguments }}
         run: |
           "version=$env:ImageVersion" >> $env:GITHUB_OUTPUT
           $project = [Text.Encoding]::UTF8.GetBytes((Get-Location).Path)
           "project=$([Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($project)).Substring(0, 16))" >> $env:GITHUB_OUTPUT
+          $arguments = [Text.Encoding]::UTF8.GetBytes([string]$env:BMK_CONFIGURE_ARGUMENTS)
+          "configuration=$([Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($arguments)).Substring(0, 16))" >> $env:GITHUB_OUTPUT
           "XMAKE_GLOBALDIR=$env:RUNNER_TEMP/bmk/global" >> $env:GITHUB_ENV
           "XMAKE_PKG_INSTALLDIR=$env:RUNNER_TEMP/bmk/packages" >> $env:GITHUB_ENV
           "XMAKE_PKG_CACHEDIR=$env:RUNNER_TEMP/bmk/downloads" >> $env:GITHUB_ENV
@@ -124,12 +141,18 @@ jobs:
             }}-downloads-
 
       - name: Cache installed dependencies
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        id: dependencies
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ env.XMAKE_PKG_INSTALLDIR }}
           key:
             xmake-3.1.1-${{ runner.os }}-mod-${{ steps.image.outputs.project
             }}-msvc-${{ steps.image.outputs.version }}-${{
+            steps.image.outputs.configuration }}-${{
+            hashFiles(format('{0}/xmake-requires.lock',
+            inputs.project-directory)) != '' &&
+            hashFiles(format('{0}/**/xmake-*.lock', inputs.project-directory),
+            format('{0}/packages/**', inputs.project-directory)) ||
             hashFiles(format('{0}/**/xmake.lua', inputs.project-directory),
             format('{0}/**/xmake-*.lock', inputs.project-directory),
             format('{0}/packages/**', inputs.project-directory)) }}
@@ -153,6 +176,13 @@ jobs:
           $PSNativeCommandUseErrorActionPreference = $true
           $arguments = @($env:BMK_CONFIGURE_ARGUMENTS -split "`r?`n" | Where-Object { $_.Trim() })
           xmake f -y -a x64 -m releasedbg --toolchain=msvc --deploy=n --distdir="$env:BMK_DIST_DIRECTORY" --policies=build.ccache --ccachedir="$env:RUNNER_TEMP/bmk/compilation" @arguments
+
+      - name: Save installed dependencies
+        if: steps.dependencies.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.XMAKE_PKG_INSTALLDIR }}
+          key: ${{ steps.dependencies.outputs.cache-primary-key }}
 
       - name: Build
         run: xmake -y
