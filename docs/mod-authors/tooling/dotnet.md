@@ -56,7 +56,7 @@ Add `BethesdaModKit.Mutagen` to a Skyrim generator that creates an MCM Helper
 quest:
 
 ```xml
-<PackageReference Include="BethesdaModKit.Mutagen" Version="0.3.1" />
+<PackageReference Include="BethesdaModKit.Mutagen" Version="X.Y.Z" />
 ```
 
 Create the quest after installing the generator's persistent FormID allocator:

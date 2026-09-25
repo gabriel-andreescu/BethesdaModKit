@@ -19,7 +19,7 @@ does not reinstall build tools or update Python's environment.
 Select the BMK release in `xmake.lua`:
 
 ```lua
-add_addons("bmk 0.3.1")
+add_addons("bmk X.Y.Z")
 ```
 
 The recipe installs the corresponding Git tag. XMake records the selected

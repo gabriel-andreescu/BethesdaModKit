@@ -92,7 +92,7 @@ consumer's `bmk` repository and install it with XMake's `--debugdir` option:
 ```powershell
 $env:XMAKE_GLOBALDIR = Join-Path $PWD ".xmake/development"
 xmake repo --add --global bmk C:/path/to/BethesdaModKit
-xrepo install --addon -y --debugdir=C:/path/to/BethesdaModKit "bmk 0.3.1"
+xrepo install --addon -y --debugdir=C:/path/to/BethesdaModKit "bmk X.Y.Z"
 xmake
 xmake package
 ```
@@ -117,10 +117,10 @@ Keep the XMake version in the CI and consumer workflows aligned with
 
 For BMK releases, update `python/pyproject.toml`, the
 `BethesdaModKit.Mutagen.csproj` package version, `uv.lock` and the dated
-changelog entry. Update the template and documentation PackageReference pins.
-Add the release to `addons/b/bmk/xmake.lua` and update the `add_addons` version
-in the template, examples and test consumers. Keep existing recipe versions so
-consumers can continue installing older releases.
+changelog entry. Update the template PackageReference pin. Add the release to
+`addons/b/bmk/xmake.lua` and update the `add_addons` version in the template and
+test consumers. Keep existing recipe versions so consumers can continue
+installing older releases.
 
 Publish a matching `vX.Y.Z` tag. The addon downloads that tag, and CI publishes
 the source release after checks pass. Do not move published release tags.
