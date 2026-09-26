@@ -8,7 +8,7 @@ public static class McmQuest
 {
     public static Quest Add(SkyrimMod mod, McmQuestOptions options)
     {
-        var quest = mod.Quests.AddNew(options.EditorId);
+        Quest quest = mod.Quests.AddNew(options.EditorId);
         quest.Name = options.DisplayName;
         quest.Flags = Quest.Flag.StartGameEnabled | Quest.Flag.RunOnce;
         quest.VirtualMachineAdapter = new QuestAdapter

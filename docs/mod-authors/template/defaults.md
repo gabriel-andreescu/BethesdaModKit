@@ -104,9 +104,11 @@ on save.
 
 `Directory.Build.props` enables the SDK's
 [recommended analyzers](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/overview#enable-additional-rules)
-and treats warnings as errors. `dotnet format style` and
-`dotnet format analyzers` can apply available code fixes. CSharpier owns
-whitespace formatting.
+and treats warnings as errors. Builds also enforce the `.editorconfig` code
+style: `var` only where the type is apparent, following
+[Microsoft's conventions](https://learn.microsoft.com/dotnet/csharp/fundamentals/coding-style/coding-conventions#implicitly-typed-local-variables),
+and braces on every block. `dotnet format style` and `dotnet format analyzers`
+can apply available code fixes. CSharpier owns whitespace formatting.
 
 See [C# build rules](../tooling/dotnet.md) for generator arguments, patcher
 inputs and package outputs.

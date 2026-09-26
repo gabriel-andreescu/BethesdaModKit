@@ -38,7 +38,7 @@ persists IDs by allocation name. Supply a unique, stable name when creating each
 record:
 
 ```csharp
-var quest = mod.Quests.AddNew("MyMod_Quest");
+Quest quest = mod.Quests.AddNew("MyMod_Quest");
 ```
 
 Setting `EditorID` after calling parameterless `AddNew()` does not enable
@@ -64,7 +64,7 @@ Create the quest after installing the generator's persistent FormID allocator:
 ```csharp
 using BMK.Mutagen.Skyrim;
 
-var quest = McmQuest.Add(
+Quest quest = McmQuest.Add(
     mod,
     new McmQuestOptions
     {

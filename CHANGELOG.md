@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 
 - Pin generated projects' build workflow to the BMK release tag.
+- Enforce Microsoft's `var` convention and braces on every block in generated C#
+  projects.
 
 ### Fixed
 

@@ -13,7 +13,7 @@ internal static class Program
 {
     private static void Main(string[] args)
     {
-        var output = Path.GetFullPath(args[0]);
+        string output = Path.GetFullPath(args[0]);
 {% if mcm %}
         var mod = new {{ 'SkyrimMod' if game == 'skyrim' else 'Fallout4Mod' }}("{{ project_name }}.esp", {{ 'SkyrimRelease.SkyrimSE' if game == 'skyrim' else 'Fallout4Release.Fallout4' }}){% if 'plugin_generation' in components %};{% endif %}
 
