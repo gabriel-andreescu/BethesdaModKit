@@ -8,7 +8,7 @@
 | XMake dependencies       | `xmake require --upgrade`                                             | `xmake-requires.lock`.                         |
 | NuGet helpers            | Change the `PackageReference` version, then `dotnet restore`          | The consuming `.csproj`.                       |
 | Python helpers           | `uv lock --upgrade-package bethesda-mod-kit`, then `uv sync --locked` | `uv.lock`.                                     |
-| GitHub build workflow    | Change the `uses` revision in the caller                              | `.github/workflows/build.yml`.                 |
+| GitHub build workflow    | Change the `uses` release tag in the caller                           | `.github/workflows/build.yml`.                 |
 
 Keep `.copier-answers.yml`, `xmake-requires.lock`, `xmake-addons.lock` and
 `uv.lock` in Git when the project uses them. Copier merges project files. It
@@ -56,9 +56,9 @@ Review the lockfile changes and rebuild the affected targets before publishing
 the mod. The [dependency reference](dependencies.md) identifies BMK's library
 sources and adaptations.
 
-## Workflow revision
+## Workflow release
 
-Use the BMK commit selected for the project in the reusable workflow's `uses`
+Use the BMK release selected for the project in the reusable workflow's `uses`
 reference. This selects CI's build steps, independently of the addon and
-dependency installations. See
+dependency installations. Copier updates that tag for generated projects. See
 [workflow setup](github-actions.md#workflow-setup).

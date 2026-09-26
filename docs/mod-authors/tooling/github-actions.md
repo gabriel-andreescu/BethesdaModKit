@@ -25,7 +25,7 @@ jobs:
   build:
     permissions:
       contents: write
-    uses: gabriel-andreescu/BethesdaModKit/.github/workflows/build.yml@03209b04fcd1cd536fc5cbfa4803938212dce6a4
+    uses: gabriel-andreescu/BethesdaModKit/.github/workflows/build.yml@vX.Y.Z
 ```
 
 | Input                 | Default      | Purpose                                                                        |
@@ -38,7 +38,7 @@ jobs:
 
 Builds use Windows, MSVC and XMake 3.1.1. Deployment is disabled.
 
-Select the BMK revision used by the project. See [updating](updating.md) for the
+Select the BMK release used by the project. See [updating](updating.md) for the
 separate workflow, addon and dependency pins.
 
 If the repository has a root `.pre-commit-config.yaml`, the workflow runs its

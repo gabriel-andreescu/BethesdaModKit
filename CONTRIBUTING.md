@@ -119,8 +119,8 @@ For BMK releases, update `python/pyproject.toml`, the
 `BethesdaModKit.Mutagen.csproj` package version, `uv.lock` and the dated
 changelog entry. Update the template PackageReference pin. Add the release to
 `addons/b/bmk/xmake.lua` and update the `add_addons` version in the template and
-test consumers. Keep existing recipe versions so consumers can continue
-installing older releases.
+test consumers, and the template's build workflow tag. Keep existing recipe
+versions so consumers can continue installing older releases.
 
 Publish a matching `vX.Y.Z` tag. The addon downloads that tag, and CI publishes
 the source release after checks pass. Do not move published release tags.
