@@ -101,6 +101,17 @@ Keep that global directory for the development session. The source override
 installs uncommitted code under the requested version, so it belongs in an
 isolated development cache. Consumer builds install the tagged source instead.
 
+Pack a changed `BethesdaModKit.Mutagen` with a unique prerelease suffix, so it
+never shares a version with a release or an earlier local pack that NuGet has
+cached:
+
+```powershell
+dotnet pack dotnet/BethesdaModKit.Mutagen/BethesdaModKit.Mutagen.csproj -c Release -o build/nuget --version-suffix "dev.$(Get-Date -Format yyyyMMddHHmmss)"
+```
+
+Add `build/nuget` as a NuGet source in the consumer and reference the packed
+version.
+
 Check generated plugin metadata, deployed files and archive contents as
 appropriate to the change. Run the
 [tests](docs/maintainers/development.md#tests) when changing the generator or
@@ -117,12 +128,12 @@ test setup change, and on tags or manual runs.
 Keep the XMake version in the CI and consumer workflows aligned with
 [the development setup](docs/maintainers/development.md#xmake).
 
-For BMK releases, update `python/pyproject.toml`, the
-`BethesdaModKit.Mutagen.csproj` package version, `uv.lock` and the dated
-changelog entry. Update the template PackageReference pin. Add the release to
-`addons/b/bmk/xmake.lua` and update the `add_addons` version in the template and
-test consumers, and the template's build workflow tag. Keep existing recipe
-versions so consumers can continue installing older releases.
+For BMK releases, update `python/pyproject.toml`, the `VersionPrefix` in
+`BethesdaModKit.Mutagen.csproj`, `uv.lock` and the dated changelog entry. Update
+the template PackageReference pin. Add the release to `addons/b/bmk/xmake.lua`
+and update the `add_addons` version in the template and test consumers, and the
+template's build workflow tag. Keep existing recipe versions so consumers can
+continue installing older releases.
 
 Merge `dev` into `main` through a pull request without squashing, then publish a
 matching `vX.Y.Z` tag on `main`. The addon downloads that tag, and CI publishes
