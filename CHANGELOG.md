@@ -18,6 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Require `kCamelCase` enum constants in generated native projects.
 - Allow pointer conditions, all-public data structs and internal-linkage
   non-const globals in generated native projects.
+- Keep comparisons on one line when clang-format wraps a logical expression in
+  generated native projects.
 
 ## [0.4.0] - 2026-09-29
 
