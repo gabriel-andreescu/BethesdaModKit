@@ -1,3 +1,4 @@
+{% from 'templates/_partials/json.jinja' import prettier_json %}
 {% set settings = {} %}
 {% if devbench_tests %}
 {% set _ = settings.update({
@@ -27,4 +28,4 @@
     '[xml]': {'editor.defaultFormatter': 'redhat.vscode-xml'}
 }) %}
 {% endif %}
-{{ settings | to_json(indent=2) }}
+{{ prettier_json(settings) }}

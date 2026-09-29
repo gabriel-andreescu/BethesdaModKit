@@ -1,4 +1,9 @@
 #pragma once
 
-#include <{{ 'RE/Skyrim.h' if game == 'skyrim' else 'RE/Fallout.h' }}>
-#include <{{ 'SKSE/SKSE.h' if game == 'skyrim' else 'F4SE/F4SE.h' }}>
+{% if game == 'skyrim' %}
+#include <RE/Skyrim.h>
+#include <SKSE/SKSE.h>
+{% else %}
+#include <F4SE/F4SE.h>
+#include <RE/Fallout.h>
+{% endif %}

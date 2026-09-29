@@ -1,3 +1,4 @@
+{% from 'templates/_partials/json.jinja' import prettier_json %}
 {% set recommendations = ['tboox.xmake-vscode', 'EditorConfig.EditorConfig', 'gabriel-andreescu.bbcode-editor'] %}
 {% if devbench_tests %}
 {% set _ = recommendations.extend(['ms-python.python', 'charliermarsh.ruff']) %}
@@ -11,4 +12,4 @@
 {% if 'interface' in components %}
 {% set _ = recommendations.append('redhat.vscode-xml') %}
 {% endif %}
-{{ {'recommendations': recommendations} | to_json(indent=2) }}
+{{ prettier_json({'recommendations': recommendations}) }}
