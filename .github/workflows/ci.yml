@@ -27,6 +27,8 @@ jobs:
         id: filter
         if: github.event_name != 'workflow_dispatch' && github.ref_type != 'tag'
         with:
+          # Pushes compare with the branch's previous commit instead of the default branch.
+          base: ${{ github.ref }}
           filters: |
             native:
               - 'packages/b/bmk/**'
