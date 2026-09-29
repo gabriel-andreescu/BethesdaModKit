@@ -14,7 +14,7 @@ end
 local function pack(directory, name, options, parts)
     local game = import("archives." .. name .. ".settings", { rootdir = modules }).get()
     local calls = {}
-    os.vrunv = function(program, arguments)
+    os.vrunv = function(program, arguments, _)
         assert(path.filename(program) == "BSArch.exe")
         assert(arguments[1] == "pack")
         local files = {}

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Add `.luarc.json` to generated projects, turning off Lua language server
+  diagnostics that report xmake's built-in API.
+
 ### Changed
 
 - Require `_camelCase` names for private and protected members in generated
