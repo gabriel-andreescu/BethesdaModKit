@@ -223,6 +223,8 @@ jobs:
           version: "0.12.13"
           python-version: "3.11"
           enable-cache: true
+          # The checks job saves the same cache key.
+          save-cache: false
 
       - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a
         with:
