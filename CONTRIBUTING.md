@@ -84,15 +84,17 @@ license notices in the installed package.
 
 ## Validate package and rule changes
 
-Reinstall the changed package in a
-[consumer project](docs/mod-authors/tooling/building.md), then build and package
-it. For changes to the shared BMK rules, register the local checkout as the
-consumer's `bmk` repository and install it with XMake's `--debugdir` option:
+Build and package a [consumer project](docs/mod-authors/tooling/building.md)
+with the changes. Install the local checkout as the consumer's addon with
+XMake's `--debugdir` option in an isolated global directory, and register it as
+the consumer's package repository:
 
 ```powershell
 $env:XMAKE_GLOBALDIR = Join-Path $PWD ".xmake/development"
 xmake repo --add --global bmk C:/path/to/BethesdaModKit
 xrepo install --addon -y --debugdir=C:/path/to/BethesdaModKit "bmk X.Y.Z"
+xmake repo --add bmk C:/path/to/BethesdaModKit
+xmake f -y --policies=package.requires_lock:n
 xmake
 xmake package
 ```
@@ -100,6 +102,21 @@ xmake package
 Keep that global directory for the development session. The source override
 installs uncommitted code under the requested version, so it belongs in an
 isolated development cache. Consumer builds install the tagged source instead.
+The project's repository takes precedence over the one in `xmake.lua`, so
+recipes also come from the checkout. Disabling the requires lock keeps
+`xmake-requires.lock` from pinning or recording it. Reinstall the addon after
+rule changes, and a package after recipe changes with
+`xmake require -f -y <package>`.
+
+XMake records the checkout in `xmake-addons.lock` when the lock has no entry for
+the requested version. Don't commit that lock. Once the version is released,
+return the consumer to it from a new shell:
+
+```powershell
+xmake repo --remove bmk
+Remove-Item xmake-addons.lock
+xmake f -c -y
+```
 
 Pack a changed `BethesdaModKit.Mutagen` with a unique prerelease suffix, so it
 never shares a version with a release or an earlier local pack that NuGet has
