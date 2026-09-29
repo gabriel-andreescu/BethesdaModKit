@@ -6,8 +6,10 @@ compiler defaults, packaged outputs and optional components.
 ## Editor and Git settings
 
 Projects include `.editorconfig` and `.gitattributes` for consistent
-indentation, LF line endings and binary mod assets. `.luarc.json` turns off the
-Lua language server diagnostics that report xmake's built-in API.
+indentation, LF line endings and binary mod assets. `.luarc.json` loads the
+XMake declarations and plugin from
+[xmake-luals](https://github.com/gabriel-andreescu/xmake-luals), which `xmake f`
+installs into `.xmake/luals`.
 
 ## Formatting
 

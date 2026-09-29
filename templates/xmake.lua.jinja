@@ -5,8 +5,9 @@ set_policy("package.requires_lock", true)
 local version = "0.1.0"
 
 add_repositories({{ ('bmk ' ~ bmk_repository | replace('\\', '/')) | to_json(ensure_ascii=False) }})
-add_addons("bmk 0.4.0")
-includes("@addon/bmk/project")
+add_repositories("xmake-luals https://github.com/gabriel-andreescu/xmake-luals.git")
+add_addons("bmk 0.4.0", "xmake-luals 0.1.0")
+includes("@addon/bmk/project", "@addon/xmake-luals/luals")
 {% if 'native' in components %}
 includes("@addon/bmk/native")
 {% endif %}

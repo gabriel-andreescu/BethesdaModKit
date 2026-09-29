@@ -1,14 +1,14 @@
 # Updating tools and dependencies
 
-| Part                     | Update                                                                | Recorded in                                    |
-| ------------------------ | --------------------------------------------------------------------- | ---------------------------------------------- |
-| Generated project files  | `copier update`                                                       | `.copier-answers.yml` and the generated files. |
-| XMake dependency recipes | `xmake repo --update`                                                 | Local repository checkouts.                    |
-| BMK build rules          | Change the `add_addons` version, then configure                       | `xmake.lua` and `xmake-addons.lock`.           |
-| XMake dependencies       | `xmake require --upgrade`                                             | `xmake-requires.lock`.                         |
-| NuGet helpers            | Change the `PackageReference` version, then `dotnet restore`          | The consuming `.csproj`.                       |
-| Python helpers           | `uv lock --upgrade-package bethesda-mod-kit`, then `uv sync --locked` | `uv.lock`.                                     |
-| GitHub build workflow    | Change the `uses` release tag in the caller                           | `.github/workflows/build.yml`.                 |
+| Part                       | Update                                                                | Recorded in                                    |
+| -------------------------- | --------------------------------------------------------------------- | ---------------------------------------------- |
+| Generated project files    | `copier update`                                                       | `.copier-answers.yml` and the generated files. |
+| XMake dependency recipes   | `xmake repo --update`                                                 | Local repository checkouts.                    |
+| BMK and xmake-luals addons | Change the `add_addons` version, then configure                       | `xmake.lua` and `xmake-addons.lock`.           |
+| XMake dependencies         | `xmake require --upgrade`                                             | `xmake-requires.lock`.                         |
+| NuGet helpers              | Change the `PackageReference` version, then `dotnet restore`          | The consuming `.csproj`.                       |
+| Python helpers             | `uv lock --upgrade-package bethesda-mod-kit`, then `uv sync --locked` | `uv.lock`.                                     |
+| GitHub build workflow      | Change the `uses` release tag in the caller                           | `.github/workflows/build.yml`.                 |
 
 Keep `.copier-answers.yml`, `xmake-requires.lock`, `xmake-addons.lock` and
 `uv.lock` in Git when the project uses them. Copier merges project files. It

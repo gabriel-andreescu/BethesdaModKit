@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
-- Add `.luarc.json` to generated projects, turning off Lua language server
-  diagnostics that report xmake's built-in API.
+- Add `.luarc.json` to generated projects, with XMake declarations for the Lua
+  language server from xmake-luals.
 
 ### Changed
 
