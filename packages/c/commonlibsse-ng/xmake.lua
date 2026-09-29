@@ -7,12 +7,14 @@ add_urls("https://github.com/gabriel-andreescu/CommonLibSSE-NG/archive/$(version
         local revisions = {
             ["8.0.1"] = "b3bec7424238c9fee2623f145e2714e7558f18d4",
             ["9.0.0"] = "e04a2f09fbd6df65ecd24a1abf3e6580fda60411",
+            ["10.0.0"] = "c2cf6028006b8ec7a017ccf1c49871eb8e5d2aeb",
         }
         return revisions[tostring(version)]
     end,
 })
 add_versions("8.0.1", "34162b1feaacd66a617e913f3bcf3320722ad9b8728be5c8d3f1c8bbcb07e39c")
 add_versions("9.0.0", "406df41ff3c6cd9bc3eb5bb8c5f68e3f4159798452d3b7f3335a23dab8231afd")
+add_versions("10.0.0", "da00b56835ab4500255ac977d52a7d2cecec003afc280dd322b419005418e792")
 add_patches(
     ">=8.0.1",
     path.join(os.scriptdir(), "patches", "vr-form-factory.patch"),
