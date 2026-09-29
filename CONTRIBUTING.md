@@ -84,15 +84,17 @@ license notices in the installed package.
 
 ## Validate package and rule changes
 
-Reinstall the changed package in a
-[consumer project](docs/mod-authors/tooling/building.md), then build and package
-it. For changes to the shared BMK rules, register the local checkout as the
-consumer's `bmk` repository and install it with XMake's `--debugdir` option:
+Build and package a [consumer project](docs/mod-authors/tooling/building.md)
+with the changes. Install the local checkout as the consumer's addon with
+XMake's `--debugdir` option in an isolated global directory, and register it as
+the consumer's package repository:
 
 ```powershell
 $env:XMAKE_GLOBALDIR = Join-Path $PWD ".xmake/development"
 xmake repo --add --global bmk C:/path/to/BethesdaModKit
-xrepo install --addon -y --debugdir=C:/path/to/BethesdaModKit "bmk 0.3.1"
+xrepo install --addon -y --debugdir=C:/path/to/BethesdaModKit "bmk X.Y.Z"
+xmake repo --add bmk C:/path/to/BethesdaModKit
+xmake f -y --policies=package.requires_lock:n
 xmake
 xmake package
 ```
@@ -100,6 +102,32 @@ xmake package
 Keep that global directory for the development session. The source override
 installs uncommitted code under the requested version, so it belongs in an
 isolated development cache. Consumer builds install the tagged source instead.
+The project's repository takes precedence over the one in `xmake.lua`, so
+recipes also come from the checkout. Disabling the requires lock keeps
+`xmake-requires.lock` from pinning or recording it. Reinstall the addon after
+rule changes, and a package after recipe changes with
+`xmake require -f -y <package>`.
+
+XMake records the checkout in `xmake-addons.lock` when the lock has no entry for
+the requested version. Don't commit that lock. Once the version is released,
+return the consumer to it from a new shell:
+
+```powershell
+xmake repo --remove bmk
+Remove-Item xmake-addons.lock
+xmake f -c -y
+```
+
+Pack a changed `BethesdaModKit.Mutagen` with a unique prerelease suffix, so it
+never shares a version with a release or an earlier local pack that NuGet has
+cached:
+
+```powershell
+dotnet pack dotnet/BethesdaModKit.Mutagen/BethesdaModKit.Mutagen.csproj -c Release -o build/nuget --version-suffix "dev.$(Get-Date -Format yyyyMMddHHmmss)"
+```
+
+Add `build/nuget` as a NuGet source in the consumer and reference the packed
+version.
 
 Check generated plugin metadata, deployed files and archive contents as
 appropriate to the change. Run the
@@ -108,6 +136,8 @@ packaging rules.
 
 ## CI and releases
 
+Unreleased work lands on `dev`. `main` tracks the latest release.
+
 [CI](.github/workflows/ci.yml) runs the development checks. Native consumers
 build with MSVC and clang-cl when their dependencies, build rules, headers or
 test setup change, and on tags or manual runs.
@@ -115,14 +145,15 @@ test setup change, and on tags or manual runs.
 Keep the XMake version in the CI and consumer workflows aligned with
 [the development setup](docs/maintainers/development.md#xmake).
 
-For BMK releases, update `python/pyproject.toml`, the
-`BethesdaModKit.Mutagen.csproj` package version, `uv.lock` and the dated
-changelog entry. Update the template and documentation PackageReference pins.
-Add the release to `addons/b/bmk/xmake.lua` and update the `add_addons` version
-in the template, examples and test consumers. Keep existing recipe versions so
-consumers can continue installing older releases.
+For BMK releases, update `python/pyproject.toml`, the `VersionPrefix` in
+`BethesdaModKit.Mutagen.csproj`, `uv.lock` and the dated changelog entry. Update
+the template PackageReference pin. Add the release to `addons/b/bmk/xmake.lua`
+and update the `add_addons` version in the template and test consumers, and the
+template's build workflow tag. Keep existing recipe versions so consumers can
+continue installing older releases.
 
-Publish a matching `vX.Y.Z` tag. The addon downloads that tag, and CI publishes
+Merge `dev` into `main` through a pull request without squashing, then publish a
+matching `vX.Y.Z` tag on `main`. The addon downloads that tag, and CI publishes
 the source release after checks pass. Do not move published release tags.
 
 BMK and [mod releases](docs/mod-authors/tooling/github-actions.md) share

@@ -18,6 +18,9 @@ uses four-space indentation. Run the hooks on all tracked files with:
 uv run pre-commit run --all-files
 ```
 
+Builds enforce the C# code style in `.editorconfig`: `var` only where the type
+is apparent, and braces on every block.
+
 CI runs the same checks. Jinja templates and bundled license files are excluded
 from formatting.
 
