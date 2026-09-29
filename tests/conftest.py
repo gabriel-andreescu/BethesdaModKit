@@ -50,6 +50,6 @@ def bmk_addon(tmp_path_factory, xmake):
         "-f",
         "-y",
         f"--debugdir={ROOT}",
-        "bmk 0.3.1",
+        "bmk 0.4.0",
     )
     return xmake

@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-29
+
+### Added
+
+- Add CommonLibSSE-NG 9.0.0 and 10.0.0 packages.
+
 ### Changed
 
 - Pin generated projects' build workflow to the BMK release tag.

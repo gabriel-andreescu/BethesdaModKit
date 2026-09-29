@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RootNamespace>BMK.Mutagen</RootNamespace>
-    <VersionPrefix>0.3.1</VersionPrefix>
+    <VersionPrefix>0.4.0</VersionPrefix>
     <Authors>Gabriel Andreescu</Authors>
     <Description>Mutagen helpers for Bethesda modding.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
