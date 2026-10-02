@@ -10,6 +10,9 @@ on:
 permissions:
   contents: read
 
+env:
+  XMAKE_COMMIT: 7ec04bfc12726ff51d69c9efe69280bd163ce28d
+
 jobs:
   changes:
     runs-on: ubuntu-latest
@@ -115,7 +118,7 @@ jobs:
 
       - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a
         with:
-          xmake-version: "3.1.1"
+          xmake-version: gabriel-andreescu/xmake#sha@${{ env.XMAKE_COMMIT }}
           actions-cache-folder: .xmake-install
 
       - name: Set XMake cache directories
@@ -135,8 +138,11 @@ jobs:
             ${{ runner.temp }}/bmk/downloads
             ${{ env.BMK_TEST_CACHE }}/*/global
             ${{ env.BMK_TEST_CACHE }}/*/downloads
-          key: xmake-3.1.1-${{ runner.os }}-checks-downloads-${{ github.sha }}
-          restore-keys: xmake-3.1.1-${{ runner.os }}-checks-downloads-
+          key:
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-checks-downloads-${{
+            github.sha }}
+          restore-keys:
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-checks-downloads-
 
       - name: Cache installed dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -145,11 +151,11 @@ jobs:
             ${{ runner.temp }}/bmk/packages
             ${{ env.BMK_TEST_CACHE }}/*/packages
           key:
-            xmake-3.1.1-${{ runner.os }}-checks-${{ steps.image.outputs.version
-            }}-${{ github.sha }}
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-checks-${{
+            steps.image.outputs.version }}-${{ github.sha }}
           restore-keys:
-            xmake-3.1.1-${{ runner.os }}-checks-${{ steps.image.outputs.version
-            }}-
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-checks-${{
+            steps.image.outputs.version }}-
 
       - name: Install development dependencies
         run: uv sync --locked
@@ -259,7 +265,7 @@ jobs:
 
       - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a
         with:
-          xmake-version: "3.1.1"
+          xmake-version: gabriel-andreescu/xmake#sha@${{ env.XMAKE_COMMIT }}
           actions-cache-folder: .xmake-install
 
       - name: Set XMake cache directory
@@ -275,21 +281,22 @@ jobs:
             ${{ env.BMK_TEST_CACHE }}/*/global
             ${{ env.BMK_TEST_CACHE }}/*/downloads
           key:
-            xmake-3.1.1-${{ runner.os }}-${{ matrix.toolchain }}-downloads-${{
-            github.sha }}
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-${{ matrix.toolchain
+            }}-downloads-${{ github.sha }}
           restore-keys:
-            xmake-3.1.1-${{ runner.os }}-${{ matrix.toolchain }}-downloads-
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-${{ matrix.toolchain
+            }}-downloads-
 
       - name: Cache installed dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ env.BMK_TEST_CACHE }}/*/packages
           key:
-            xmake-3.1.1-${{ runner.os }}-${{ matrix.toolchain }}-${{
-            steps.image.outputs.version }}-${{ github.sha }}
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-${{ matrix.toolchain
+            }}-${{ steps.image.outputs.version }}-${{ github.sha }}
           restore-keys:
-            xmake-3.1.1-${{ runner.os }}-${{ matrix.toolchain }}-${{
-            steps.image.outputs.version }}-
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-${{ matrix.toolchain
+            }}-${{ steps.image.outputs.version }}-
 
       - run: uv sync --locked
 
