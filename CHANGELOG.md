@@ -6,8 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- The `devbench_wait_timeout` pytest setting sets the `wait_for` fixture's
+  default timeout, 30 seconds.
+
 ### Changed
 
+- The `wait_for` fixture no longer takes its default timeout from
+  `devbench_launch_timeout`.
 - Generated projects pin the `bmk` header package to the BMK release,
   `skyrim-papyrus-sdk 2026.09.20` and `caprica 2026.9.17`. The two recipes now
   declare versions, so `xmake require` rejects unknown ones.

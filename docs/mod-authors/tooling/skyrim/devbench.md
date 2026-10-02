@@ -87,8 +87,9 @@ devbench_cwd = 'C:\Games\Skyrim'
 | `devbench_url`            | `http://127.0.0.1:8920` | DevBench endpoint.                                                                                             |
 | `devbench_command`        | Empty                   | Launcher executable followed by separate arguments. Empty connects to a running game.                          |
 | `devbench_cwd`            | Current directory       | Launcher working directory.                                                                                    |
-| `devbench_launch_timeout` | `120`                   | Seconds to wait for DevBench after launching. Also the default for the `wait_for` fixture.                     |
+| `devbench_launch_timeout` | `120`                   | Seconds to wait for DevBench after launching.                                                                  |
 | `devbench_timeout`        | `30`                    | HTTP request timeout in seconds.                                                                               |
+| `devbench_wait_timeout`   | `30`                    | Default timeout of the `wait_for` fixture in seconds.                                                          |
 | `devbench_quit_on_exit`   | `false`                 | Request game exit after the session, including when tests fail. Applies to launched and already-running games. |
 
 The session launches once, when its first test requests the client. Run game
@@ -97,12 +98,12 @@ tests without pytest-xdist workers.
 Set `devbench_quit_on_exit = true` to quit after the suite. This queues Skyrim's
 `qqq` command. It does not wait for process exit or mod manager cleanup.
 
-| Fixture            | Value                                                                                                                 |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| `devbench`         | Client with a separate JSON transcript for each test.                                                                 |
-| `devbench_session` | Shared client for the test session.                                                                                   |
-| `game_artifacts`   | Output directory for the current test.                                                                                |
-| `wait_for`         | [`bmk.testing.wait_for`](#helpers) with the configured timeout. Pass `timeout=` to override it for a particular wait. |
+| Fixture            | Purpose                                                                             |
+| ------------------ | ----------------------------------------------------------------------------------- |
+| `devbench`         | Client with a separate JSON transcript for each test.                               |
+| `devbench_session` | Shared client for the test session.                                                 |
+| `game_artifacts`   | Output directory for the current test.                                              |
+| `wait_for`         | `bmk.testing.wait_for` with the configured timeout. Pass `timeout=` to override it. |
 
 ## Helpers
 
