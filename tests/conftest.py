@@ -1,5 +1,4 @@
 import hashlib
-import json
 import os
 import shutil
 from pathlib import Path
@@ -37,19 +36,9 @@ def xmake(worker_id):
 
 @pytest.fixture(scope="session")
 def bmk_addon(tmp_path_factory, xmake):
-    project = tmp_path_factory.mktemp("addon")
-    (project / "xmake.lua").write_text(
-        f"add_repositories({json.dumps('bmk ' + ROOT.as_posix())})\n"
-        'target("addon-install")\n    set_kind("phony")\n'
-    )
-    run(
-        project,
-        xmake,
-        "require",
-        "--addon",
-        "-f",
-        "-y",
-        f"--debugdir={ROOT}",
-        "bmk 0.4.0",
-    )
+    xrepo = shutil.which("xrepo")
+    assert xrepo, "Install XMake to run build integration tests."
+    directory = tmp_path_factory.mktemp("addon")
+    run(directory, xmake, "repo", "--add", "--global", "bmk", ROOT.as_posix())
+    run(directory, xrepo, "install", "--addon", "-y", f"--debugdir={ROOT}", "bmk 0.4.0")
     return xmake
