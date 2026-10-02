@@ -25,6 +25,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 - The build workflow builds with XMake from `gabriel-andreescu/xmake` at a
   pinned commit instead of the XMake 3.1.1 release.
 
+### Removed
+
+- **Breaking:** The template no longer asks for the BMK repository, and
+  `copier update` switches projects that answered a local directory back to
+  GitHub. To build a project against a local checkout, follow
+  [Validate package and rule changes](CONTRIBUTING.md#validate-package-and-rule-changes).
+
 ### Fixed
 
 - Report which game rule to use when a target uses `@addon/bmk/package` on its

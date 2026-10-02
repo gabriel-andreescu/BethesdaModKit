@@ -1,19 +1,19 @@
 # {{ project_name }}
 
 This project uses
-[BethesdaModKit (BMK)](https://github.com/gabriel-andreescu/BethesdaModKit) for
+[BethesdaModKit (BMK)]({{ bmk_repository }}) for
 project generation and development tooling.
 
 ## Development
 
 See BMK's
-[project build instructions](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/template/projects.md#build-a-generated-project)
+[project build instructions]({{ bmk_docs }}/mod-authors/template/projects.md#build-a-generated-project)
 and
-[deployment and packaging](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/tooling/packaging.md).
+[deployment and packaging]({{ bmk_docs }}/mod-authors/tooling/packaging.md).
 {% if pre_commit %}
 
 See
-[formatting setup](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/template/defaults.md#formatting).
+[formatting setup]({{ bmk_docs }}/mod-authors/template/defaults.md#formatting).
 {% endif %}
 {% if 'papyrus' in components or mcm %}
 
@@ -23,18 +23,18 @@ with language extensions enabled.
 {% if 'native' in components %}
 
 See
-[Clang tooling](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/tooling/clang.md)
+[Clang tooling]({{ bmk_docs }}/mod-authors/tooling/clang.md)
 for formatting and linting.
 {% endif %}
 {% if devbench_api %}
 
 See
-[DevBench native integration](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/tooling/skyrim/devbench.md#native-api).
+[DevBench native integration]({{ bmk_docs }}/mod-authors/tooling/skyrim/devbench.md#native-api).
 {% endif %}
 {% if native_settings %}
 
 See
-[Settings and MCM](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/template/settings.md)
+[Settings and MCM]({{ bmk_docs }}/mod-authors/template/settings.md)
 for configuration and menu integration.
 {% endif %}
 
@@ -47,7 +47,7 @@ xmake package
 ## Tests
 
 See
-[DevBench setup](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/template/defaults.md#devbench)
+[DevBench setup]({{ bmk_docs }}/mod-authors/template/defaults.md#devbench)
 and the
-[Python client and fixtures](https://github.com/gabriel-andreescu/BethesdaModKit/blob/main/docs/mod-authors/tooling/skyrim/devbench.md).
+[Python client and fixtures]({{ bmk_docs }}/mod-authors/tooling/skyrim/devbench.md).
 {% endif %}

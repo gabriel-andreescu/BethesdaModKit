@@ -120,11 +120,6 @@ devbench_api:
   default: false
   when: "{{ game == 'skyrim' and 'native' in components }}"
 
-bmk_repository:
-  type: str
-  help: BMK package repository (URL or local directory)
-  default: https://github.com/gabriel-andreescu/BethesdaModKit.git
-
 pack_assets:
   type: bool
   help: Create BSA/BA2 archives
@@ -134,3 +129,13 @@ deploy:
   type: str
   help: Initial deployment directories separated by ; (leave blank to disable)
   default: ""
+
+bmk_repository:
+  type: str
+  default: https://github.com/gabriel-andreescu/BethesdaModKit
+  when: false
+
+bmk_docs:
+  type: str
+  default: "{{ bmk_repository }}/blob/main/docs"
+  when: false

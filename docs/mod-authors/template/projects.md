@@ -101,7 +101,6 @@ Pass answers with `-d name=value`, or use the interactive prompts.
 | `devbench_api`          | `false`                                                   | Include the DevBench API and BMK helpers for a Skyrim native plugin.                                                                                  |
 | `pack_assets`           | `false`                                                   | Enable BSA/BA2 packing on the initial package.                                                                                                        |
 | `deploy`                | Empty                                                     | Initial deployment destinations, separated by `;`. Stored locally.                                                                                    |
-| `bmk_repository`        | BMK's GitHub URL                                          | Package repository URL or local directory.                                                                                                            |
 
 Put source files in `src/` and files to include unchanged in `assets/`. BMK
 writes build output to `build/`. Source paths are configurable. Selecting native
