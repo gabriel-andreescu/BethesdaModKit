@@ -10,6 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 - Add `.luarc.json` to generated projects, with XMake declarations for the Lua
   language server from xmake-luals.
+- The build workflow installs npm dependencies for each committed
+  `package-lock.json` before it runs pre-commit hooks.
 
 ### Changed
 
@@ -20,6 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
   non-const globals in generated native projects.
 - Keep comparisons on one line when clang-format wraps a logical expression in
   generated native projects.
+- The build workflow builds with XMake from `gabriel-andreescu/xmake` at a
+  pinned commit instead of the XMake 3.1.1 release.
 
 ### Fixed
 
