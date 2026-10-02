@@ -90,6 +90,6 @@ Install the main mod first, then let the optional MCM addon overwrite
 
 Build the MCM addon with:
 
-```sh
+```powershell
 xmake package MyModMCM
 ```

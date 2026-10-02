@@ -6,7 +6,7 @@ or through a later update.
 ## First build
 
 Requires Copier, Git, XMake 3.1.1 or newer and, for this SKSE DLL example,
-Windows with an MSVC C++23 toolchain and Windows SDK.
+Visual Studio 2022 with the C++ toolset and Windows SDK.
 
 ```powershell
 copier copy --defaults -d project_name=MyMod -d 'components=[native]' https://github.com/gabriel-andreescu/BethesdaModKit.git MyMod
@@ -43,14 +43,14 @@ packages. Supply the toolchains and local inputs for those components:
 
 | Component            | Local requirements                                                                                              |
 | -------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Native               | Windows, an MSVC C++23 toolchain and Windows SDK.                                                               |
+| Native               | Visual Studio 2022 with the C++ toolset and Windows SDK.                                                        |
 | Papyrus or MCM       | Windows and [Papyrus import paths](defaults.md#papyrus). Fallout 4 MCM also needs matching F4SE script sources. |
 | Mutagen or Synthesis | The .NET SDK specified in `global.json`.                                                                        |
 | Synthesis            | [Input Data directory and load-order file](defaults.md#c-projects).                                             |
 
 From the project root:
 
-```sh
+```powershell
 xmake f -y
 xmake
 xmake package
@@ -105,10 +105,9 @@ Set `tooling_only=true` to
 | `devbench_api`          | `false`                                                   | Include the DevBench API and BMK helpers for a Skyrim native plugin.                                                                                  |
 | `deploy`                | Empty                                                     | Initial deployment destinations, separated by `;`. Stored locally.                                                                                    |
 
-Put source files in `src/` and files to include unchanged in `assets/`. BMK
-writes build output to `build/`. Source paths are configurable. Selecting native
-settings includes CLibUtil regardless of `clib_util`. MCM also generates the
-Papyrus scripts and Mutagen project it needs.
+Put source files in `src/` and files to include unchanged in `assets/`.
+Selecting native settings includes CLibUtil regardless of `clib_util`. MCM also
+generates the Papyrus scripts and Mutagen project it needs.
 
 Multiple games can coexist through manually composed
 [targets](../tooling/native-plugins.md#shared-native-sources) and
@@ -136,13 +135,13 @@ changes with those customizations.
 
 Keep `.copier-answers.yml` in Git. From a clean working tree:
 
-```sh
+```powershell
 copier update
 ```
 
 To add components, supply the complete selection:
 
-```sh
+```powershell
 copier update -d 'components=[native, papyrus, interface]'
 ```
 
