@@ -1,8 +1,9 @@
 import json
+import shutil
 
 import pytest
 import yaml
-from copier import run_copy
+from copier import run_copy, run_update
 from tests.support import ROOT, VERSION, archive_files, deployment_config, run
 
 
@@ -11,7 +12,7 @@ def generate(destination, **answers):
         str(ROOT),
         destination,
         vcs_ref="HEAD",
-        data={"bmk_repository": ROOT.as_posix(), **answers},
+        data=answers,
         defaults=True,
         quiet=True,
     )
@@ -88,7 +89,7 @@ def test_native_source_choice(tmp_path):
 def test_asset_package(tmp_path, bmk_addon):
     project = tmp_path / "project"
     destination = tmp_path / "deployed"
-    generate(project, deploy=str(destination))
+    generate(project, deploy=str(destination), bmk_repository=ROOT.as_posix())
     assert not (project / "src").exists()
     assert not (project / ".clangd").exists()
     answers = yaml.safe_load((project / ".copier-answers.yml").read_text())
@@ -99,6 +100,20 @@ def test_asset_package(tmp_path, bmk_addon):
         "config.ini": b"configuration"
     }
     assert (destination / "config.ini").read_text() == "configuration"
+
+
+def test_kit_release_pins(tmp_path):
+    generate(tmp_path, components=["native"], native_settings=True, mcm=True)
+    workflow = yaml.safe_load((tmp_path / ".github/workflows/build.yml").read_text())
+    assert (
+        workflow["jobs"]["build"]["uses"]
+        == f"gabriel-andreescu/BethesdaModKit/.github/workflows/build.yml@v{VERSION}"
+    )
+    native = (tmp_path / "xmake.lua").read_text()
+    assert f'add_addons("bmk {VERSION}", ' in native
+    assert f'add_requires("bmk {VERSION}"' in native
+    project = (tmp_path / "src/mutagen/MyMod/MyMod.csproj").read_text()
+    assert f'Include="BethesdaModKit.Mutagen" Version="{VERSION}"' in project
 
 
 def test_package_composition(tmp_path, bmk_addon):
@@ -167,3 +182,60 @@ def test_tooling_only_keeps_existing_project(tmp_path):
         ".vscode/extensions.json",
         ".vscode/settings.json",
     }
+
+
+def test_tooling_update_preserves_project_hooks(tmp_path):
+    template = tmp_path / "template"
+    template.mkdir()
+    shutil.copy(ROOT / "copier.yml", template)
+    shutil.copytree(ROOT / "templates", template / "templates")
+    run(template, "git", "init", "-q")
+    run(template, "git", "add", ".")
+    commit = (
+        "git",
+        "-c",
+        "user.name=BMK tests",
+        "-c",
+        "user.email=tests@example.invalid",
+        "-c",
+        "commit.gpgsign=false",
+        "-c",
+        "core.hooksPath=NUL",
+        "commit",
+        "-qm",
+    )
+    run(template, *commit, "Template")
+    consumer = tmp_path / "consumer"
+    run_copy(
+        str(template),
+        consumer,
+        vcs_ref="HEAD",
+        data={"tooling_only": True, "components": ["native"]},
+        defaults=True,
+        quiet=True,
+    )
+    hooks_path = consumer / ".pre-commit-config.yaml"
+    hooks = yaml.safe_load(hooks_path.read_text())
+    hooks["repos"][0]["hooks"].append(
+        {
+            "id": "project-check",
+            "name": "Project check",
+            "entry": "check-project",
+            "language": "system",
+        }
+    )
+    hooks_path.write_text(yaml.safe_dump(hooks, sort_keys=False))
+    (consumer / "xmake.lua").write_text('set_project("Existing")\n')
+    run(consumer, "git", "init", "-q")
+    run(consumer, "git", "add", ".")
+    run(consumer, *commit, "Project customizations")
+    editor = template / "templates/.editorconfig.jinja"
+    editor.write_text(editor.read_text().replace("indent_size = 4", "indent_size = 8"))
+    run(template, "git", "add", ".")
+    run(template, *commit, "Update editor defaults")
+    run_update(consumer, vcs_ref="HEAD", defaults=True, overwrite=True, quiet=True)
+    updated_hooks = yaml.safe_load(hooks_path.read_text())
+    assert updated_hooks["repos"][0]["hooks"][-1]["id"] == "project-check"
+    assert "indent_size = 8" in (consumer / ".editorconfig").read_text()
+    assert (consumer / "xmake.lua").read_text() == 'set_project("Existing")\n'
+    assert not (consumer / "README.md").exists()
