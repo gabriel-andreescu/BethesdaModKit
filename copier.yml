@@ -139,3 +139,8 @@ bmk_docs:
   type: str
   default: "{{ bmk_repository }}/blob/main/docs"
   when: false
+
+bmk_version:
+  type: str
+  default: 0.4.0
+  when: false
