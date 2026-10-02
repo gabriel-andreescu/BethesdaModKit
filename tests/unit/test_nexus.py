@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
 import yaml
 from tests.support import ROOT
 
@@ -85,6 +86,31 @@ def test_package_destinations_and_shared_changelogs():
         "1.1.0": ["Fixed: Settings reload & saving."],
         "2.0.0": ["Added: Textures for My Mod (https://example.com)."],
     }
+
+
+def test_rejects_nexus_mod_from_another_game():
+    namespace = run_step("Plan Nexus publication")
+    package = {
+        "target": "Main",
+        "name": "My Mod",
+        "version": "1.0.0",
+        "game": "skyrim",
+        "archive": "Main/My Mod-1.0.0.zip",
+        "nexus": {
+            "mod_id": "15144054878116",
+            "file_id": "1",
+            "category": "main",
+        },
+    }
+    notes = {
+        "0000": {
+            "version": "1.0.0",
+            "path": "CHANGELOG.md",
+            "html": "<h3>Added</h3><ul><li>Initial release.</li></ul>",
+        }
+    }
+    with pytest.raises(ValueError, match="belongs to another game"):
+        namespace["plan"]([package], notes, ".")
 
 
 def test_retry_skips_uploaded_file(tmp_path, monkeypatch):
