@@ -1,4 +1,4 @@
-target("{{ project_name }}", function()
+target({{ project_name | to_json(ensure_ascii=False) }}, function()
     set_version(version)
     add_rules("@addon/bmk/{{ game }}.package"{% if components or pack_assets %}, {
 {% if components %}
@@ -19,7 +19,7 @@ target("{{ project_name }}", function()
 end)
 {% if mcm %}
 
-target("{{ project_name }}MCM", function()
+target({{ (project_name ~ 'MCM') | to_json(ensure_ascii=False) }}, function()
     set_version(version)
     add_deps("Mutagen", { inherit = false })
     add_rules("@addon/bmk/{{ game }}.package", { targets = { "MCMScripts" } })

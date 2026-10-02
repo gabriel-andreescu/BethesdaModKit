@@ -1,6 +1,6 @@
 target("Native", function()
     set_default(false)
-    set_basename("{{ project_name }}")
+    set_basename({{ project_name | to_json(ensure_ascii=False) }})
     set_version(version)
     add_rules("@{{ 'commonlibsse-ng' if game == 'skyrim' else 'commonlibf4' }}/plugin", {
         author = {{ author | to_json(ensure_ascii=False) }},

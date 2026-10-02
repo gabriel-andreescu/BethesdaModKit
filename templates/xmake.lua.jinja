@@ -1,5 +1,5 @@
 set_xmakever("3.1.1")
-set_project("{{ project_name }}")
+set_project({{ project_name | to_json(ensure_ascii=False) }})
 set_policy("package.requires_lock", true)
 
 local version = "0.1.0"
