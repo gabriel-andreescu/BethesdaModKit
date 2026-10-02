@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-02
+
 ### Added
 
 - Generate only tooling configuration for an existing project with
@@ -17,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ### Changed
 
+- Generated projects pin xmake-luals 0.1.1, whose declarations match the XMake
+  build the kits use.
 - Native targets compile with `/Zc:__cplusplus`, so `__cplusplus` reports the
   selected standard.
 - Generated README lists the documentation links and describes CI.
@@ -41,6 +45,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ### Fixed
 
+- The build workflow keeps separate compilation caches for different
+  `configure-arguments`.
 - The generated startup test checks the main menu instead of only starting the
   session.
 - Report which game rule to use when a target uses `@addon/bmk/package` on its
