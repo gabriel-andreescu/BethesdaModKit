@@ -36,7 +36,9 @@ jobs:
 | `configure-arguments` | Empty        | Additional XMake configure arguments, one per line.                            |
 | `publish-nexus`       | `false`      | Upload configured packages to [Nexus Mods](nexus.md) after the GitHub release. |
 
-Builds use Windows, MSVC and XMake 3.1.1. Deployment is disabled.
+Builds use Windows, MSVC and the
+[XMake build](https://github.com/gabriel-andreescu/xmake) pinned as
+`XMAKE_COMMIT` in the workflow. Deployment is disabled.
 
 Select the BMK release used by the project. See [updating](updating.md) for the
 separate workflow, addon and dependency pins.
@@ -75,6 +77,17 @@ overwritten.
 
 Enable [Nexus Mods publication](nexus.md) to upload the same packages and their
 changelogs after the GitHub release succeeds.
+
+### Custom builds
+
+Call [release.yml](../../../.github/workflows/release.yml) after your own build
+job, from a workflow that runs on tag pushes, to reuse publication without the
+build workflow. Pass `artifact` with the Actions artifact containing the ZIPs,
+and `metadata` when uploading XMake's `.xmake/bmk/packages/*.json` records.
+`project-directory` and `changelog` locate the root changelog, and
+`expected-version` requires the tag to match. Leave `artifact` empty for a
+source release. `publish-nexus` uploads the packages to Nexus Mods with the
+`NEXUSMODS_API_KEY` secret after the release.
 
 ### Target changelogs
 
