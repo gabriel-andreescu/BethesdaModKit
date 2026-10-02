@@ -65,7 +65,8 @@ data lifetime.
 
 For clangd support in the Skyrim headers, generate the consumer's compilation
 database after installing the local addon as described in
-[consumer validation](../../CONTRIBUTING.md#validate-package-and-rule-changes):
+[consumer validation](../../CONTRIBUTING.md#validate-package-and-rule-changes).
+The consumer uses the newest release listed in the addon recipe:
 
 ```powershell
 xmake f -P tests/native/plugins -y -a x64 --game=skyrim --deploy=n

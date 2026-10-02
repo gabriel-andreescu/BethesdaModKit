@@ -3,7 +3,7 @@ set_license("GPL-3.0")
 
 option("game", { default = "skyrim", values = { "skyrim", "fallout4" } })
 add_repositories("bmk " .. (os.getenv("BMK_TEST_REPOSITORY") or path.join(os.scriptdir(), "../../..")))
-add_addons("bmk 0.5.0")
+add_addons("bmk")
 includes("@addon/bmk/project")
 includes("@addon/bmk/native")
 
@@ -17,7 +17,7 @@ if is_config("game", "skyrim") then
             skse_patch_safety = false,
         },
     })
-    add_requires("bmk 0.5.0", "devbench-api 2026.09.13")
+    add_requires("bmk", "devbench-api 2026.09.13")
 else
     add_requires("commonlibf4 2026.09.13")
 end
