@@ -39,6 +39,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ### Fixed
 
+- The generated startup test checks the main menu instead of only starting the
+  session.
 - Report which game rule to use when a target uses `@addon/bmk/package` on its
   own.
 
