@@ -43,19 +43,17 @@ Load the fixtures in the suite's `conftest.py`:
 pytest_plugins = ["bmk.skyrim.devbench.pytest_plugin"]
 ```
 
-A startup check in `tests/game/test_startup.py`:
+The generated `tests/game/test_startup.py` asserts the main menu after the
+session `conftest.py` waits for it:
 
 ```python
 import pytest
 
 
 @pytest.mark.game
-def test_main_menu(devbench, wait_for):
-    wait_for(
-        lambda: devbench.call("menu", {"action": "list"}),
-        lambda menus: "Main Menu" in menus["openMenus"],
-        "Skyrim did not reach the main menu",
-    )
+def test_startup(devbench):
+    menus = devbench.call("menu", {"action": "list"})
+    assert "Main Menu" in menus["openMenus"]
 ```
 
 For tests that need a character, create a `TestBaseline` save first and load it
