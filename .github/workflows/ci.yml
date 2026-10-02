@@ -337,7 +337,7 @@ jobs:
 
   nuget:
     if: github.event_name == 'push' && github.ref_type == 'tag'
-    needs: [workflows, checks, plugins]
+    needs: release
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -361,6 +361,6 @@ jobs:
         shell: pwsh
         env:
           NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
-        run:
-          dotnet nuget push packages/*.nupkg --api-key $env:NUGET_API_KEY
-          --source https://api.nuget.org/v3/index.json
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          dotnet nuget push packages/*.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate

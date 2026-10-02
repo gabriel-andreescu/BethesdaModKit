@@ -156,9 +156,9 @@ existing recipe versions so consumers can continue installing older releases.
 Merge `dev` into `main` through a pull request without squashing, then publish a
 matching lightweight `vX.Y.Z` tag on `main` with `git tag vX.Y.Z`. Workflows
 calling `build.yml` by an annotated tag cannot find its nested release workflow,
-so CI rejects annotated release tags. The addon downloads that tag, and CI
-publishes the source release after checks pass. Do not move published release
-tags.
+so CI rejects annotated release tags. The addon downloads that tag. After checks
+pass, CI publishes the GitHub release, then pushes the NuGet package. Do not
+move published release tags.
 
 BMK and [mod releases](docs/mod-authors/tooling/github-actions.md) share
 [release.yml](.github/workflows/release.yml), which extracts notes with
