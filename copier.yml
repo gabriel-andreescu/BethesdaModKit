@@ -5,6 +5,25 @@ _envops:
   lstrip_blocks: true
 _exclude:
   - _partials
+  - |
+    {% if tooling_only %}
+    **
+    !/.clang-format
+    !/.clang-tidy
+    !/.clangd
+    !/.config/
+    !/.config/**
+    !/.editorconfig
+    !/.gitattributes
+    !/.gitignore
+    !/.pre-commit-config.yaml
+    !/.prettierignore
+    !/.prettierrc.json
+    !/.stylua.toml
+    !/.vscode/
+    !/.vscode/**
+    !/{{ _copier_conf.answers_file }}
+    {% endif %}
   - >-
     {% if not ('native' in components or 'plugin_generation' in components or
     'plugin_patching' in components or 'interface' in components or
@@ -13,10 +32,16 @@ _skip_if_exists:
   - .xmake/bmk/deploy.json
   - "{{ mutagen_source }}/FormIDs.txt"
 
+tooling_only:
+  type: bool
+  help: Configure tooling for an existing project
+  default: false
+
 project_name:
   type: str
   help: Project name
   default: MyMod
+  when: "{{ not tooling_only }}"
   validator: >-
     {% if not (project_name | regex_search('^[A-Za-z][A-Za-z0-9_-]*$')) %} Use
     letters, digits, underscores or dashes, starting with a letter. {% endif %}
@@ -28,28 +53,36 @@ game:
     Skyrim: skyrim
     Fallout 4: fallout4
   default: skyrim
+  when: "{{ not tooling_only }}"
 
 components:
   type: str
-  help: Components to build
+  help: "{{ 'Tooling to include' if tooling_only else 'Components to build' }}"
   multiselect: true
   choices:
-    "{{ 'SKSE' if game == 'skyrim' else 'F4SE' }} plugin (.dll)": native
+    ? "{{ 'C++' if tooling_only else ('SKSE' if game == 'skyrim' else 'F4SE') ~
+      ' plugin (.dll)' }}"
+    : native
     Papyrus: papyrus
-    Build UI files (.swf) with FFDec: interface
-    Generate an ESP with Mutagen: plugin_generation
-    Run a Synthesis patcher: plugin_patching
+    "{{ 'Flash XML' if tooling_only else 'Build UI files (.swf) with FFDec' }}":
+      interface
+    "{{ 'C# (Mutagen)' if tooling_only else 'Generate an ESP with Mutagen' }}":
+      plugin_generation
+    "{{ 'C# (Synthesis)' if tooling_only else 'Run a Synthesis patcher' }}":
+      plugin_patching
   default: []
 
 description:
   type: str
   help: Short project description
   default: ""
+  when: "{{ not tooling_only }}"
 
 author:
   type: str
   help: Author
   default: ""
+  when: "{{ not tooling_only }}"
 
 pre_commit:
   type: bool
@@ -60,7 +93,7 @@ native_settings:
   type: bool
   help: Include native INI settings
   default: false
-  when: "{{ 'native' in components }}"
+  when: "{{ not tooling_only and 'native' in components }}"
 
 mcm:
   type: bool
@@ -69,66 +102,69 @@ mcm:
     'plugin_generation' in components %}Its ESP replaces the main ESP. Publish
     both ZIPs together.{% else %}The generated ESP goes in the addon.{% endif %}
   default: false
-  when: "{{ 'native' in components and native_settings }}"
+  when: "{{ not tooling_only and 'native' in components and native_settings }}"
 
 native_source:
   type: str
   help: Native source directory
   default:
     "{{ 'src' if components | length == 1 and not mcm else 'src/native' }}"
-  when: "{{ 'native' in components }}"
+  when: "{{ not tooling_only and 'native' in components }}"
 
 papyrus_source:
   type: str
   help: Papyrus source directory
   default: src/papyrus
-  when: "{{ 'papyrus' in components or mcm }}"
+  when: "{{ not tooling_only and ('papyrus' in components or mcm) }}"
 
 interface_source:
   type: str
   help: Interface source directory
   default: src/interface
-  when: "{{ 'interface' in components }}"
+  when: "{{ not tooling_only and 'interface' in components }}"
 
 mutagen_source:
   type: str
   help: Mutagen project directory
   default: "src/mutagen/{{ project_name }}"
-  when: "{{ 'plugin_generation' in components or mcm }}"
+  when: "{{ not tooling_only and ('plugin_generation' in components or mcm) }}"
 
 synthesis_source:
   type: str
   help: Synthesis project directory
   default: "src/synthesis/{{ project_name }}Patch"
-  when: "{{ 'plugin_patching' in components }}"
+  when: "{{ not tooling_only and 'plugin_patching' in components }}"
 
 clib_util:
   type: bool
   help: Include CLibUtil
   default: true
-  when: "{{ 'native' in components and not native_settings }}"
+  when:
+    "{{ not tooling_only and 'native' in components and not native_settings }}"
 
 devbench_tests:
   type: bool
   help: Include DevBench tests using pytest
   default: false
-  when: "{{ game == 'skyrim' }}"
+  when: "{{ not tooling_only and game == 'skyrim' }}"
 
 devbench_api:
   type: bool
   help: Include the DevBench native API and BMK helpers
   default: false
-  when: "{{ game == 'skyrim' and 'native' in components }}"
+  when: "{{ not tooling_only and game == 'skyrim' and 'native' in components }}"
 
 pack_assets:
   type: bool
   help: Create BSA/BA2 archives
   default: false
+  when: "{{ not tooling_only }}"
 
 deploy:
   type: str
   help: Initial deployment directories separated by ; (leave blank to disable)
   default: ""
+  when: "{{ not tooling_only }}"
 
 bmk_repository:
   type: str

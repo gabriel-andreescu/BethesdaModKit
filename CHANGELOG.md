@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ### Added
 
+- Generate only tooling configuration for an existing project with
+  `tooling_only=true`.
 - Add `.luarc.json` to generated projects, with XMake declarations for the Lua
   language server from xmake-luals.
 - The build workflow installs npm dependencies for each committed
