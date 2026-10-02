@@ -138,6 +138,12 @@ clib_util:
   when:
     "{{ not tooling_only and 'native' in components and not native_settings }}"
 
+pack_assets:
+  type: bool
+  help: Create BSA/BA2 archives
+  default: false
+  when: "{{ not tooling_only }}"
+
 devbench_tests:
   type: bool
   help: Include DevBench tests using pytest
@@ -149,12 +155,6 @@ devbench_api:
   help: Include the DevBench native API and BMK helpers
   default: false
   when: "{{ not tooling_only and game == 'skyrim' and 'native' in components }}"
-
-pack_assets:
-  type: bool
-  help: Create BSA/BA2 archives
-  default: false
-  when: "{{ not tooling_only }}"
 
 deploy:
   type: str

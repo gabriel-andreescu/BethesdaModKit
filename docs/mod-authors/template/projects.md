@@ -100,9 +100,9 @@ Set `tooling_only=true` to
 | `clib_util`             | `true`                                                    | Include CLibUtil with a native plugin.                                                                                                                |
 | `native_settings`       | `false`                                                   | Generate native settings using CLibUtil. Requires `native`.                                                                                           |
 | `mcm`                   | `false`                                                   | Add an optional [MCM package](settings.md). Requires native settings.                                                                                 |
+| `pack_assets`           | `false`                                                   | Enable BSA/BA2 packing on the initial package.                                                                                                        |
 | `devbench_tests`        | `false`                                                   | Set up pytest with BMK's DevBench client and fixtures for Skyrim.                                                                                     |
 | `devbench_api`          | `false`                                                   | Include the DevBench API and BMK helpers for a Skyrim native plugin.                                                                                  |
-| `pack_assets`           | `false`                                                   | Enable BSA/BA2 packing on the initial package.                                                                                                        |
 | `deploy`                | Empty                                                     | Initial deployment destinations, separated by `;`. Stored locally.                                                                                    |
 
 Put source files in `src/` and files to include unchanged in `assets/`. BMK
