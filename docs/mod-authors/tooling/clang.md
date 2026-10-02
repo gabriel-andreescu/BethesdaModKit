@@ -28,3 +28,6 @@ selected files, pass them with `-f`:
 ```powershell
 xmake check clang.tidy -f src/Plugin.cpp
 ```
+
+Under MSVC, XMake's precompiled-header wrapper makes everything `PCH.h` includes
+a system header, which clang-tidy skips. Keep project headers out of `PCH.h`.
