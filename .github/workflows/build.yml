@@ -69,6 +69,8 @@ jobs:
           key:
             nuget-${{ runner.os }}-${{ hashFiles(format('{0}/**/*.csproj',
             inputs.project-directory), format('{0}/**/packages.lock.json',
+            inputs.project-directory), format('{0}/**/Directory.Packages.props',
+            inputs.project-directory), format('{0}/**/Directory.Build.props',
             inputs.project-directory), format('{0}/.config/dotnet-tools.json',
             inputs.project-directory)) }}
           restore-keys: nuget-${{ runner.os }}-
