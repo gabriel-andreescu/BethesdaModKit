@@ -26,6 +26,10 @@ sources supplied through `imports` instead of the Skyrim SDK. Select the Papyrus
 target in a [package](packaging.md#package-composition) to ship its PEX files
 under `Scripts/`.
 
+Generated Papyrus sources require
+[Caprica's language extensions](https://github.com/gabriel-andreescu/Caprica#language-extensions),
+which the generated targets enable through `arguments`.
+
 | Option      | Default                       | Purpose                                           |
 | ----------- | ----------------------------- | ------------------------------------------------- |
 | `root`      | Required                      | Source root used for compilation.                 |

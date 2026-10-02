@@ -14,6 +14,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 - The generated pre-commit configuration no longer restores .NET tools before
   CSharpier runs. Run `dotnet tool restore` once per clone. The build workflow
   restores them before running the hooks.
+- Generated C# projects enable implicit usings and nullable reference types in
+  `Directory.Build.props` instead of each project file.
+- The generated README links the Papyrus page instead of noting the Caprica
+  requirement.
 
 ## [0.5.0] - 2026-10-02
 
