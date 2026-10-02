@@ -178,6 +178,7 @@ jobs:
           $variants = @{
               skyrim = @("-d", "game=skyrim", "-d", "components=[native, papyrus, interface, plugin_generation, plugin_patching]", "-d", "mcm=true", "-d", "native_settings=true", "-d", "devbench_tests=true", "-d", "devbench_api=true")
               fallout4 = @("-d", "game=fallout4", "-d", "components=[native, papyrus, interface, plugin_generation, plugin_patching]", "-d", "native_settings=true")
+              tooling = @("-d", "tooling_only=true", "-d", "components=[native, plugin_generation]")
           }
           foreach ($variant in $variants.GetEnumerator()) {
               $project = Join-Path $env:RUNNER_TEMP $variant.Key

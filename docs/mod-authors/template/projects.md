@@ -82,6 +82,9 @@ libraries.
 
 Pass answers with `-d name=value`, or use the interactive prompts.
 
+Set `tooling_only=true` to
+[configure an existing project's tools](#tooling-for-existing-projects).
+
 | Answer                  | Default                                                   | Purpose                                                                                                                                               |
 | ----------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `project_name`          | `MyMod`                                                   | Project name and initial DLL/ESP basenames.                                                                                                           |
@@ -110,6 +113,24 @@ Papyrus scripts and Mutagen project it needs.
 Multiple games can coexist through manually composed
 [targets](../tooling/native-plugins.md#shared-native-sources) and
 [packages](../tooling/packaging.md).
+
+## Tooling for existing projects
+
+Use the same template to add editor settings, formatter configuration and
+pre-commit hooks to an existing project:
+
+```powershell
+copier copy https://github.com/gabriel-andreescu/BethesdaModKit.git C:/path/to/ExistingProject -d tooling_only=true -d 'components=[native]'
+```
+
+Select `native` for C++ configuration, `plugin_generation` or `plugin_patching`
+for C# and `interface` for XML editor support. This mode generates only tooling
+configuration and `.copier-answers.yml`. Sources, build files and documentation
+remain project-owned.
+
+Review existing configuration files during the first copy. Keep project-specific
+settings and hooks in those files. Later `copier update` runs merge template
+changes with those customizations.
 
 ## Adding components and updating
 
