@@ -30,9 +30,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ### Added
 
-- Generate only tooling configuration for an existing project with
+- The template generates only tooling configuration for an existing project with
   `tooling_only=true`.
-- Add `.luarc.json` to generated projects, with XMake declarations for the Lua
+- Generated projects include `.luarc.json`, with XMake declarations for the Lua
   language server from xmake-luals.
 - The build workflow installs npm dependencies for each committed
   `package-lock.json` before it runs pre-commit hooks.
@@ -45,13 +45,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 - Generated README lists the documentation links and describes CI.
 - Generated VS Code settings recommend and configure Prettier, StyLua and the
   Lua language server.
-- Require `_camelCase` names for private and protected members in generated
-  native projects.
-- Require `kCamelCase` enum constants in generated native projects.
-- Allow pointer conditions, all-public data structs and internal-linkage
-  non-const globals in generated native projects.
-- Keep comparisons on one line when clang-format wraps a logical expression in
-  generated native projects.
+- Generated native projects require `_camelCase` names for private and protected
+  members.
+- Generated native projects require `kCamelCase` enum constants.
+- Generated native projects allow pointer conditions, all-public data structs
+  and internal-linkage non-const globals.
+- Generated native projects keep comparisons on one line when clang-format wraps
+  a logical expression.
 - The build workflow builds with XMake from `gabriel-andreescu/xmake` at a
   pinned commit instead of the XMake 3.1.1 release.
 
@@ -68,31 +68,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
   `configure-arguments`.
 - The generated startup test checks the main menu instead of only starting the
   session.
-- Report which game rule to use when a target uses `@addon/bmk/package` on its
-  own.
+- The build reports which game rule to use when a target uses
+  `@addon/bmk/package` on its own.
 
 ## [0.4.0] - 2026-09-29
 
 ### Added
 
-- Add CommonLibSSE-NG 9.0.0 and 10.0.0 packages.
+- BMK provides CommonLibSSE-NG 9.0.0 and 10.0.0 packages.
 
 ### Changed
 
-- Pin generated projects' build workflow to the BMK release tag.
-- Enforce Microsoft's `var` convention and braces on every block in generated C#
-  projects.
+- Generated projects' build workflow is pinned to the BMK release tag.
+- Generated C# projects enforce Microsoft's `var` convention and braces on every
+  block.
 
 ### Fixed
 
-- Use clang-format 23.1.0 in generated projects and their build workflow.
+- Generated projects and their build workflow use clang-format 23.1.0.
 
 ## [0.3.1] - 2026-09-20
 
 ### Fixed
 
-- Publish Nexus changelogs under the selected release version.
-- Use the project's Ruff executable directly in generated editor settings.
+- Nexus changelogs are published under the selected release version.
+- Generated editor settings use the project's Ruff executable directly.
 
 ## [0.3.0] - 2026-09-20
 
@@ -105,33 +105,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ### Added
 
-- Add a Nexus description starter and recommend BBCode Editor and Preview.
-- Add a NuGet package for creating Skyrim MCM Helper quests with Mutagen.
-- Add native settings helpers for layered INI loading and log levels.
-- Add a Skyrim DevBench inspection registration helper.
-- Add native compiler defaults for plugins, tests, and utilities.
-- Format native project sources with clang-format during pre-commit checks.
-- Add a Skyrim Papyrus SDK package with optional SKSE, MCM Helper, and
-  powerofthree's Papyrus Extender interfaces.
-- Add Papyrus source packages for Skyrim, SKSE, and powerofthree's Papyrus
-  Extender.
+- Generated projects include a Nexus description starter and recommend BBCode
+  Editor and Preview.
+- The `BethesdaModKit.Mutagen` NuGet package creates Skyrim MCM Helper quests
+  with Mutagen.
+- Native settings helpers load layered INIs and apply log levels.
+- A Skyrim DevBench helper registers inspections.
+- Native compiler defaults apply to plugins, tests and utilities.
+- Pre-commit checks format native project sources with clang-format.
+- The Skyrim Papyrus SDK package provides the vanilla interfaces with optional
+  SKSE, MCM Helper and powerofthree's Papyrus Extender interfaces.
+- Papyrus source packages provide the Skyrim, SKSE and powerofthree's Papyrus
+  Extender interfaces.
 
 ### Changed
 
-- Generate native projects with a precompiled header for CommonLib and the
-  script extender.
-- Include source locations and thread IDs in generated native plugins' logs, and
-  use CommonLib's default log level.
+- Generated native projects precompile the CommonLib and script extender
+  headers.
+- Generated native plugins log source locations and thread IDs, and use
+  CommonLib's default log level.
 
 ### Fixed
 
-- Require Python 3.11 or newer in generated DevBench test projects.
-- Avoid a false positive from LLVM's enum range analyzer in MSVC filesystem
-  headers.
-- Apply the documented C++23 default when native targets do not set a language.
-- Fix Clang tooling for native projects that use precompiled headers.
-- Generate dependency lockfiles for new projects.
-- Flush debug log messages when debug logging is enabled.
+- Generated DevBench test projects require Python 3.11 or newer.
+- LLVM's enum range analyzer no longer reports a false positive in MSVC
+  filesystem headers.
+- Native targets that set no language use the documented C++23 default.
+- Clang tooling works for native projects that use precompiled headers.
+- New projects generate dependency lockfiles.
+- Debug log messages are flushed when debug logging is enabled.
 
 ## [0.1.0] - 2026-09-17
 
