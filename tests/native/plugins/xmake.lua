@@ -17,7 +17,7 @@ if is_config("game", "skyrim") then
             skse_patch_safety = false,
         },
     })
-    add_requires("bmk", "devbench-api 2026.09.13")
+    add_requires("bmk 0.5.0", "devbench-api 2026.09.13")
 else
     add_requires("commonlibf4 2026.09.13")
 end

@@ -192,7 +192,8 @@ DevBench interface is available so the plugin also works without the host.
 BMK also provides
 [`BMK::Skyrim::DevBench::InspectOnGameThread`](../../../../native/include/BMK/Skyrim/DevBench.h)
 for inspection callbacks that need to read game state on the game thread.
-Require the `bmk` header package and add it to the target's packages to use it.
+Require the `bmk` header package at the project's BMK release and add it to the
+target's packages to use it.
 
 Call this helper from DevBench's listener-thread inspection callback, after
 SKSE's task interface is available. It blocks that thread for up to three

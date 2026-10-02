@@ -148,11 +148,11 @@ Keep the XMake version in the CI and consumer workflows aligned with
 For BMK releases, update `python/pyproject.toml`, the `VersionPrefix` in
 `BethesdaModKit.Mutagen.csproj`, `uv.lock`, `bmk_version` in `copier.yml` and
 the dated changelog entry. Add the release to `addons/b/bmk/xmake.lua` and
-update the `add_addons` version in `tests/native/plugins/xmake.lua`. The
-template's `add_addons` version, PackageReference pin and build workflow tag
-follow `bmk_version`, and CI fails when the package version, `bmk_version` and
-the recipe disagree. Keep existing recipe versions so consumers can continue
-installing older releases.
+`packages/b/bmk/xmake.lua`, and update the `add_addons` version in
+`tests/native/plugins/xmake.lua`. The template's `add_addons` and `bmk` package
+versions, PackageReference pin and build workflow tag follow `bmk_version`, and
+CI fails when the package version, `bmk_version` and the recipes disagree. Keep
+existing recipe versions so consumers can continue installing older releases.
 
 Merge `dev` into `main` through a pull request without squashing, then publish a
 matching lightweight `vX.Y.Z` tag on `main` with `git tag vX.Y.Z`. Workflows

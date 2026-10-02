@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ### Changed
 
+- Generated projects pin the `bmk` header package to the BMK release,
+  `skyrim-papyrus-sdk 2026.09.20` and `caprica 2026.9.17`. The two recipes now
+  declare versions, so `xmake require` rejects unknown ones.
 - The generated pre-commit configuration no longer restores .NET tools before
   CSharpier runs. Run `dotnet tool restore` once per clone. The build workflow
   restores them before running the hooks.

@@ -235,6 +235,9 @@ jobs:
           if (-not (Select-String -Path addons/b/bmk/xmake.lua -SimpleMatch "add_versions(`"$version`", `"v$version`")")) {
               throw "addons/b/bmk/xmake.lua does not list $version."
           }
+          if (-not (Select-String -Path packages/b/bmk/xmake.lua -SimpleMatch "add_versions(`"$version`", `"local`")")) {
+              throw "packages/b/bmk/xmake.lua does not list $version."
+          }
           $packageVersion = dotnet msbuild dotnet/BethesdaModKit.Mutagen/BethesdaModKit.Mutagen.csproj --getProperty:PackageVersion --nologo
           if ($packageVersion -cne $version) {
               throw "BethesdaModKit.Mutagen version '$packageVersion' does not match BMK version '$version'."
