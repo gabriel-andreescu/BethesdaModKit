@@ -8,11 +8,14 @@
 | XMake dependencies         | `xmake require --upgrade`                                             | `xmake-requires.lock`.                         |
 | NuGet helpers              | Change the `PackageReference` version, then `dotnet restore`          | The consuming `.csproj`.                       |
 | Python helpers             | `uv lock --upgrade-package bethesda-mod-kit`, then `uv sync --locked` | `uv.lock`.                                     |
-| GitHub build workflow      | Change the `uses` release tag in the caller                           | `.github/workflows/build.yml`.                 |
+| Build workflow             | Change the `uses` release tag in the caller                           | `.github/workflows/build.yml`.                 |
 
 Keep `.copier-answers.yml`, `xmake-requires.lock`, `xmake-addons.lock` and
 `uv.lock` in Git when the project uses them. Copier merges project files. It
 does not reinstall build tools or update Python's environment.
+
+The same update command applies to tooling-only projects. Copier merges shared
+configuration changes with project-specific settings and hooks.
 
 ## BMK addon
 
@@ -28,7 +31,7 @@ version in `xmake-addons.lock` and keeps different versions side by side.
 To upgrade, update the repository recipes, change the `add_addons` version and
 configure again:
 
-```sh
+```powershell
 xmake repo --update
 xmake f -y
 xmake package
@@ -36,6 +39,9 @@ xmake package
 
 For a version range, `xmake addon --upgrade` resolves it again and updates the
 lockfile. An exact version remains fixed until its declaration changes.
+
+To build against a local BMK checkout, follow the
+[consumer setup](../../../CONTRIBUTING.md#validate-package-and-rule-changes).
 
 ## Library and compiler packages
 
@@ -48,7 +54,7 @@ BMK recipes can change their pinned source without changing the library's
 version label. When adopting such a recipe change, reinstall the affected
 package, for example:
 
-```sh
+```powershell
 xmake require --upgrade -f -y clib-util
 ```
 
