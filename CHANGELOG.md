@@ -21,6 +21,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Keep comparisons on one line when clang-format wraps a logical expression in
   generated native projects.
 
+### Fixed
+
+- Report which game rule to use when a target uses `@addon/bmk/package` on its
+  own.
+
 ## [0.4.0] - 2026-09-29
 
 ### Added
