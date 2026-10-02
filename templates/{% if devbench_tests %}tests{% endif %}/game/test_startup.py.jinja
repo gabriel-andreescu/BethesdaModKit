@@ -2,6 +2,6 @@ import pytest
 
 
 @pytest.mark.game
-@pytest.mark.usefixtures("devbench_session")
-def test_startup():
-    pass
+def test_startup(devbench):
+    menus = devbench.call("menu", {"action": "list"})
+    assert "Main Menu" in menus["openMenus"]
