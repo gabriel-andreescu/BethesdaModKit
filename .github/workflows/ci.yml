@@ -181,6 +181,7 @@ jobs:
       - name: Check generated projects' formatting
         run: |
           $PSNativeCommandUseErrorActionPreference = $true
+          $description = "A sample mod whose description is long enough to wrap in the generated README file."
           $variants = @{
               skyrim = @("-d", "game=skyrim", "-d", "components=[native, papyrus, interface, plugin_generation, plugin_patching]", "-d", "mcm=true", "-d", "native_settings=true", "-d", "devbench_tests=true", "-d", "devbench_api=true")
               fallout4 = @("-d", "game=fallout4", "-d", "components=[native, papyrus, interface, plugin_generation, plugin_patching]", "-d", "native_settings=true")
@@ -188,7 +189,7 @@ jobs:
           }
           foreach ($variant in $variants.GetEnumerator()) {
               $project = Join-Path $env:RUNNER_TEMP $variant.Key
-              uv run copier copy --defaults --trust --vcs-ref HEAD -d project_name=SampleMod @($variant.Value) $env:GITHUB_WORKSPACE $project
+              uv run copier copy --defaults --trust --vcs-ref HEAD -d project_name=SampleMod -d "description=$description" @($variant.Value) $env:GITHUB_WORKSPACE $project
               Push-Location $project
               git init --quiet
               git add --all
