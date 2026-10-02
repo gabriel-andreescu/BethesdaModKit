@@ -19,7 +19,15 @@ clang-format -i src/Plugin.cpp
 With LLVM on PATH, run from the native project:
 
 ```powershell
-xmake check clang.tidy -f 'src/**.cpp'
+xmake check clang.tidy
 ```
 
-Adjust the file pattern to match your native sources.
+This checks every native source the project builds, in parallel. To check
+selected files, pass them with `-f`:
+
+```powershell
+xmake check clang.tidy -f src/Plugin.cpp
+```
+
+Under MSVC, XMake's precompiled-header wrapper makes everything `PCH.h` includes
+a system header, which clang-tidy skips. Keep project headers out of `PCH.h`.

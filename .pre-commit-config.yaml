@@ -39,3 +39,10 @@ repos:
         additional_dependencies: ["@johnnymorganz/stylua-bin@2.5.2"]
         types: [lua]
         args: [--verify]
+      - id: clang-format
+        name: clang-format
+        language: python
+        entry: clang-format -i
+        additional_dependencies: [clang-format==23.1.0]
+        types_or: [c, c++]
+        exclude: ^(templates|packages)/

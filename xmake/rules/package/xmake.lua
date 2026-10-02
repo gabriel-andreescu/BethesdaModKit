@@ -3,7 +3,12 @@ on_load(function(target)
     target:set("kind", "phony")
 end)
 after_load(function(target)
-    for _, name in ipairs(target:data("bmk.package").options.targets or {}) do
+    local package = target:data("bmk.package")
+    assert(
+        package,
+        target:name() .. ": use @addon/bmk/skyrim.package or @addon/bmk/fallout4.package instead of @addon/bmk/package."
+    )
+    for _, name in ipairs(package.options.targets or {}) do
         target:add("deps", name, { inherit = false })
     end
 end)

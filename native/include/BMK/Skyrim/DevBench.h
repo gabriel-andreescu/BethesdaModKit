@@ -41,21 +41,21 @@ inline void InspectOnGameThread(
 }
 
 namespace Detail {
-template <const Inspection& Definition>
-void HandleInspection(
-    [[maybe_unused]] void* a_context,
-    [[maybe_unused]] const char* a_args,
-    void* a_sink,
-    DevBenchAPI::WriteFn a_write
-) {
-    InspectOnGameThread(
-        Definition.snapshot,
-        a_sink,
-        a_write,
-        Definition.timeoutResponse,
-        Definition.failureResponse
-    );
-}
+    template <const Inspection& Definition>
+    void HandleInspection(
+        [[maybe_unused]] void* a_context,
+        [[maybe_unused]] const char* a_args,
+        void* a_sink,
+        DevBenchAPI::WriteFn a_write
+    ) {
+        InspectOnGameThread(
+            Definition.snapshot,
+            a_sink,
+            a_write,
+            Definition.timeoutResponse,
+            Definition.failureResponse
+        );
+    }
 }
 
 template <const Inspection& Definition>

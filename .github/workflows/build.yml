@@ -31,6 +31,9 @@ on:
 permissions:
   contents: read
 
+env:
+  XMAKE_COMMIT: 9c1ecaf411d668305e360a5563502f6dbc8f38d7
+
 jobs:
   build:
     runs-on: windows-2025
@@ -50,21 +53,8 @@ jobs:
 
       - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a
         with:
-          xmake-version: "3.1.1"
+          xmake-version: gabriel-andreescu/xmake#sha@${{ env.XMAKE_COMMIT }}
           actions-cache-folder: .xmake-install
-
-      - name: Fix XMake MSVC precompiled header caching
-        run: |
-          xmake lua -c '
-            local file = path.join(os.programdir(), "modules/core/tools/cl.lua")
-            local source = io.readfile(file)
-            local old = "if objectfile:endswith(\".pch\") then"
-            local replacement = "if objectfile:endswith(\".pch\") or objectfile:endswith(\".pch.obj\") then"
-            if not source:find(replacement, 1, true) then
-              assert(source:find(old, 1, true), "Unexpected XMake MSVC PCH check")
-              local patched = source:replace(old, replacement, {plain = true})
-              io.writefile(file, patched)
-            end'
 
       - uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5
         if: hashFiles(format('{0}/global.json', inputs.project-directory)) != ''
@@ -89,14 +79,6 @@ jobs:
           version: "0.12.13"
           enable-cache: true
 
-      - name: Install clang-format
-        if:
-          hashFiles('.pre-commit-config.yaml') != '' &&
-          hashFiles(format('{0}/.clang-format', inputs.project-directory)) != ''
-        run: |
-          uv tool install clang-format==23.1.0
-          uv tool dir --bin >> $env:GITHUB_PATH
-
       - name: Cache pre-commit environments
         if: hashFiles('.pre-commit-config.yaml') != ''
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -105,6 +87,26 @@ jobs:
           key:
             pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml')
             }}
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        if:
+          hashFiles('.pre-commit-config.yaml') != '' &&
+          hashFiles('package-lock.json', '**/package-lock.json') != ''
+        with:
+          node-version: "22"
+
+      - name: Install Node dependencies
+        if:
+          hashFiles('.pre-commit-config.yaml') != '' &&
+          hashFiles('package-lock.json', '**/package-lock.json') != ''
+        working-directory: ${{ github.workspace }}
+        shell: pwsh
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          foreach ($lockfile in git ls-files ':(glob)**/package-lock.json') {
+              $directory = Split-Path -Parent $lockfile
+              npm ci --prefix ($directory ? $directory : '.') --no-audit --no-fund
+          }
 
       - name: Lint and format
         if: hashFiles('.pre-commit-config.yaml') != ''
@@ -134,11 +136,11 @@ jobs:
             ${{ env.XMAKE_GLOBALDIR }}
             ${{ env.XMAKE_PKG_CACHEDIR }}
           key:
-            xmake-3.1.1-${{ runner.os }}-mod-${{ steps.image.outputs.project
-            }}-downloads-${{ github.sha }}
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-mod-${{
+            steps.image.outputs.project }}-downloads-${{ github.sha }}
           restore-keys:
-            xmake-3.1.1-${{ runner.os }}-mod-${{ steps.image.outputs.project
-            }}-downloads-
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-mod-${{
+            steps.image.outputs.project }}-downloads-
 
       - name: Cache installed dependencies
         id: dependencies
@@ -146,9 +148,9 @@ jobs:
         with:
           path: ${{ env.XMAKE_PKG_INSTALLDIR }}
           key:
-            xmake-3.1.1-${{ runner.os }}-mod-${{ steps.image.outputs.project
-            }}-msvc-${{ steps.image.outputs.version }}-${{
-            steps.image.outputs.configuration }}-${{
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-mod-${{
+            steps.image.outputs.project }}-msvc-${{ steps.image.outputs.version
+            }}-${{ steps.image.outputs.configuration }}-${{
             hashFiles(format('{0}/xmake-requires.lock',
             inputs.project-directory)) != '' &&
             hashFiles(format('{0}/**/xmake-*.lock', inputs.project-directory),
@@ -162,11 +164,15 @@ jobs:
         with:
           path: ${{ runner.temp }}/bmk/compilation
           key:
-            xmake-3.1.1-${{ runner.os }}-mod-${{ steps.image.outputs.project
-            }}-msvc-objects-${{ steps.image.outputs.version }}-${{ github.sha }}
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-mod-${{
+            steps.image.outputs.project }}-msvc-objects-${{
+            steps.image.outputs.version }}-${{ steps.image.outputs.configuration
+            }}-${{ github.sha }}
           restore-keys:
-            xmake-3.1.1-${{ runner.os }}-mod-${{ steps.image.outputs.project
-            }}-msvc-objects-${{ steps.image.outputs.version }}-
+            xmake-${{ env.XMAKE_COMMIT }}-${{ runner.os }}-mod-${{
+            steps.image.outputs.project }}-msvc-objects-${{
+            steps.image.outputs.version }}-${{ steps.image.outputs.configuration
+            }}-
 
       - name: Configure
         env:

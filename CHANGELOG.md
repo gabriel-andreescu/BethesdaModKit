@@ -2,9 +2,54 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ## [Unreleased]
+
+## [0.5.0] - 2026-10-02
+
+### Added
+
+- Generate only tooling configuration for an existing project with
+  `tooling_only=true`.
+- Add `.luarc.json` to generated projects, with XMake declarations for the Lua
+  language server from xmake-luals.
+- The build workflow installs npm dependencies for each committed
+  `package-lock.json` before it runs pre-commit hooks.
+
+### Changed
+
+- Generated projects pin xmake-luals 0.1.1.
+- Native targets compile with `/Zc:__cplusplus`, so `__cplusplus` reports the
+  selected standard.
+- Generated README lists the documentation links and describes CI.
+- Generated VS Code settings recommend and configure Prettier, StyLua and the
+  Lua language server.
+- Require `_camelCase` names for private and protected members in generated
+  native projects.
+- Require `kCamelCase` enum constants in generated native projects.
+- Allow pointer conditions, all-public data structs and internal-linkage
+  non-const globals in generated native projects.
+- Keep comparisons on one line when clang-format wraps a logical expression in
+  generated native projects.
+- The build workflow builds with XMake from `gabriel-andreescu/xmake` at a
+  pinned commit instead of the XMake 3.1.1 release.
+
+### Removed
+
+- **Breaking:** The template no longer asks for the BMK repository, and
+  `copier update` switches projects that answered a local directory back to
+  GitHub. To build a project against a local checkout, follow
+  [Validate package and rule changes](CONTRIBUTING.md#validate-package-and-rule-changes).
+
+### Fixed
+
+- The build workflow keeps separate compilation caches for different
+  `configure-arguments`.
+- The generated startup test checks the main menu instead of only starting the
+  session.
+- Report which game rule to use when a target uses `@addon/bmk/package` on its
+  own.
 
 ## [0.4.0] - 2026-09-29
 

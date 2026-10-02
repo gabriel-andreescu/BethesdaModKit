@@ -3,7 +3,7 @@ function main(requestfile)
     local request = json.loadfile(requestfile)
     local modules = path.join(os.scriptdir(), "../../../xmake/modules")
     local result = { calls = {} }
-    os.vrunv = function(program, arguments)
+    os.vrunv = function(program, arguments, _)
         assert(path.filename(program) == "BSArch.exe")
         local files = {}
         for _, file in ipairs(os.files(path.join(arguments[2], "**"))) do
