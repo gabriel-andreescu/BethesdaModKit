@@ -172,6 +172,9 @@ jobs:
             hashFiles('.pre-commit-config.yaml',
             'templates/*pre-commit-config.yaml*') }}
 
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
       - name: Lint and format
         run: uv run pre-commit run --all-files --show-diff-on-failure
 
@@ -189,6 +192,9 @@ jobs:
               Push-Location $project
               git init --quiet
               git add --all
+              if (Test-Path .config/dotnet-tools.json) {
+                  dotnet tool restore
+              }
               uv run --project $env:GITHUB_WORKSPACE pre-commit run --all-files --show-diff-on-failure
               Pop-Location
           }

@@ -4,6 +4,7 @@ Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/). From the BMK root:
 
 ```powershell
 uv sync --locked
+dotnet tool restore
 uv run pre-commit install
 ```
 

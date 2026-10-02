@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- The generated pre-commit configuration no longer restores .NET tools before
+  CSharpier runs. Run `dotnet tool restore` once per clone. The build workflow
+  restores them before running the hooks.
+
 ## [0.5.0] - 2026-10-02
 
 ### Added

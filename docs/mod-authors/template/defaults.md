@@ -25,7 +25,8 @@ Pre-commit formats staged files with:
   `.pyi` files. The lint configuration also enables import sorting.
 - **[CSharpier](https://csharpier.com/docs/About)**, when C# is included: C# and
   XML (`.cs`, `.csx`, `.csproj`, `.props`, `.targets`, `.slnx`, `.xml`,
-  `.config`). The hook restores the pinned .NET tool before formatting.
+  `.config`). Run `dotnet tool restore` once per clone to install the pinned
+  tool.
 - **clang-format**, when native code is included: C and C++ sources using the
   template's pinned [clang-format 23.1.0](../tooling/clang.md).
 
@@ -95,11 +96,10 @@ imports.
 `global.json`, `Directory.Build.props` and a root `.slnx` solution.
 
 CSharpier uses its [defaults](https://csharpier.com/docs/Configuration) with the
-indentation and line endings in `.editorconfig`. Restore and run it
-independently of pre-commit with:
+indentation and line endings in `.editorconfig`. Run it independently of
+pre-commit with:
 
-```sh
-dotnet tool restore
+```powershell
 dotnet csharpier format .
 ```
 
