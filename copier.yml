@@ -24,10 +24,6 @@ _exclude:
     !/.vscode/**
     !/{{ _copier_conf.answers_file }}
     {% endif %}
-  - >-
-    {% if not ('native' in components or 'plugin_generation' in components or
-    'plugin_patching' in components or 'interface' in components or
-    devbench_tests) %}.vscode/settings.json{% endif %}
 _skip_if_exists:
   - .xmake/bmk/deploy.json
   - "{{ mutagen_source }}/FormIDs.txt"

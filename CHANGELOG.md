@@ -17,6 +17,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ### Changed
 
+- Generated VS Code settings recommend and configure Prettier, StyLua and the
+  Lua language server.
 - Require `_camelCase` names for private and protected members in generated
   native projects.
 - Require `kCamelCase` enum constants in generated native projects.

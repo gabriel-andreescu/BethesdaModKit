@@ -1,5 +1,11 @@
 {% from 'templates/_partials/json.jinja' import prettier_json %}
-{% set recommendations = ['tboox.xmake-vscode', 'EditorConfig.EditorConfig'] %}
+{% set recommendations = [
+    'EditorConfig.EditorConfig',
+    'tboox.xmake-vscode',
+    'esbenp.prettier-vscode',
+    'JohnnyMorganz.stylua',
+    'sumneko.lua'
+] %}
 {% if not tooling_only %}
 {% set _ = recommendations.append('gabriel-andreescu.bbcode-editor') %}
 {% endif %}
