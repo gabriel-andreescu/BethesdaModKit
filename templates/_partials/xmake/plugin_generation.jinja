@@ -7,7 +7,7 @@ target("Mutagen", function()
         arguments = { "$(outputdir)", path.absolute("{{ mutagen_source }}/FormIDs.txt") },
 {% else %}
         arguments = { "$(outputdir)/{{ project_name }}.esp", path.absolute("{{ mutagen_source }}/FormIDs.txt") },
-        outputs = { "{{ project_name }}.esp" },
+        outputs = { {{ (project_name ~ '.esp') | to_json(ensure_ascii=False) }} },
 {% endif %}
     })
 {% if mcm %}

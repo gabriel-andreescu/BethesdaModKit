@@ -3,7 +3,7 @@ target("Interface", function()
     add_rules("@addon/bmk/ffdec", {
         xml = "{{ interface_source }}/swf/{{ project_name }}.xml",
         scripts = "{{ interface_source }}/actionscript",
-        output = "{{ project_name }}.swf",
+        output = {{ (project_name ~ '.swf') | to_json(ensure_ascii=False) }},
     })
     add_packages("ffdec")
 end)
