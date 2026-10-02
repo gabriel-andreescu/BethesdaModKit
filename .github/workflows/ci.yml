@@ -218,6 +218,13 @@ jobs:
         run: |
           $PSNativeCommandUseErrorActionPreference = $true
           $version = uv run python -c 'import tomllib; print(tomllib.load(open("python/pyproject.toml", "rb"))["project"]["version"])'
+          $templateVersion = uv run python -c 'import yaml; print(yaml.safe_load(open("copier.yml"))["bmk_version"]["default"])'
+          if ($templateVersion -cne $version) {
+              throw "copier.yml bmk_version '$templateVersion' does not match BMK version '$version'."
+          }
+          if (-not (Select-String -Path addons/b/bmk/xmake.lua -SimpleMatch "add_versions(`"$version`", `"v$version`")")) {
+              throw "addons/b/bmk/xmake.lua does not list $version."
+          }
           $packageVersion = dotnet msbuild dotnet/BethesdaModKit.Mutagen/BethesdaModKit.Mutagen.csproj --getProperty:PackageVersion --nologo
           if ($packageVersion -cne $version) {
               throw "BethesdaModKit.Mutagen version '$packageVersion' does not match BMK version '$version'."
