@@ -30,7 +30,7 @@ wheels = [
 
 [[package]]
 name = "bethesda-mod-kit"
-version = "0.5.0"
+version = "0.6.0"
 source = { editable = "python" }
 dependencies = [
     { name = "requests" },

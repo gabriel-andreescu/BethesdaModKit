@@ -174,5 +174,5 @@ bmk_docs:
 
 bmk_version:
   type: str
-  default: 0.5.0
+  default: 0.6.0
   when: false
