@@ -184,7 +184,11 @@ def test_tooling_only_keeps_existing_project(tmp_path):
     }
 
 
-def test_tooling_update_preserves_project_hooks(tmp_path):
+def test_tooling_update_preserves_project_hooks(tmp_path, monkeypatch):
+    # Template file names plus pytest's temporary path exceed MAX_PATH on Windows runners.
+    monkeypatch.setenv("GIT_CONFIG_COUNT", "1")
+    monkeypatch.setenv("GIT_CONFIG_KEY_0", "core.longpaths")
+    monkeypatch.setenv("GIT_CONFIG_VALUE_0", "true")
     template = tmp_path / "template"
     template.mkdir()
     shutil.copy(ROOT / "copier.yml", template)
