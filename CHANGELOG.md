@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/2.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Installing `commonlibsse-ng` or `commonlibf4` from a local checkout with
+  `--debugdir` no longer modifies the checkout. The recipes build a staged copy.
+
 ## [0.6.0] - 2026-10-03
 
 ### Added

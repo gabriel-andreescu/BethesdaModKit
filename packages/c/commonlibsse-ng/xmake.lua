@@ -15,11 +15,6 @@ add_urls("https://github.com/gabriel-andreescu/CommonLibSSE-NG/archive/$(version
 add_versions("8.0.1", "34162b1feaacd66a617e913f3bcf3320722ad9b8728be5c8d3f1c8bbcb07e39c")
 add_versions("9.0.0", "406df41ff3c6cd9bc3eb5bb8c5f68e3f4159798452d3b7f3335a23dab8231afd")
 add_versions("10.0.0", "da00b56835ab4500255ac977d52a7d2cecec003afc280dd322b419005418e792")
-add_patches(
-    ">=8.0.1",
-    path.join(os.scriptdir(), "patches", "vr-form-factory.patch"),
-    "d16641d4e41f7a58d8c978fc1d23293b980ee1e9a9ea704a7c008fa301693260"
-)
 for _, runtime in ipairs({ "skyrim_se", "skyrim_ae", "skyrim_vr" }) do
     add_configs(runtime, { description = "Enable " .. runtime, default = true, type = "boolean" })
 end
@@ -63,9 +58,30 @@ on_load(function(package)
     package:add("includedirs", "include")
 end)
 on_install("windows|x64", function(package)
+    -- XMake keeps a package build's config and build directory in the current directory, which is the checkout
+    -- under --debugdir, and would patch the checkout's sources. Building a staged copy leaves the checkout untouched.
+    local source = os.curdir()
+    local stage = path.join(package:cachedir(), "bmk-source")
+    os.tryrm(stage)
+    os.mkdir(stage)
+    for _, entry in ipairs({ "include", "licenses", "res", "src", "COPYING.txt", "EXCEPTIONS.md", "xmake.lua" }) do
+        local input = path.join(source, entry)
+        assert(os.exists(input), "CommonLibSSE-NG source is missing " .. entry .. ": " .. source)
+        os.cp(input, path.join(stage, entry))
+    end
+    os.cd(stage)
+    import("lib.detect.find_tool")
+    local git = assert(find_tool("git"), "Git is required to apply the VR form-factory override")
+    -- The ceiling keeps Git from treating the stage as part of a repository above it, which would skip the patch.
+    os.vrunv(git.program, {
+        "apply",
+        "--ignore-whitespace",
+        path.join(package:scriptdir(), "patches", "vr-form-factory.patch"),
+    }, { envs = { GIT_CEILING_DIRECTORIES = path.directory(stage) } })
     local openvr
     if package:config("skyrim_vr") then
         openvr = path.join(package:resourcedir("openvr"), "openvr-60eb187801956ad277f1cae6680e3a410ee0873b")
+        os.mkdir("extern/openvr")
         os.cp(path.join(openvr, "headers"), "extern/openvr/headers")
     end
     import("package.tools.xmake").install(package, {

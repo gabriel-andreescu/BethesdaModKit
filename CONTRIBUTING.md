@@ -40,6 +40,12 @@ Update source revisions, package versions and archive hashes together. Review
 patches against the new source before retaining them. Preserve upstream license
 and exception files in the installed package.
 
+The CommonLib recipes build a staged copy of their source, so a `--debugdir`
+checkout stays unchanged. After changing a recipe, build a native consumer
+against the pinned revision and against a
+[local checkout](docs/mod-authors/tooling/native-plugins.md#local-dependency-builds),
+and check that the checkout's `git status` is clean afterwards.
+
 ### CommonLibSSE-NG
 
 The [package definition](packages/c/commonlibsse-ng/xmake.lua) also pins OpenVR.
@@ -48,6 +54,9 @@ Update that revision alongside CommonLib.
 | Patch                                                                             | Purpose                                                  |
 | --------------------------------------------------------------------------------- | -------------------------------------------------------- |
 | [vr-form-factory.patch](packages/c/commonlibsse-ng/patches/vr-form-factory.patch) | Correct the VR form-factory initialization flag address. |
+
+The recipe applies the patch to its staged copy during installation, not through
+`add_patches`, which would patch a `--debugdir` checkout in place.
 
 [rules/plugin.lua](packages/c/commonlibsse-ng/rules/plugin.lua) adapts metadata
 generation for installed-package consumers using the unchanged upstream

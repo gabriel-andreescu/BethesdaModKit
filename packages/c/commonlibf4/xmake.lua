@@ -84,6 +84,18 @@ on_load(function(package)
     end
 end)
 on_install("windows|x64", function(package)
+    -- XMake keeps a package build's config and build directory in the current directory, which is the checkout
+    -- under --debugdir, and commonlib-shared is copied into it. Building a staged copy leaves the checkout untouched.
+    local source = os.curdir()
+    local stage = path.join(package:cachedir(), "bmk-source")
+    os.tryrm(stage)
+    os.mkdir(stage)
+    for _, entry in ipairs({ "include", "res", "src", "EXCEPTIONS", "LICENSE", "xmake.lua" }) do
+        local input = path.join(source, entry)
+        assert(os.exists(input), "CommonLibF4 source is missing " .. entry .. ": " .. source)
+        os.cp(input, path.join(stage, entry))
+    end
+    os.cd(stage)
     local shared =
         path.join(package:resourcedir("commonlib-shared"), "commonlib-shared-29fbdb0e2dc548c9ab22f6964981d75090dc9094")
     os.mkdir("lib/commonlib-shared")
