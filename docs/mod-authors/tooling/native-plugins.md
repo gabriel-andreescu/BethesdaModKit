@@ -11,7 +11,7 @@ matching CommonLib package:
 
 ```lua
 includes("@addon/bmk/native")
-add_requires("commonlibsse-ng 8.0.1", {system = false})
+add_requires("commonlibsse-ng X.Y.Z", {system = false})
 
 target("Native")
     set_default(false)
@@ -80,7 +80,7 @@ The settings helper requires C++23 and Windows. Add the `bmk` and `clib-util`
 header packages to the target. CommonLib provides spdlog:
 
 ```lua
-add_requires("bmk X.Y.Z", "clib-util 1.5.0")
+add_requires("bmk X.Y.Z", "clib-util X.Y.Z")
 
 target("Native", function()
     add_packages("bmk", "clib-util")

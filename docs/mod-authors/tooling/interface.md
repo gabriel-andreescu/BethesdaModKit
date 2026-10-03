@@ -7,7 +7,7 @@ optionally importing ActionScript.
 ## `@addon/bmk/ffdec`
 
 ```lua
-add_requires("ffdec 26.3.0", {host = true})
+add_requires("ffdec X.Y.Z", {host = true})
 
 target("Interface")
     set_default(false)

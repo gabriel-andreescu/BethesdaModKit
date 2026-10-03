@@ -174,7 +174,7 @@ working directory and `--launch-timeout` controls how long to wait for DevBench.
 Add the API package and companion source to a Skyrim plugin:
 
 ```lua
-add_requires("devbench-api 2026.09.13", {system = false})
+add_requires("devbench-api YYYY.MM.DD", {system = false})
 
 target("MyMod")
     add_packages("devbench-api")

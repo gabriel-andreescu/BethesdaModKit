@@ -13,7 +13,7 @@ The Skyrim package enables SE, AE and VR together. Restrict a build through the
 CommonLib package configurations when the mod targets fewer runtimes:
 
 ```lua
-add_requires("commonlibsse-ng 8.0.1", {system = false, configs = {
+add_requires("commonlibsse-ng X.Y.Z", {system = false, configs = {
     skyrim_se = false,
     skyrim_ae = true,
     skyrim_vr = false

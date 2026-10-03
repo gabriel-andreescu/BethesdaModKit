@@ -7,8 +7,8 @@ sources through `imports` or Papyrus SDK packages.
 ## Target configuration
 
 ```lua
-add_requires("caprica 2026.9.17", { host = true })
-add_requires("skyrim-papyrus-sdk 2026.09.20", { configs = { skse = true } })
+add_requires("caprica YYYY.M.D", { host = true })
+add_requires("skyrim-papyrus-sdk YYYY.MM.DD", { configs = { skse = true } })
 
 target("Papyrus", function()
     set_default(false)
