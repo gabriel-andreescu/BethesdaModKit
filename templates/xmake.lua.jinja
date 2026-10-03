@@ -21,18 +21,18 @@ add_requires("{{ 'commonlibsse-ng 8.0.1' if game == 'skyrim' else 'commonlibf4 2
 add_requires("clib-util 1.5.0", { system = false })
 {% endif %}
 {% if native_settings and not (devbench_api and game == 'skyrim') %}
-add_requires("bmk", { system = false })
+add_requires("bmk {{ bmk_version }}", { system = false })
 {% elif devbench_api and game == 'skyrim' %}
-add_requires("bmk", "devbench-api 2026.09.13", { system = false })
+add_requires("bmk {{ bmk_version }}", "devbench-api 2026.09.13", { system = false })
 {% endif %}
 {% endif %}
 {% if 'papyrus' in components or mcm %}
 
-add_requires("caprica", { host = true })
+add_requires("caprica 2026.9.17", { host = true })
 {% if mcm and game == 'skyrim' %}
-add_requires("skyrim-papyrus-sdk", { configs = { mcm = true } })
+add_requires("skyrim-papyrus-sdk 2026.09.20", { configs = { mcm = true } })
 {% elif game == 'skyrim' %}
-add_requires("skyrim-papyrus-sdk")
+add_requires("skyrim-papyrus-sdk 2026.09.20")
 {% endif %}
 option("papyrus_imports", { description = "Papyrus import directories separated by ;" })
 option("papyrus_flags", { description = "Optional Papyrus flags file override" })

@@ -9,7 +9,7 @@ Use the [project template](docs/mod-authors/template/projects.md), or
 
 ## Create a project
 
-Requires [Copier](https://copier.readthedocs.io/en/stable/), Git and
+Requires [Copier 9](https://copier.readthedocs.io/en/stable/), Git and
 [XMake 3.1.1 or newer](https://github.com/xmake-io/xmake/releases/tag/v3.1.1).
 
 ```powershell

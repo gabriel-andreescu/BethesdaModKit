@@ -69,7 +69,9 @@ root-level files. Use full target names, including namespaces. Paths are
 absolute or relative to the project root. Each package accepts multiple
 destinations.
 
-```sh
+Build the package or the project:
+
+```powershell
 xmake Skyrim::MyMod
 xmake
 ```
@@ -83,17 +85,15 @@ sharing a destination must have non-overlapping output paths. Conflicts with
 another package or unowned files fail before deployment changes its
 destinations.
 
-Ownership records live in the ignored `.bmk/deployment.lua`, independently of
-XMake's cache. After deleting `.xmake/`, restore `deploy.json` to resume
-deployment to the same destinations.
-
-Removing a destination leaves its deployed files in place. Keep `.bmk/` while
-those files are deployed. If ownership records are lost, remove this project's
-previously deployed files or choose an empty destination before deploying again.
+Ownership records live in `.bmk/deployment.lua`, independently of XMake's cache.
+After removing `.xmake/`, restore `deploy.json` to resume deployment. Removing a
+destination leaves its files in place. Keep `.bmk/` while its outputs are
+deployed. If ownership records are lost, remove the project's previously
+deployed files or choose an empty destination.
 
 ## ZIP packages
 
-```sh
+```powershell
 xmake package
 xmake package OtherModPatch
 ```

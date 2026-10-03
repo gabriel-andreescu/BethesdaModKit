@@ -1,8 +1,8 @@
 # Game tests
 
-Session setup waits for Skyrim's main menu once, before any game test. Configure
-a launch command or start the game before running the suite. Add mod-specific
-tests using BMK's
+Session setup waits once for Skyrim's main menu, before any game test. Start
+Skyrim with DevBench installed, or set `devbench_command` in `pyproject.toml`,
+before running the suite. Add mod-specific tests using BMK's
 [DevBench fixtures]({{ bmk_docs }}/mod-authors/tooling/skyrim/devbench.md#pytest).
 
 ```powershell

@@ -24,12 +24,11 @@ def pytest_addoption(parser):
     parser.addini("devbench_url", "DevBench HTTP URL", default="http://127.0.0.1:8920")
     parser.addini("devbench_command", "Launcher executable and arguments", type="args")
     parser.addini("devbench_cwd", "Launcher working directory", default="")
-    parser.addini(
-        "devbench_launch_timeout",
-        "Launch and condition-wait timeout in seconds",
-        default="120",
-    )
+    parser.addini("devbench_launch_timeout", "Launch timeout in seconds", default="120")
     parser.addini("devbench_timeout", "HTTP request timeout in seconds", default="30")
+    parser.addini(
+        "devbench_wait_timeout", "Condition-wait timeout in seconds", default="30"
+    )
     parser.addini(
         "devbench_quit_on_exit",
         "Request game exit after the test session",
@@ -94,7 +93,7 @@ def devbench_session(request):
 @pytest.fixture(name="wait_for", scope="session")
 def wait_for_fixture(pytestconfig):
     return partial(
-        wait_for, timeout=float(pytestconfig.getini("devbench_launch_timeout"))
+        wait_for, timeout=float(pytestconfig.getini("devbench_wait_timeout"))
     )
 
 

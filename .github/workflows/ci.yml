@@ -172,12 +172,16 @@ jobs:
             hashFiles('.pre-commit-config.yaml',
             'templates/*pre-commit-config.yaml*') }}
 
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
       - name: Lint and format
         run: uv run pre-commit run --all-files --show-diff-on-failure
 
       - name: Check generated projects' formatting
         run: |
           $PSNativeCommandUseErrorActionPreference = $true
+          $description = "A sample mod whose description is long enough to wrap in the generated README file."
           $variants = @{
               skyrim = @("-d", "game=skyrim", "-d", "components=[native, papyrus, interface, plugin_generation, plugin_patching]", "-d", "mcm=true", "-d", "native_settings=true", "-d", "devbench_tests=true", "-d", "devbench_api=true")
               fallout4 = @("-d", "game=fallout4", "-d", "components=[native, papyrus, interface, plugin_generation, plugin_patching]", "-d", "native_settings=true")
@@ -185,10 +189,13 @@ jobs:
           }
           foreach ($variant in $variants.GetEnumerator()) {
               $project = Join-Path $env:RUNNER_TEMP $variant.Key
-              uv run copier copy --defaults --trust --vcs-ref HEAD -d project_name=SampleMod @($variant.Value) $env:GITHUB_WORKSPACE $project
+              uv run copier copy --defaults --trust --vcs-ref HEAD -d project_name=SampleMod -d "description=$description" @($variant.Value) $env:GITHUB_WORKSPACE $project
               Push-Location $project
               git init --quiet
               git add --all
+              if (Test-Path .config/dotnet-tools.json) {
+                  dotnet tool restore
+              }
               uv run --project $env:GITHUB_WORKSPACE pre-commit run --all-files --show-diff-on-failure
               Pop-Location
           }
@@ -228,6 +235,9 @@ jobs:
           }
           if (-not (Select-String -Path addons/b/bmk/xmake.lua -SimpleMatch "add_versions(`"$version`", `"v$version`")")) {
               throw "addons/b/bmk/xmake.lua does not list $version."
+          }
+          if (-not (Select-String -Path packages/b/bmk/xmake.lua -SimpleMatch "add_versions(`"$version`", `"local`")")) {
+              throw "packages/b/bmk/xmake.lua does not list $version."
           }
           $packageVersion = dotnet msbuild dotnet/BethesdaModKit.Mutagen/BethesdaModKit.Mutagen.csproj --getProperty:PackageVersion --nologo
           if ($packageVersion -cne $version) {
@@ -328,7 +338,7 @@ jobs:
 
   nuget:
     if: github.event_name == 'push' && github.ref_type == 'tag'
-    needs: [workflows, checks, plugins]
+    needs: release
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -352,6 +362,6 @@ jobs:
         shell: pwsh
         env:
           NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
-        run:
-          dotnet nuget push packages/*.nupkg --api-key $env:NUGET_API_KEY
-          --source https://api.nuget.org/v3/index.json
+        run: |
+          $PSNativeCommandUseErrorActionPreference = $true
+          dotnet nuget push packages/*.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate

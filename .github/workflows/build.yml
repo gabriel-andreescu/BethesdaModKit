@@ -69,6 +69,8 @@ jobs:
           key:
             nuget-${{ runner.os }}-${{ hashFiles(format('{0}/**/*.csproj',
             inputs.project-directory), format('{0}/**/packages.lock.json',
+            inputs.project-directory), format('{0}/**/Directory.Packages.props',
+            inputs.project-directory), format('{0}/**/Directory.Build.props',
             inputs.project-directory), format('{0}/.config/dotnet-tools.json',
             inputs.project-directory)) }}
           restore-keys: nuget-${{ runner.os }}-
@@ -107,6 +109,13 @@ jobs:
               $directory = Split-Path -Parent $lockfile
               npm ci --prefix ($directory ? $directory : '.') --no-audit --no-fund
           }
+
+      - name: Restore .NET tools
+        if:
+          hashFiles('.pre-commit-config.yaml') != '' &&
+          hashFiles('.config/dotnet-tools.json') != ''
+        working-directory: ${{ github.workspace }}
+        run: dotnet tool restore
 
       - name: Lint and format
         if: hashFiles('.pre-commit-config.yaml') != ''

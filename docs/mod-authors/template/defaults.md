@@ -17,21 +17,18 @@ installs into `.xmake/luals`.
 
 Pre-commit formats staged files with:
 
-- **Prettier:** Markdown (`.md`), YAML (`.yaml`, `.yml`) and JSON (`.json`,
-  `.jsonc`), using [Prettier's defaults](https://prettier.io/docs/options) with
-  `proseWrap: "always"`.
-- **StyLua:** Lua (`.lua`), using four-space indentation.
-- **Ruff**, when Python is included: lint fixes and formatting for `.py` and
-  `.pyi` files. The lint configuration also enables import sorting.
+- **Prettier:** Markdown, YAML and JSON, with `proseWrap: "always"`.
+- **StyLua:** Lua, using four-space indentation.
+- **Ruff**, when Python tests are included: lint fixes, import sorting and
+  formatting.
 - **[CSharpier](https://csharpier.com/docs/About)**, when C# is included: C# and
-  XML (`.cs`, `.csx`, `.csproj`, `.props`, `.targets`, `.slnx`, `.xml`,
-  `.config`). The hook restores the pinned .NET tool before formatting.
-- **clang-format**, when native code is included: C and C++ sources using the
-  template's pinned [clang-format 23.1.0](../tooling/clang.md).
+  XML. Run `dotnet tool restore` once per clone to install the pinned tool.
+- **clang-format**, when native code is included: C and C++ sources using
+  clang-format 23.1.0.
 
 After initializing the project's Git repository, install the hooks with:
 
-```sh
+```powershell
 uv tool install pre-commit
 pre-commit install
 ```
@@ -57,8 +54,7 @@ Copier update.
 
 ## Native plugins
 
-Native projects include `.clang-format`, `.clangd` and `.clang-tidy`. The
-formatting configuration requires clang-format 23 or newer. The clangd
+Native projects include `.clang-format`, `.clangd` and `.clang-tidy`. The clangd
 configuration uses `clang-cl` for Windows x64 C++23. The clang-tidy header
 filter covers `src/`. Adjust it if project headers live elsewhere. Generated
 native targets precompile the CommonLib and script extender headers in `PCH.h`.
@@ -81,7 +77,7 @@ interfaces.
 The generated XMake options accept local import paths and an optional flags
 file:
 
-```sh
+```powershell
 xmake f --papyrus_imports="C:/Game/Source/Scripts;C:/Dependencies/Scripts"
 xmake f --papyrus_flags="path/to/CustomFlags.flg"
 ```
@@ -95,11 +91,10 @@ imports.
 `global.json`, `Directory.Build.props` and a root `.slnx` solution.
 
 CSharpier uses its [defaults](https://csharpier.com/docs/Configuration) with the
-indentation and line endings in `.editorconfig`. Restore and run it
-independently of pre-commit with:
+indentation and line endings in `.editorconfig`. Run it independently of
+pre-commit with:
 
-```sh
-dotnet tool restore
+```powershell
 dotnet csharpier format .
 ```
 
@@ -121,7 +116,7 @@ inputs and package outputs.
 For Synthesis, set the input Data directory and load-order file through the
 generated `synthesis_data` and `synthesis_load_order` XMake options:
 
-```sh
+```powershell
 xmake f --synthesis_data="C:/PatchInputs/Data" --synthesis_load_order="patch-loadorder.txt"
 ```
 
@@ -134,8 +129,9 @@ updates preserve it.
 See [persistent FormIDs](../tooling/dotnet.md#persistent-formids) for allocation
 names and shared mappings.
 
-## GitHub Actions
+## CI workflow
 
-The generated workflow calls BMK's
-[reusable build workflow](../tooling/github-actions.md) on pushes to `main`,
-pull requests and manual runs. Version tags also publish a GitHub release.
+`.github/workflows/build.yml` calls BMK's
+[build workflow](../tooling/github-actions.md) at the project's BMK release. It
+runs on pushes to `main`, pull requests and manual runs. Version tags also
+publish a GitHub release.

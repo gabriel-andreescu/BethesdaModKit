@@ -4,15 +4,16 @@ Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/). From the BMK root:
 
 ```powershell
 uv sync --locked
+dotnet tool restore
 uv run pre-commit install
 ```
 
 ## Formatting and lint
 
 The [commit hooks](../../.pre-commit-config.yaml) format staged files with
-Prettier, Ruff and StyLua, and apply Ruff lint fixes. Prettier uses
-[`proseWrap: "always"`](https://prettier.io/docs/options#prose-wrap). StyLua
-uses four-space indentation. Run the hooks on all tracked files with:
+Prettier, Ruff and StyLua, and apply Ruff lint fixes. Prettier wraps Markdown
+prose. StyLua uses four-space indentation. Run the hooks on all tracked files
+with:
 
 ```powershell
 uv run pre-commit run --all-files
@@ -22,11 +23,29 @@ Builds enforce the C# code style in `.editorconfig`: `var` only where the type
 is apparent, and braces on every block.
 
 CI runs the same checks. Jinja templates and bundled license files are excluded
-from formatting.
+from formatting. Render changed templates and check the generated files.
 
 ## XMake
 
-Requires [XMake 3.1.1](https://github.com/xmake-io/xmake/releases/tag/v3.1.1).
+Requires Git and the [XMake build](https://github.com/gabriel-andreescu/xmake)
+pinned as `XMAKE_COMMIT` in the
+[build workflow](../../.github/workflows/build.yml). Use the
+[consumer setup](../../CONTRIBUTING.md#validate-package-and-rule-changes) to
+install local addon changes.
+
+## Mods
+
+Generate a mod from the local checkout, then build and package it as described
+in
+[validating changes](../../CONTRIBUTING.md#validate-package-and-rule-changes):
+
+```powershell
+uv run copier copy --defaults --trust --vcs-ref HEAD -d project_name=SampleMod -d 'components=[native]' C:/path/to/BethesdaModKit scratch/SampleMod
+```
+
+`--vcs-ref HEAD` selects the checkout instead of the latest release tag, and
+includes uncommitted changes. Keep generated projects under the ignored
+`scratch/` directory.
 
 ## Tests
 
@@ -52,7 +71,8 @@ Set `BMK_TEST_CACHE` to choose the XMake test cache directory.
 
 ## Native tests
 
-Requires an x64 C++23 compiler. XMake installs Catch2.
+Requires Visual Studio 2022 with the C++ toolset and Windows SDK. XMake installs
+Catch2.
 
 ```powershell
 xmake -P tests/native
@@ -64,7 +84,8 @@ data lifetime.
 
 For clangd support in the Skyrim headers, generate the consumer's compilation
 database after installing the local addon as described in
-[consumer validation](../../CONTRIBUTING.md#validate-package-and-rule-changes):
+[consumer validation](../../CONTRIBUTING.md#validate-package-and-rule-changes).
+The consumer uses the newest release listed in the addon recipe:
 
 ```powershell
 xmake f -P tests/native/plugins -y -a x64 --game=skyrim --deploy=n

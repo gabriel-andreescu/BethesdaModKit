@@ -7,8 +7,8 @@ sources through `imports` or Papyrus SDK packages.
 ## Target configuration
 
 ```lua
-add_requires("caprica", { host = true })
-add_requires("skyrim-papyrus-sdk", { configs = { skse = true } })
+add_requires("caprica 2026.9.17", { host = true })
+add_requires("skyrim-papyrus-sdk 2026.09.20", { configs = { skse = true } })
 
 target("Papyrus", function()
     set_default(false)
@@ -25,6 +25,10 @@ Fallout 4 uses `@addon/bmk/fallout4.papyrus` with its game and dependency
 sources supplied through `imports` instead of the Skyrim SDK. Select the Papyrus
 target in a [package](packaging.md#package-composition) to ship its PEX files
 under `Scripts/`.
+
+Generated Papyrus sources require
+[Caprica's language extensions](https://github.com/gabriel-andreescu/Caprica#language-extensions),
+which the generated targets enable through `arguments`.
 
 | Option      | Default                       | Purpose                                           |
 | ----------- | ----------------------------- | ------------------------------------------------- |

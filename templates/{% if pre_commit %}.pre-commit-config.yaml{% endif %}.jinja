@@ -25,12 +25,6 @@ repos:
         types_or: [python, pyi]
 {% endif %}
 {% if 'plugin_generation' in components or 'plugin_patching' in components or mcm %}
-      - id: dotnet-tool-restore
-        name: Restore .NET tools
-        language: system
-        entry: dotnet tool restore
-        pass_filenames: false
-        files: (^|/)(global\.json|\.config/dotnet-tools\.json)$|\.(cs|csx|csproj|props|targets|slnx|xml|config)$
       - id: csharpier
         name: CSharpier
         language: system

@@ -17,25 +17,32 @@ These integrations do not require Copier or its generated project layout.
 A complete asset-only `xmake.lua`:
 
 ```lua
+set_xmakever("3.1.1")
+set_project("MyMod")
+set_policy("package.requires_lock", true)
+
 add_repositories("bmk https://github.com/gabriel-andreescu/BethesdaModKit.git")
 add_addons("bmk X.Y.Z")
 includes("@addon/bmk/project")
-set_policy("package.requires_lock", true)
 
-target("MyMod")
+target("MyMod", function()
     set_version("1.0.0")
     add_rules("@addon/bmk/skyrim.package")
     add_installfiles("assets/(**)")
+end)
 ```
+
+The root policy enables XMake's dependency lockfile. `project` declares the
+`deploy` and `distdir` options. Native plugins also include `@addon/bmk/native`
+for the compiler defaults.
 
 Place files under `assets/` using the paths you want inside the ZIP. For
 example, `assets/textures/MyMod/iron.dds` becomes `textures/MyMod/iron.dds`. Use
-`@addon/bmk/fallout4.package` for Fallout 4. The root policy enables XMake's
-dependency lockfile. `project` declares the `deploy` and `distdir` options.
+`@addon/bmk/fallout4.package` for Fallout 4.
 
 ## Build and package
 
-```sh
+```powershell
 xmake
 xmake package
 ```
@@ -43,12 +50,6 @@ xmake package
 The example writes `build/dist/MyMod/MyMod-1.0.0.zip`. To add compilation,
 declare the component targets and list them in the
 [package's `targets` option](packaging.md#package-composition).
-
-With no target named, `xmake` builds default targets and their dependencies.
-Package rules add dependencies from their `targets` option. A component's
-`set_default(false)` leaves build selection to its packages. It still builds
-when a package needs it or when requested directly, for example with
-`xmake build Interface`.
 
 Configure asset paths, deployment destinations and ZIP outputs through
 [deployment and packaging](packaging.md). For BSA/BA2 settings, see
@@ -60,10 +61,10 @@ mod. [Interface builds](interface.md) resolve FFDec and Java through XMake.
 
 ## SKSE and F4SE plugins
 
-Requires Windows, a C++23-capable MSVC toolchain and a Windows SDK. For clang-cl
+Requires Visual Studio 2022 with the C++ toolset and Windows SDK. For clang-cl
 builds, also install LLVM and configure the toolchain:
 
-```sh
+```powershell
 xmake f --toolchain=clang-cl
 ```
 

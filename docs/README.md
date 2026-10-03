@@ -17,21 +17,21 @@ build rules or helpers.
 
 ### Build tools and helpers
 
-| Guide                                                             | Covers                                                            |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [Use BMK in an existing project](mod-authors/tooling/building.md) | Integrating build rules and helpers without the template.         |
-| [SKSE and F4SE plugins](mod-authors/tooling/native-plugins.md)    | CommonLib, DLL metadata and shared sources.                       |
-| [Dependencies and runtimes](mod-authors/tooling/dependencies.md)  | Dependency sources, runtime requirements and library adaptations. |
-| [Papyrus](mod-authors/tooling/papyrus.md)                         | Caprica, imports and packaged script sources.                     |
-| [Scaleform UI](mod-authors/tooling/interface.md)                  | SWF builds with FFDec and ActionScript.                           |
-| [C# generators and patchers](mod-authors/tooling/dotnet.md)       | Mutagen and Synthesis projects.                                   |
-| [Deployment and packaging](mod-authors/tooling/packaging.md)      | Package contents, local deployment and ZIPs.                      |
-| [BSA and BA2 archives](mod-authors/tooling/archives.md)           | File selection, compression and loader plugins.                   |
-| [Clang tooling](mod-authors/tooling/clang.md)                     | Compilation databases, formatting and lint commands.              |
-| [GitHub Actions](mod-authors/tooling/github-actions.md)           | Mod builds and releases.                                          |
-| [Nexus Mods](mod-authors/tooling/nexus.md)                        | File destinations, categories and release uploads.                |
-| [Updating](mod-authors/tooling/updating.md)                       | Addon, dependency, Python and workflow updates.                   |
-| [Skyrim DevBench](mod-authors/tooling/skyrim/devbench.md)         | Python helpers, pytest fixtures and native API integration.       |
+| Guide                                                            | Covers                                                            |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Using BMK in an existing mod](mod-authors/tooling/building.md)  | Integrating build rules and helpers without the template.         |
+| [SKSE and F4SE plugins](mod-authors/tooling/native-plugins.md)   | CommonLib, DLL metadata and shared sources.                       |
+| [Dependencies and runtimes](mod-authors/tooling/dependencies.md) | Dependency sources, runtime requirements and library adaptations. |
+| [Papyrus](mod-authors/tooling/papyrus.md)                        | Caprica, imports and packaged script sources.                     |
+| [Scaleform UI](mod-authors/tooling/interface.md)                 | SWF builds with FFDec and ActionScript.                           |
+| [C# generators and patchers](mod-authors/tooling/dotnet.md)      | Mutagen and Synthesis projects.                                   |
+| [Deployment and packaging](mod-authors/tooling/packaging.md)     | Package contents, local deployment and ZIPs.                      |
+| [BSA and BA2 archives](mod-authors/tooling/archives.md)          | File selection, compression and loader plugins.                   |
+| [Clang tooling](mod-authors/tooling/clang.md)                    | Compilation databases, formatting and lint commands.              |
+| [GitHub Actions](mod-authors/tooling/github-actions.md)          | Mod builds and releases.                                          |
+| [Nexus Mods](mod-authors/tooling/nexus.md)                       | File destinations, categories and release uploads.                |
+| [Updating](mod-authors/tooling/updating.md)                      | Addon, dependency, Python and workflow updates.                   |
+| [Skyrim DevBench](mod-authors/tooling/skyrim/devbench.md)        | Python helpers, pytest fixtures and native API integration.       |
 
 ## BMK maintainers
 

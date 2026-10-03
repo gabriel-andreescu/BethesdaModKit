@@ -1,6 +1,7 @@
 package("skyrim-papyrus-sdk", function()
     set_kind("library", { headeronly = true })
     set_description("Skyrim Papyrus SDK interfaces")
+    add_versions("2026.09.20", "local")
 
     add_configs("skse", { description = "Include SKSE interfaces", default = false, type = "boolean" })
     add_configs("mcm", { description = "Include MCM Helper interfaces", default = false, type = "boolean" })
