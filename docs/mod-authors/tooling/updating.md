@@ -51,12 +51,20 @@ XMake to resolve a newer version. `xmake require --upgrade` resolves within the
 project's current declarations.
 
 BMK recipes can change their pinned source without changing the library's
-version label. When adopting such a recipe change, reinstall the affected
-package, for example:
+version label. To adopt such a recipe change, reinstall the affected package
+with the requires lock disabled, then configure from scratch so the lock records
+the new recipe revision:
 
 ```powershell
-xmake require --upgrade -f -y clib-util
+xmake repo --update
+xmake f -y --policies=package.requires_lock:n
+xmake require -f -y "clib-util X.Y.Z"
+xmake f -c -y
 ```
+
+With the lock enabled, reinstalling one package rewrites `xmake-requires.lock`
+down to that package. To build against a local checkout of a dependency, see
+[local dependency builds](native-plugins.md#local-dependency-builds).
 
 Review the lockfile changes and rebuild the affected targets before publishing
 the mod. The [dependency reference](dependencies.md) identifies BMK's library

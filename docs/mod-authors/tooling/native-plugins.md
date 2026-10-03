@@ -74,6 +74,30 @@ Each target compiles shared files with its own dependencies and definitions. In
 included Lua files, use `$(projectdir)/src/...` for paths relative to the
 project root.
 
+## Local dependency builds
+
+To build against a local CommonLibSSE-NG, CommonLibF4, CLibUtil or DevBench
+checkout, reinstall its package from it with the requires lock disabled. With
+the lock enabled, reinstalling one package rewrites `xmake-requires.lock` down
+to that package:
+
+```powershell
+xmake f -y --policies=package.requires_lock:n
+xmake require -f -y --debugdir=C:/path/to/CommonLibSSE-NG "commonlibsse-ng X.Y.Z"
+xmake
+```
+
+Use the version the project's `xmake.lua` requires. The package builds a copy of
+the checkout and leaves it unchanged. The CommonLibSSE-NG copy also receives
+BMK's [VR override](dependencies.md#library-sources).
+
+To return to the pinned source, reinstall the package, then enable the lock:
+
+```powershell
+xmake require -f -y "commonlibsse-ng X.Y.Z"
+xmake f -y --policies=package.requires_lock:y
+```
+
 ## Settings files
 
 The settings helper requires C++23 and Windows. Add the `bmk` and `clib-util`

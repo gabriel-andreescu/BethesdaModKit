@@ -39,6 +39,12 @@ See [SKSE](https://skse.silverlock.org/),
 | CLibUtil        | [gabriel-andreescu/CLibUtil](https://github.com/gabriel-andreescu/CLibUtil), pinned in [the recipe](../../../packages/c/clib-util/xmake.lua)                        | Headers installed unchanged.                                  |
 | DevBench API    | [alandtse/devbench](https://github.com/alandtse/devbench), pinned in [the recipe](../../../packages/d/devbench-api/xmake.lua)                                       | Packages the MIT API header and companion source.             |
 
+Projects select a package version in `add_requires`. These pages write it as
+`X.Y.Z` or `YYYY.MM.DD`. The recipes and a generated `xmake.lua` have the
+current ones. See
+[local dependency builds](native-plugins.md#local-dependency-builds) to build
+against a checkout of one.
+
 The CommonLib metadata rules use the libraries' resource templates and default
 the embedded DLL name to the target's basename.
 
