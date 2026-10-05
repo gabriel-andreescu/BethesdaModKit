@@ -1,4 +1,5 @@
 import os
+import time
 
 
 def test_payload_reuse_and_input_changes(payload_module):
@@ -21,8 +22,8 @@ def test_payload_reuse_and_input_changes(payload_module):
     assert not invoke()["calls"]
     assert (payload / "plugin.dll").read_bytes() == b"native output"
 
-    # XMake compares modification times in whole seconds.
-    changed = script.stat().st_mtime + 2
+    # XMake rebuilds inputs newer than its last build, in whole seconds.
+    changed = time.time() + 2
     script.write_bytes(b"modified")
     os.utime(script, (changed, changed))
     assert len(invoke()["calls"]) == 1
