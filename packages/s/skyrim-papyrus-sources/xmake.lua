@@ -8,7 +8,6 @@ add_versions("ec822650", "a6988fb829b85ae37a69c96a2d3af206ec5126d7f30b06519962fe
 on_install(function(package)
     local share = package:installdir("share/skyrim-papyrus-sources")
     os.cp("data/SkyrimSE/vanilla/*.psc", package:installdir("include"))
-    os.cp("LICENSE.md", path.join(share, "LICENSE.md"))
     os.cp("data/README.md", path.join(share, "DATA-README.md"))
     os.cp("data/SkyrimSE/vanilla/meta.yaml", path.join(share, "vanilla-meta.yaml"))
 end)

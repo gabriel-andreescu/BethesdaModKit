@@ -37,8 +37,9 @@ then set the `NUGET_USER` repository secret to the NuGet.org profile name.
 ## Package maintenance
 
 Update source revisions, package versions and archive hashes together. Review
-patches against the new source before retaining them. Preserve upstream license
-and exception files in the installed package.
+patches against the new source before retaining them. Recipes install only what
+builds use, so they don't copy dependency license files into the installed
+package.
 
 The CommonLib recipes build a staged copy of their source, so a `--debugdir`
 checkout stays unchanged. After changing a recipe, build a native consumer
@@ -88,8 +89,7 @@ The [package definition](packages/c/caprica/xmake.lua) downloads Windows x64
 binaries from
 [gabriel-andreescu/Caprica releases](https://github.com/gabriel-andreescu/Caprica/releases).
 Update the release version, ZIP checksum and compiler-options link in
-[Papyrus](docs/mod-authors/tooling/papyrus.md) together. Preserve the archive's
-license notices in the installed package.
+[Papyrus](docs/mod-authors/tooling/papyrus.md) together.
 
 ## Validate package and rule changes
 

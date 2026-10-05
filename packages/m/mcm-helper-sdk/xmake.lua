@@ -8,5 +8,4 @@ add_urls("https://github.com/Exit-9B/MCM-Helper/archive/a30334864ea46ab6ee9e74bc
 add_versions("1.6.3", "6d37d9d3ead78137d41c100d9798549d0c9d13a78f807ef6b947ea040e20238c")
 on_install(function(package)
     os.cp("scripts/public/*.psc", package:installdir("include"))
-    os.cp("LICENSE", package:installdir("share/mcm-helper-sdk"))
 end)

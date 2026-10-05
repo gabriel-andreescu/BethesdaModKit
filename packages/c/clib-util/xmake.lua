@@ -7,5 +7,4 @@ add_urls("https://github.com/gabriel-andreescu/CLibUtil/archive/8fd0d88865bab972
 add_versions("1.5.0", "b0ee9ca5c1d05f8692554f6662d260a960a303da8dd48751ae3828fd808bee64")
 on_install(function(package)
     os.cp("include/*", package:installdir("include"))
-    os.cp("LICENSE", package:installdir("share"))
 end)

@@ -8,5 +8,4 @@ add_versions("2026.09.13", "e96e7fd6162e0146c285a153a3577f7a490a1a74350651d008e2
 on_install(function(package)
     os.cp("include/DevBenchAPI.h", package:installdir("include"))
     os.cp("include/DevBenchAPI.cpp", package:installdir("share"))
-    os.cp("include/DevBenchAPI.LICENSE.txt", package:installdir("share"))
 end)

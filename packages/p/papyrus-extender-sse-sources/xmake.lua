@@ -8,5 +8,4 @@ add_urls("https://github.com/powerof3/PapyrusExtenderSSE/archive/81e4c6b7b4912a3
 add_versions("81e4c6b7", "811ac402cb3eed9b341f9ec9f0ba46a733d84664d7e7b3115acb9194857e8d24")
 on_install(function(package)
     os.cp("Papyrus/Source/scripts/*.psc", package:installdir("include"))
-    os.cp("LICENSE", package:installdir("share/papyrus-extender-sse-sources"))
 end)

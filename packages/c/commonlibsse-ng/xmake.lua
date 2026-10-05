@@ -64,7 +64,7 @@ on_install("windows|x64", function(package)
     local stage = path.join(package:cachedir(), "bmk-source")
     os.tryrm(stage)
     os.mkdir(stage)
-    for _, entry in ipairs({ "include", "licenses", "res", "src", "COPYING.txt", "EXCEPTIONS.md", "xmake.lua" }) do
+    for _, entry in ipairs({ "include", "res", "src", "xmake.lua" }) do
         local input = path.join(source, entry)
         assert(os.exists(input), "CommonLibSSE-NG source is missing " .. entry .. ": " .. source)
         os.cp(input, path.join(stage, entry))
@@ -95,12 +95,8 @@ on_install("windows|x64", function(package)
     })
     if package:config("skyrim_vr") then
         os.cp("extern/openvr/headers/*.h", package:installdir("include/openvr"))
-        os.cp(path.join(openvr, "LICENSE"), path.join(package:installdir("share/licenses"), "openvr.txt"))
     end
     os.cp("res/commonlib-plugin.rc.in", package:installdir("share"))
     os.cp("res/commonlibsse-ng-plugin.cpp.in", package:installdir("share"))
-    os.cp("COPYING.txt", package:installdir("share"))
-    os.cp("EXCEPTIONS.md", package:installdir("share"))
-    os.cp("licenses/*", package:installdir("share/licenses"))
     os.cp(path.join(package:scriptdir(), "licenses"), package:installdir())
 end)

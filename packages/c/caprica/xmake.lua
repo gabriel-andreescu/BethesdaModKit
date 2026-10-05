@@ -7,5 +7,4 @@ add_urls("https://github.com/gabriel-andreescu/Caprica/releases/download/v$(vers
 add_versions("2026.9.17", "9f11b66819465027c1da5b13a65ce6e461590f08845a23db922d2e6344ce17a1")
 on_install("windows|x64", function(package)
     os.cp("Caprica.exe", package:installdir("bin"))
-    os.cp("licenses/*", package:installdir("share", "licenses", "caprica"))
 end)
