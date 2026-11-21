@@ -289,6 +289,15 @@ jobs:
           xmake-version: gabriel-andreescu/xmake#sha@${{ env.XMAKE_COMMIT }}
           actions-cache-folder: .xmake-install
 
+      # The image's standalone LLVM can be older than the Clang its Visual
+      # Studio standard library accepts, which fails every C++ compile.
+      - name: Use Visual Studio's Clang
+        if: matrix.toolchain == 'clang-cl'
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $visualStudio = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Llvm.Clang -property installationPath
+          "$visualStudio\VC\Tools\Llvm\x64\bin" >> $env:GITHUB_PATH
+
       - name: Set XMake cache directory
         id: image
         run: |
